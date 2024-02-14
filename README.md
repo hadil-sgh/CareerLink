@@ -1,4 +1,4 @@
-# CoConsult 
+# CareerLink Platform 
 
 ## Introduction
 Digital services companies, consulting firms, and engineering enterprises encounter complex management challenges. System fragmentation, manual activity tracking, and lack of integration result in operational inefficiency. To overcome these obstacles, the CoConsult project proposes an integrated ERP solution designed to meet the unique needs of these enterprises.
