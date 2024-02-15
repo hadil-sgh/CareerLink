@@ -8,51 +8,51 @@ Digital services companies, consulting firms, and engineering enterprises encoun
 
 ### 1. User Management
 
-- Description: Handles user authentication, authorization, and basic profile information.
+- Handles user authentication, authorization, and basic profile information.
 
 ### 2. Recruitment Management
 
-- Description: Manages the recruitment process, including job posting, candidate application, and hiring workflows.
+- Manages the recruitment process, including job posting, candidate application, and hiring workflows.
 
 ### 3. Leave and Absence Management
 
-- Description: Tracks and manages employee leave requests, absences, and related information.
+-  Tracks and manages employee leave requests, absences, and related information.
 
 ### 4. Project Management
 
-- Description: Manages projects, including task assignment, progress tracking, and collaboration tools.
+- Manages projects, including task assignment, progress tracking, and collaboration tools.
 
 ### 5. Teams Management
 
-- Description: Handles the creation, organization, and management of teams within the organization.
+-  Handles the creation, organization, and management of teams within the organization.
 
 ### 6. Tasks Management
 
-- Description: Tracks and manages individual tasks, including assignments, deadlines, and status updates.
+- Tracks and manages individual tasks, including assignments, deadlines, and status updates.
 
 ### 7. Expenses Management
 
-- Description: Manages employee expenses, including submission, approval, and reimbursement processes.
+-  Manages employee expenses, including submission, approval, and reimbursement processes.
 
 ### 8. Payment Management
 
-- Description: Handles salary payments, invoicing, and financial transactions related to employee compensation.
+-  Handles salary payments, invoicing, and financial transactions related to employee compensation.
 
 ### 9. Client Management
 
-- Description: Manages client information, interactions, and relationships.
+-  Manages client information, interactions, and relationships.
 
 ### 10. Contract Management
 
-- Description: Handles the creation, tracking, and management of contracts with clients or partners.
+-  Handles the creation, tracking, and management of contracts with clients or partners.
 
 ### 11. Performance Management
 
-- Description: Manages employee performance reviews, goal-setting, and performance improvement plans.
+-  Manages employee performance reviews, goal-setting, and performance improvement plans.
 
 ### 12. Messenger Management
 
-- Description: Provides a messaging platform for internal communication and collaboration.
+-  Provides a messaging platform for internal communication and collaboration.
 
 ## Getting Started
 
