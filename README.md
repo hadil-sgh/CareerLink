@@ -58,13 +58,15 @@ Digital services companies, consulting firms, and engineering enterprises encoun
 
 ## Installation
 
-1.Clone the repository: git clone https://github.com/hadil-sgh/CareerLink.git
-2.Configure the database connection in the config file.
+- 1.Clone the repository: git clone https://github.com/hadil-sgh/CareerLink.git
+- 2.Configure the database connection in the config file.
+  
 
 ## How can i use it ?
 
--Start the web server: ng server (Angular)
--Access the application in your web browser: localhost:4200
+- Start the web server: ng server (Angular)
+- Activate the backend sever in springboot + mysql server 
+-  Access the application in your web browser: localhost:4200
 
 ## Contact
 
