@@ -16,8 +16,21 @@ public class Expense{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Integer idexpense;
     Float amount;
+    Date date;
+    String category;
+    @Enumerated(EnumType.STRING)
+    private MethodPayment methodPayment;
+
+    @ManyToOne
+    IntegrationProjectCalendar integrationProjectCalendar;
     @OneToOne
     Project project;
+    @OneToOne
+    Expense_Validation expenseValidation;
+    @OneToOne
+    Expense_Reimbursement expenseReimbursement;
+    @OneToOne
+    Reports_Analysis reportsAnalysis;
 }
