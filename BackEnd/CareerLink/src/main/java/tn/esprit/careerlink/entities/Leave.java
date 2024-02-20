@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "leave_table")
 @FieldDefaults (level = AccessLevel.PRIVATE)
 public class Leave{
 

@@ -26,6 +26,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     Role role;
     String email;
+    String login;
+    String pwd;
 
     @OneToMany (mappedBy = "user")
     Set<Recruitment> recruitments;
