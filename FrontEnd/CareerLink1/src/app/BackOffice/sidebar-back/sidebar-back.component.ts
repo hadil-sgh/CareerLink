@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar-back.component.css']
 })
 export class SidebarBackComponent {
-
+  ngOnInit(){
+    
+  }
 }

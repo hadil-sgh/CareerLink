@@ -10,6 +10,8 @@ import { NavbarBackComponent } from './BackOffice/navbar-back/navbar-back.compon
 import { SidebarBackComponent } from './BackOffice/sidebar-back/sidebar-back.component';
 import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.component';
 import { HeaderBackComponent } from './FrontOffice/header-back/header-back.component';
+import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { HeaderBackComponent } from './FrontOffice/header-back/header-back.compo
     NavbarBackComponent,
     SidebarBackComponent,
     FooterFrontComponent,
-    HeaderBackComponent
+    HeaderBackComponent,
+    HomeBackComponent,
+    
   ],
   imports: [
     BrowserModule,
