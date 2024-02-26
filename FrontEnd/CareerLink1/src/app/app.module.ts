@@ -9,8 +9,9 @@ import { FooterBackComponent } from './BackOffice/footer-back/footer-back.compon
 import { NavbarBackComponent } from './BackOffice/navbar-back/navbar-back.component';
 import { SidebarBackComponent } from './BackOffice/sidebar-back/sidebar-back.component';
 import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.component';
-import { HeaderBackComponent } from './FrontOffice/header-back/header-back.component';
+import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
+
 
 
 @NgModule({
@@ -22,8 +23,8 @@ import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
     NavbarBackComponent,
     SidebarBackComponent,
     FooterFrontComponent,
-    HeaderBackComponent,
     HomeBackComponent,
+    HeaderFrontComponent,
     
   ],
   imports: [

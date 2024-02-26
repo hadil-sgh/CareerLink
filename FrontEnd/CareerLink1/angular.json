@@ -26,6 +26,8 @@
             ],
             "styles": [
               "src/styles.css"
+              
+
             ],
             "scripts": [ "src/assets/BackOffice/js/jquery-3.6.0.min.js",
             "src/assets/BackOffice/js/popper.min.js",

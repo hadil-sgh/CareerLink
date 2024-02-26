@@ -1,5 +1,7 @@
 package tn.esprit.careerlink.entities;
 
-public enum MethodPayment {
+import java.io.Serializable;
+
+public enum MethodPayment implements Serializable {
     CARD, CASH, TRANSFER
 }

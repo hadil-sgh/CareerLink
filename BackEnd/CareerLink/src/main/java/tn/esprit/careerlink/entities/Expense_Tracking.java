@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 
-public class Expense_Tracking {
+public class Expense_Tracking implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer  tracking_id;

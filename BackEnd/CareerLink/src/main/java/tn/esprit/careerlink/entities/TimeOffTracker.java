@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -10,9 +11,9 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "leave_table")
+
 @FieldDefaults (level = AccessLevel.PRIVATE)
-public class Leave{
+public class TimeOffTracker implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +27,5 @@ public class Leave{
     LeaveStatus status;
     @ManyToOne
     User user;
+
 }

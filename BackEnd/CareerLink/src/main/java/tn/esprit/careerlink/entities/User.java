@@ -1,9 +1,11 @@
 package tn.esprit.careerlink.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults (level = AccessLevel.PRIVATE)
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +33,14 @@ public class User {
 
     @OneToMany (mappedBy = "user")
     Set<Recruitment> recruitments;
-    @OneToMany (mappedBy = "user")
-    Set<Performence> performenceSet;
+    @JsonIgnore
+    @OneToMany (mappedBy = "user" )
+    Set<Performance> performenceSet;
     @ManyToMany (mappedBy = "users")
     Set<Event> events;
-    @OneToMany(mappedBy = "user")
-    Set<Leave> leaves;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user" )
+    Set<TimeOffTracker> leaves;
     @ManyToMany (mappedBy = "users")
     Set<Team> teams;
     @OneToMany (mappedBy = "user")
