@@ -9,7 +9,7 @@ import tn.esprit.careerlink.services.IRecruitmentService;
 import java.util.List;
 @AllArgsConstructor
 @Service
-public class RecruitmentUserImpl implements IRecruitmentService {
+public class RecruitmentServiceImpl implements IRecruitmentService {
    final RecruitmentRepository recruitmentRepository;
     @Override
     public Recruitment addRecruitment(Recruitment recruitment) {

@@ -23,7 +23,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getOneUser(Integer iduser) {
-        return userRepository.findById(iduser).orElse(null);
+        return userRepository.findById(idUser).orElse(null);
     }
 
     @Override
