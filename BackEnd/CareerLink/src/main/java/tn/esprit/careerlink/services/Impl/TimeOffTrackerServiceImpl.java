@@ -1,17 +1,25 @@
 package tn.esprit.careerlink.services.Impl;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import tn.esprit.careerlink.entities.TimeOffTracker;
-import tn.esprit.careerlink.entities.User;
 import tn.esprit.careerlink.repositories.TimeOffTrackerRepository;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
 
 import java.util.List;
 @Service
+@Component
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TimeOffTrackerServiceImpl implements ITimeOffTrackerService {
-   private  final TimeOffTrackerRepository leaveRepository;
+    TimeOffTrackerRepository leaveRepository;
+
 
     @Override
     public TimeOffTracker addLeave(TimeOffTracker leave) {

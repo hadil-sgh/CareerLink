@@ -1,20 +1,20 @@
 package tn.esprit.careerlink.controllers;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
-import tn.esprit.careerlink.services.Impl.TimeOffTrackerServiceImpl;
 
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
+
 @RequestMapping("/TimeOffTracker")
 
 public class TimeOffTrackerController {
 
-    private  final TimeOffTrackerServiceImpl timeOffTrackerService;
+     ITimeOffTrackerService timeOffTrackerService;
     @PostMapping("/add")
     public tn.esprit.careerlink.entities.TimeOffTracker addleave(@RequestBody tn.esprit.careerlink.entities.TimeOffTracker Leave){
         return timeOffTrackerService.addLeave(Leave);
