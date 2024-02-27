@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Stock")
+@RequestMapping("/Stockgit")
 public class StockController {
     @Autowired
     IStockService iStockService;
