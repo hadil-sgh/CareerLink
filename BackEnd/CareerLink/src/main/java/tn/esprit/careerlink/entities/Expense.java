@@ -26,6 +26,7 @@ public class Expense implements Serializable {
     private MethodPayment methodPayment;
     @ManyToOne
     @JsonIgnore
+
     Stock stock;
     @ManyToOne
     IntegrationProjectCalendar integrationProjectCalendar;
