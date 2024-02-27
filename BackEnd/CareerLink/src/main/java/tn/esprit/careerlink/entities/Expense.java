@@ -28,14 +28,7 @@ public class Expense implements Serializable {
     @JsonIgnore
 
     Stock stock;
-    @ManyToOne
-    IntegrationProjectCalendar integrationProjectCalendar;
     @OneToOne
     Project project;
-    @OneToOne
-    Expense_Validation expenseValidation;
-    @OneToOne
-    Expense_Reimbursement expenseReimbursement;
-    @OneToOne
-    Reports_Analysis reportsAnalysis;
+
 }
