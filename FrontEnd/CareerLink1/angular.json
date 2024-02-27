@@ -29,14 +29,15 @@
               
 
             ],
-            "scripts": [ "src/assets/BackOffice/js/jquery-3.6.0.min.js",
-            "src/assets/BackOffice/js/popper.min.js",
-            "src/assets/BackOffice/js/bootstrap.min.js",
-          "src/assets/BackOffice/js/feather.min.js",
-          "src/assets/BackOffice/plugins/slimscroll/jquery.slimscroll.min.js",
-         "src/assets/BackOffice/plugins/apexchart/apexcharts.min.js",
-         "src/assets/BackOffice/plugins/apexchart/chart-data.js",
-         "src/assets/BackOffice/js/script.js"]
+            "scripts": [ 
+              "src/assets/BackOffice/libs/jquery/dist/jquery.min.js",
+        "src/assets/BackOffice/libs/bootstrap/dist/js/bootstrap.bundle.min.js",
+        "src/assets/BackOffice/js/sidebarmenu.js",
+        "src/assets/BackOffice/js/app.min.js",
+        "src/assets/BackOffice/libs/apexcharts/dist/apexcharts.min.js",
+        "src/assets/BackOffice/libs/simplebar/dist/simplebar.js",
+        "src/assets/BackOffice/js/dashboard.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -99,14 +100,6 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/BackOffice/js/jquery-3.6.0.min.js",
-              "src/assets/BackOffice/js/popper.min.js",
-              "src/assets/BackOffice/js/bootstrap.min.js",
-            "src/assets/BackOffice/js/feather.min.js",
-           "src /assets/BackOffice/plugins/slimscroll/jquery.slimscroll.min.js",
-           "src/assets/BackOffice/plugins/apexchart/apexcharts.min.js",
-           "src/assets/BackOffice/plugins/apexchart/chart-data.js",
-           "src/assets/BackOffice/js/script.js"
 
           ]
            
