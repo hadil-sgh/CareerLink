@@ -31,22 +31,28 @@ public class User implements Serializable {
     String login;
     String pwd;
 
+    @JsonIgnore
     @OneToMany (mappedBy = "user")
     Set<Recruitment> recruitments;
     @JsonIgnore
     @OneToMany (mappedBy = "user" )
     Set<Performance> performenceSet;
+    @JsonIgnore
     @ManyToMany (mappedBy = "users")
     Set<Event> events;
     @JsonIgnore
     @OneToMany(mappedBy = "user" )
     Set<TimeOffTracker> leaves;
+    @JsonIgnore
     @ManyToMany (mappedBy = "users")
     Set<Team> teams;
+    @JsonIgnore
     @OneToMany (mappedBy = "user")
     Set<Task> tasks;
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     Set<Document> documents;
+    @JsonIgnore
     @OneToMany
     Set<Message> messages;
 

@@ -28,7 +28,9 @@ public class Expense implements Serializable {
     @JsonIgnore
 
     Stock stock;
+
     @OneToOne
+    @JsonIgnore
     Project project;
 
 }
