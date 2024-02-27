@@ -16,26 +16,26 @@ import java.util.List;
 public class ClientController {
     private  final IClientService ClientService;
     @PostMapping("/add")
-    public Client addStudent(@RequestBody Client Client){
+    public Client addClient(@RequestBody Client Client){
         return ClientService.addClient(Client);
     }
     @PutMapping("/update")
-    public Client updateStudent(@RequestBody Client Client ){
+    public Client updateClient(@RequestBody Client Client ){
         return ClientService.updateClient(Client);
     }
 
     @GetMapping("/getOne/{id}")
-    public Client getOneStudent(@PathVariable ("id")Integer idClient){
+    public Client getOneClient(@PathVariable ("id")Integer idClient){
         return ClientService.getOneClient(idClient);
     }
 
     @GetMapping("/getAll")
-    public List<Client> getAllStudent(){
+    public List<Client> getAllClient(){
         return ClientService.getAllClients();
     }
 
     @DeleteMapping("/delete/{id}")
-    public void  deleteStudent(@PathVariable ("id") Integer idClient) {
+    public void  deleteClient(@PathVariable ("id") Integer idClient) {
         ClientService.deleteClient(idClient);    }
 
 
