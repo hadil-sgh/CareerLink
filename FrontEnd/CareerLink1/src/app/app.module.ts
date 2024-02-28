@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { AllTemplateFrontComponent } from './FrontOffice/all-template-front/all-template-front.component';
 import { AllTemplateBackComponent } from './BackOffice/all-template-back/all-template-back.component';
@@ -11,7 +13,7 @@ import { SidebarBackComponent } from './BackOffice/sidebar-back/sidebar-back.com
 import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.component';
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
-
+import { UserComponent } from './components/user/user.component';
 
 
 @NgModule({
@@ -25,11 +27,15 @@ import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
     FooterFrontComponent,
     HomeBackComponent,
     HeaderFrontComponent,
+    UserComponent,
     
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
