@@ -14,6 +14,7 @@ import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.co
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
 import { UserComponent } from './components/user/user.component';
+import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 
 
 @NgModule({
@@ -28,12 +29,13 @@ import { UserComponent } from './components/user/user.component';
     HomeBackComponent,
     HeaderFrontComponent,
     UserComponent,
+    TimeofftrackerComponent,
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
+    HttpClientModule, //access to functionalities for sending and handling HTTP requests
     FormsModule,
     ReactiveFormsModule,
   ],

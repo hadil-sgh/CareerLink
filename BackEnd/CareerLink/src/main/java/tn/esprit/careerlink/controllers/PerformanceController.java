@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/Performance")
 public class PerformanceController {
     private  final PerformanceServiceImpl performenceService;
