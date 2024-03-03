@@ -1,5 +1,6 @@
 package tn.esprit.careerlink.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +20,7 @@ public class Recruitment implements Serializable {
     Integer id;
     String description;
     Integer numberRec;
-
+    @JsonIgnore
     @ManyToOne
     User user;
 }

@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-lg-12 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <div class="mb-4">
+          <h5 class="card-title fw-semibold">...</h5>
+        </div>
+        <h5 class="card-header">Employee List</h5>
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Birthday</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              <tr *ngFor="let user of users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.phoneNumber }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.birthday | date }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.login }}</td>
+                <td>{{ user.pwd }}</td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="javascript:void(0);" (click)="editUser(user)"><i class="bx bx-edit-alt me-2"></i> Edit</a>
+                      <a class="dropdown-item" href="javascript:void(0);"  (click)="deleteUser(user.id)"><i class="bx bx-trash me-2"></i> Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-7">
+  <div class="card w-100">
+    <div class="card-body p-4">
+        <form [formGroup]="userForm" (ngSubmit)="selectedUser? updateUser() : addUser()">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name:</label>
+            <input type="text" id="firstName" class="form-control" formControlName="firstName">
+          </div>
+          <div class="alert alert-danger" *ngIf="this.userForm.controls['firstName'].invalid && this.userForm.controls['firstName'].touched">
+            <div *ngIf="this.userForm.controls['firstName'].hasError('required')"> First Name is required !</div>
+            <div *ngIf="this.userForm.controls['firstName'].hasError('minlength')"> Length must be more then 3 letters ! </div>
+            <div *ngIf="this.userForm.controls['firstName'].hasError('pattern')"> First name must consist only of letters ! </div>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name:</label>
+            <input type="text" id="lastName" class="form-control" formControlName="lastName">
+          </div>
+          <div class="alert alert-danger" *ngIf="this.userForm.controls['lastName'].invalid && this.userForm.controls['lastName'].touched">
+            <div *ngIf="this.userForm.controls['lastName'].hasError('required')"> Last Name is required !</div>
+            <div *ngIf="this.userForm.controls['lastName'].hasError('minlength')"> Length must be more then 3 letters ! </div>
+            <div *ngIf="this.userForm.controls['lastName'].hasError('pattern')">Last name must consist only of letters ! </div>
+          </div>
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number:</label>
+            <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+          </div>
+          <div class="alert alert-danger" *ngIf="this.userForm.controls['phoneNumber'].invalid && this.userForm.controls['phoneNumber'].touched">
+            <div *ngIf="this.userForm.controls['phoneNumber'].hasError('required')"> Phone No is required !</div>
+            <div *ngIf="this.userForm.controls['phoneNumber'].hasError('pattern')">Last name must consist only of 8 numbers ! </div>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address:</label>
+            <input type="text" id="address" class="form-control" formControlName="address">
+          </div>
+          <div class="alert alert-danger" *ngIf="this.userForm.controls['address'].invalid && this.userForm.controls['address'].touched">
+            <div *ngIf="this.userForm.controls['address'].hasError('required')"> Address is required !</div>
+          </div>
+          <div class="mb-3">
+            <label for="birthday" class="form-label">Birth date:</label>
+            <input type="date" id="birthday" class="form-control" formControlName="birthday">
+          </div>
+          <div class="alert alert-danger" *ngIf="this.userForm.controls['birthday'].invalid && this.userForm.controls['birthday'].touched">
+            <div *ngIf="this.userForm.controls['birthday'].hasError('required')"> Birth date is required !</div>
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Role:</label>
+            <select id="role" class="form-select" formControlName="role">
+              <option value="HR_manager">HR Manager</option>
+              <option value="Consultant">Consultant</option>
+              <option value="Sales_manager">Sales Manager</option>
+              <option value="Employee">Employee</option>
+            </select>
+          </div>
+          <div class="alert alert-danger" *ngIf="this.userForm.controls['role'].invalid && this.userForm.controls['role'].touched">
+            <div *ngIf="this.userForm.controls['role'].hasError('required')"> Role is required !</div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+          </div>
+          <div class="mb-3">
+            <label for="login" class="form-label">Login:</label>
+            <input type="text" id="login" class="form-control" formControlName="login">
+          </div>
+          <div class="mb-3">
+            <label for="pwd" class="form-label">Password:</label>
+            <input type="password" id="pwd" class="form-control" formControlName="pwd">
+          </div>
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-primary" [disabled]="!selectedUser || userForm.invalid">{{selectedUser ? 'Edit' : 'Add'}} User</button>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-outline-secondary" *ngIf="selectedUser" (click)="cancelUpdate()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
