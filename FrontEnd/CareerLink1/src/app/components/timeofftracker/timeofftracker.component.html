@@ -1,25 +1,96 @@
-<h1>Time Off Tracker List</h1>
-<table class="table table-bordered">
-    <thead>
+<div class="card">
+  <div class="card-body">
+    <div >
+      <h1 style="text-align: center;">Time Off  List</h1>
+    <table class="table">
+      <thead class="thead-dark">
         <tr>
-            <th>Employee</th>
-            <th>Type Of Leave</th>
-            <th>Description</th>
-            <th>Form </th>
-            <th>To</th>
-            <th>Status </th>
+          <th>Employee</th>
+          <th>Type Of Leave</th>
+          <th>Description</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th>Action</th>
         </tr>
-    </thead>
-    <tr *ngFor="let timeoff of timesOff">
-          <td>{{timeoff.user.firstName }} {{timeoff.user.lastName }}</td>
+      </thead>
+      <tbody>
+        <tr *ngFor="let timeoff of timesOff">
+          <td class="action_label">{{timeoff.user.firstName }} {{timeoff.user.lastName }}</td>
           <td>{{timeoff.type}}</td>
           <td>{{timeoff.description}}</td>
           <td>{{timeoff.fromDate}}</td>
           <td>{{timeoff.toDate}}</td>
           <td>{{timeoff.status}}</td>
-
+          <td>
+            <button type="submit" class="btn btn-outline-success  m-1"  >Edit</button>
+            <span class="button-space1"></span> 
+            <button type="submit" class="btn btn-outline-danger m-1" (click)="deletetimeOff(timeoff.id)">Delete</button>
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    
+    <style>
+      .separator {
+      height: 100px; }
+      .separator1 {
+      height: 10px; }
+      .button-space {
+      margin: 0 10px; }
+      .button-space1 {
+      margin: 0 5px; 
+    }
+    
+    </style>
+    </div>
+    </div>
+    <div class="separator"></div>
+    <div class="card">
+      <div class="card-body"> 
+    <div class="container">
+      <h1 style="text-align: center;">Take a Leave</h1>
+    
+      <form [formGroup]="timeoffForm" (ngSubmit)="addTimeOff()">
+        <div class="form-group">
+          <label for="leaveType">Leave Type</label>
+          <select formControlName="leaveType" class="form-control" id="leaveType">
+            <option *ngFor="let type of leaveType" [value]="type">{{ type }}</option>
+          </select>
+        </div>
       
-
-    </tr>
-
-</table>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <input type="text" formControlName="description" class="form-control" id="description">
+        </div>
+      
+        <div class="form-group">
+          <label for="employee">Employee:</label>
+          <input type="text" formControlName="user" class="form-control" id="employee">
+        </div>
+      
+        <div class="form-group">
+          <label for="fromDate">From Date:</label>
+          <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
+        </div>
+      
+        <div class="form-group">
+          <label for="toDate">To Date:</label>
+          <input type="date" formControlName="toDate" class="form-control" id="toDate">
+        </div>
+      
+        <div class="separator1"></div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" [disabled]="timeoffForm.invalid">Add</button>
+          <span class="button-space"></span>
+          <button type="button" class="btn btn-secondary" (click)="cancel()">clear</button>
+        </div>
+      </form>
+      
+    </div>
+    
+    
+  </div>
+</div>

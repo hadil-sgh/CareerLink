@@ -16,5 +16,12 @@ export class TimeofftrackerService {
     return this.http.get<TimeOffTracker[]>(this.baseUrl +'getAll')
   }
 
+  TakeTiMEOff( timeoff :TimeOffTracker) :Observable<TimeOffTracker> {
 
+    return this.http.post<TimeOffTracker>(this.baseUrl +'add',timeoff)
+  }
+  
+  deleteTiMEOff(id: number): Observable<void> {
+        return this.http.delete<void> (this.baseUrl + 'delete/' + id);
+    }
 }

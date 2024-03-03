@@ -7,14 +7,22 @@ import { TimeofftrackerComponent } from './components/timeofftracker/timeofftrac
 const routes: Routes = [
   {
   path:"Employee",
-  component: AllTemplateFrontComponent
-  
+  component: AllTemplateFrontComponent,
+  children:[
+    {
+    path:"TakeTimeOff",
+    component:HomeBackComponent
+    }
+    ]
   },
   {
   path:"admin",
   component: AllTemplateBackComponent,
   children:[
-  
+    {
+    path:"home",
+    component:HomeBackComponent
+    },
     {
       path:"TimeOffTracker",
       component:TimeofftrackerComponent
