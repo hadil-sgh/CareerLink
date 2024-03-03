@@ -4,6 +4,7 @@ import { AllTemplateFrontComponent } from "./FrontOffice/all-template-front/all-
 import { AllTemplateBackComponent }from "./BackOffice/all-template-back/all-template-back.component";
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
 import { UserComponent } from './components/user/user.component';
+import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 const routes: Routes = [
   {
   path:"Employee",
@@ -14,8 +15,11 @@ const routes: Routes = [
   component: AllTemplateBackComponent,
   children:[
     {path:"home",component:HomeBackComponent},
-    {path:"user",component:UserComponent}
-
+    {path:"user",component:UserComponent},  
+    {
+      path:"TimeOffTracker",
+      component:TimeofftrackerComponent
+      }
     ]
   }
 ];

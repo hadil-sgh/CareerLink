@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-
+@CrossOrigin("*")
 @RequestMapping("/TimeOffTracker")
 
 public class TimeOffTrackerController {
