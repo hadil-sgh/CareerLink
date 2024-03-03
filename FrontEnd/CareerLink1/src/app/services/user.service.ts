@@ -12,11 +12,19 @@ export class UserService {
   constructor(private http :HttpClient) {  }
 
   findAllUsers(): Observable<User[]>{
-    return this.http.get<User[]> (this.baseUrl + 'getAll')
+    return this.http.get<User[]> ( this.baseUrl + 'getAll' )
   }
 
   addUser(user: User) : Observable<User> {
-    return this.http.post<User> ( this.baseUrl + 'add', user);
+    return this.http.post<User> ( this.baseUrl + 'add', user );
+  }
+
+  updateUser(user: User) : Observable<User> {
+    return this.http.put<User> ( this.baseUrl + 'update', user);
+  }
+
+  deleteUser(id: number) : Observable<void> {
+    return this.http.delete <void> ( this.baseUrl + 'delete/' + id )
   }
   
 
