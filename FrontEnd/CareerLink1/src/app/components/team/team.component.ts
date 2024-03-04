@@ -40,7 +40,7 @@ export class TeamComponent {
         .subscribe(
           teams => {
             this.teams = teams;
-            console.log('Teams:', teams); // Log the teams to the console
+            console.log('Teams:', teams); 
           },
           error => console.error('Error while fetching teams:', error)
         );

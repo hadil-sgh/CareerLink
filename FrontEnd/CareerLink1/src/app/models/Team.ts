@@ -7,12 +7,5 @@ export class Team{
     name!:String;
     users!:User[];
     department!:Department;
-    project!: Project;
-
-    
-
-
-    
-    
-   
+    project!: Project;  
 }

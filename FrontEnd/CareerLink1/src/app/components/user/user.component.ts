@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, ReactiveFormsModule, FormGroup , Validators, FormControl } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user',
@@ -95,13 +96,38 @@ export class UserComponent implements OnInit {
       this.selectedUser=null;
     }
 
-    deleteUser(id :number): void {
-      this.userService.deleteUser(id).subscribe(
-        response => {
-          console.log('success, deleteUser', response);
-          this.loadUsers();
-        },
-        error => console.error('error, deleteUser', error)
-      )
+    deleteUser(id: number): void {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You want to delete this user?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userService.deleteUser(id).subscribe(
+            response => {
+              console.log('success, deleteUser', response);
+              this.loadUsers();
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            },
+            error => {
+              console.error('error, deleteUser', error);
+              Swal.fire({
+                title: "Error!",
+                text: "Failed to delete user.",
+                icon: "error"
+              });
+            }
+          );
+        }
+      });
     }
+  
 }
