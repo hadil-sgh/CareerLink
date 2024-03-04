@@ -51,26 +51,41 @@
     <div class="card">
       <div class="card-body"> 
     <div class="container">
-      <h1 style="text-align: center;">Take a Leave</h1>
-    
+      <h1 style="text-align: center;">Take a Leave</h1>   
       <form [formGroup]="timeoffForm" (ngSubmit)="addTimeOff()">
-        <div class="form-group">
-          <label for="leaveType">Leave Type</label>
-          <select formControlName="leaveType" class="form-control" id="leaveType">
-            <option *ngFor="let type of leaveType" [value]="type">{{ type }}</option>
+        <div class="mb-3">
+          <div class="form-group">
+
+          <label for="type" class="form-label">Leave Type</label>
+           <select id="type" class="form-select" formControlName="type">
+            <option value="Casual">Casual</option>
+            <option value="Compassionate">Compassionate</option>
+            <option value="Medical">Medical </option>
+            <option value="Maternity">Maternity</option>
+            <option value="Unpaid">Unpaid</option>
+            <option value="Other">Other</option>
           </select>
+          </div>
         </div>
+
+        
       
         <div class="form-group">
           <label for="description">Description:</label>
           <input type="text" formControlName="description" class="form-control" id="description">
         </div>
+    
       
         <div class="form-group">
-          <label for="employee">Employee:</label>
-          <input type="text" formControlName="user" class="form-control" id="employee">
+          <label for="leaveType">Employee:</label>
+          <select formControlName="user" class="form-control">
+            <ng-container *ngFor="let user of users">
+              <option [ngValue]="user">
+                {{ user.firstName }} {{ user.lastName }}
+              </option>
+            </ng-container>
+          </select>
         </div>
-      
         <div class="form-group">
           <label for="fromDate">From Date:</label>
           <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
@@ -83,7 +98,7 @@
       
         <div class="separator1"></div>
         <div class="text-center">
-          <button type="submit" class="btn btn-primary" [disabled]="timeoffForm.invalid">Add</button>
+          <button type="submit" class="btn btn-primary" >Add</button>
           <span class="button-space"></span>
           <button type="button" class="btn btn-secondary" (click)="cancel()">clear</button>
         </div>

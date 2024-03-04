@@ -12,8 +12,6 @@ const routes: Routes = [
   children:[
     
     ]
-
-
   },
   {
   path:"admin",
