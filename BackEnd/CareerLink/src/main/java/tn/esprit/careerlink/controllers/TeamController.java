@@ -9,6 +9,7 @@ import tn.esprit.careerlink.services.ITeamService;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/Team")
 public class TeamController {
