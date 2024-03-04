@@ -16,6 +16,8 @@ import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.co
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
 import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
+import { ExpenseComponent } from './components/expense/expense.component';
+import { StockComponent } from './components/stock/stock.component';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import { TimeofftrackerComponent } from './components/timeofftracker/timeofftrac
     HeaderFrontComponent,
     UserComponent,
     TimeofftrackerComponent,
+    ExpenseComponent,
+    StockComponent,
     
   ],
   imports: [

@@ -1,0 +1,86 @@
+<div class="card">
+    <div class="card-body">
+      <div>
+        <h5 class="card-header">Expense List</h5>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>IDEXPENSE</th>
+              <th>AMOUNT</th>
+              <th>DATE</th>
+              <th>CATEGORY</th>
+              <th>METHODPAYMENT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let expense of expenses">
+              <td>{{expense.idexpense}}</td>
+              <td>{{expense.amount}}</td>
+              <td>{{expense.category}}</td>
+              <td>{{expense.date | date }}</td>
+              <td>{{expense.methodPayment}}</td>
+              <td>
+                <button type="submit" class="btn btn-outline-success m-1" (click)="editExpense(expense)">Edit</button>
+                <span class="button-space1"></span> 
+                <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteExpense(expense.idexpense)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="separator"></div>
+  
+      <div class="container">
+        <h5 class="card-header">{{ selectedExpense ? 'Edit Expense' : 'Add Expense' }}</h5>
+  
+        <form [formGroup]="expenseForm" (ngSubmit)="selectedExpense ? updateExpense() : addExpense()">
+          <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" formControlName="date" class="form-control" id="date">
+            <div class="alert alert-danger" *ngIf="expenseForm.controls['date'].invalid && expenseForm.controls['date'].touched">
+              <div *ngIf="expenseForm.controls['date'].hasError('required')"> Date is required !</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" formControlName="category" class="form-control" id="category">
+            <div class="alert alert-danger" *ngIf="expenseForm.controls['category'].invalid && expenseForm.controls['category'].touched">
+              <div *ngIf="expenseForm.controls['category'].hasError('required')"> Category is required !</div>
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" formControlName="amount" class="form-control" id="amount">
+            <div class="alert alert-danger" *ngIf="expenseForm.controls['amount'].invalid && expenseForm.controls['amount'].touched">
+              <div *ngIf="expenseForm.controls['amount'].hasError('required')"> Amount is required !</div>
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="methodPayment">Method of Payment:</label>
+            <select formControlName="methodPayment" class="form-control" id="methodPayment">
+              <option value="CARD">Card</option>
+              <option value="CASH">Cash</option>
+              <option value="TRANSFER">Transfer</option>
+            </select>
+            <div class="alert alert-danger" *ngIf="expenseForm.controls['methodPayment'].invalid && expenseForm.controls['methodPayment'].touched">
+              <div *ngIf="expenseForm.controls['methodPayment'].hasError('required')"> Method of Payment is required !</div>
+            </div>
+          </div>
+  
+          <div class="separator1"></div>
+          
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid">{{ selectedExpense ? 'Update Expense' : 'Add Expense' }}</button>
+            <span class="mx-2"></span> <!-- Espace entre les boutons -->
+            <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+  
