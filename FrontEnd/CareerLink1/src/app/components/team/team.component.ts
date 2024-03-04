@@ -34,15 +34,20 @@ export class TeamComponent {
     constructor(private teamService :TeamService , private formbilder: FormBuilder) {   
 
     }
-    loadTeams(): void{
+    loadTeams(): void {
       this.teamService.getAllTeam()
-      .subscribe(
-       teams => this.teams = teams,
-        error => console.error('error, getall', error)
-      );
+        .subscribe(
+          teams => {
+            this.teams = teams;
+            console.log('Teams:', teams); // Log the teams to the console
+          },
+          error => console.error('Error while fetching teams:', error)
+        );
+    }
+    
     }
 
-  }
+  
 
 
 

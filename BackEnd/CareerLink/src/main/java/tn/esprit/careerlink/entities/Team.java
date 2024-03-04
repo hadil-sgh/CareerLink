@@ -22,7 +22,6 @@ public class Team implements Serializable {
     Integer id;
     String name;
     @ManyToMany
-    @JsonIgnore
     Set<User> users;
     @ManyToMany
     @JsonIgnore
