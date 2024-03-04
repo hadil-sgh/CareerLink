@@ -4,6 +4,7 @@ import { TeamService} from 'src/app/services/team.service';
 import { FormBuilder, ReactiveFormsModule, FormGroup , Validators, FormControl } from '@angular/forms';
 import { Department } from 'src/app/models/Department';
 
+
 @Component({
   selector: 'app-team',
   templateUrl: './team.component.html',
@@ -11,24 +12,24 @@ import { Department } from 'src/app/models/Department';
 })
 export class TeamComponent {
   
+  ngOnInit() :void {
+    this.loadTeams();
+    this.createForm();
+   
+    
+   
+  }
+
+
+
   teams: Team[] = [];
   teamForm!: FormGroup;
   selectedTeam: Team | null = null;
   Department : string[]=[ "MARKETING",
     'SOFTWARE_DEVELOPMENT',
     'IT_OPERATIONS',
-    'PROJECT_MANAGEMENT',
-    'DATABASE_ADMINISTRATION',
-    'CYBERSECURITY',
-
-    'TECHNICAL_SUPPORT', 
-    'NETWORK_ADMINISTRATION',
-    'DATA_ANALYTICS',
-    'IT_TRAINING_AND_DOCUMENTATION',
-
-    'IT_STRATEGY_AND_PLANNING',
-    'IT_COMPLIANCE_AND_GOVERNANCE',
-    'BUSINESS_INTELLIGENCE'];
+    'PROJECT_MANAGEMENT'
+    ];
 
 
     constructor(private teamService :TeamService , private formbilder: FormBuilder) {   
@@ -44,8 +45,35 @@ export class TeamComponent {
           error => console.error('Error while fetching teams:', error)
         );
     }
+    createForm() :void{
+      this.teamForm = this.formbilder.group({
+      
+        
+        teamname : ['', Validators.required],
+        Department: ['', Validators.required],
+        Project: ['', Validators.required],
+        user: ['', Validators.required],
+        
+      });
+
+  
     
     }
+    addTeams(): void {
+    
+      const newteam = this.teamForm.value;
+     
+  
+      this.teamService.addTeam(newteam)
+      .subscribe(
+        response => {
+          console.log('success, add', response);
+          this.loadTeams();
+        },
+        error => console.error('error, add', error)
+      );
+    } 
+  }
 
   
 
