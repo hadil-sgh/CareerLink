@@ -18,37 +18,34 @@
             <span class="hide-menu">Home</span>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./all-template-back.html" aria-expanded="false">
+            <a routerLink="/admin" class="sidebar-link" routerLink="/admin" aria-expanded="false">
               <span>
-                <i class="ti ti-layout-dashboard"></i>
+                <img src="assets\BackOffice\images\Dash.png" height="20">
               </span>
               <span class="hide-menu">Dashboard</span>
+              
             </a>
-          </li>
-          <li class="nav-small-cap">
-            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-            <span class="hide-menu">UI COMPONENTS</span>
           </li>
           <li class="sidebar-item">
             <a class="sidebar-link" routerLink="/admin/user" aria-expanded="false">
               <span>
-                <i class="ti ti-article"></i>
+                <img src="assets\BackOffice\images\icons\userc.png" height="20">
               </span>
               <span class="hide-menu">Employees</span>
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+            <a class="sidebar-link"  routerLink="/admin/teams" aria-expanded="false">
               <span>
-                <i class="ti ti-alert-circle"></i>
+                <img src="assets\BackOffice\images\icons\team2.png" height="20">
               </span>
-              <span class="hide-menu">Campany</span>
+              <span class="hide-menu" >Team</span>
             </a>
           </li>
           <li class="sidebar-item">
             <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
               <span>
-                <i class="ti ti-cards"></i>
+                <img src="assets\BackOffice\images\icons\project.png" height="20">
               </span>
               <span class="hide-menu">Projects</span> 
             </a>
@@ -56,17 +53,35 @@
           <li class="sidebar-item">
             <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
               <span>
-                <i class="ti ti-file-description"></i>
+                <img src="assets\BackOffice\images\icons\tasks.png" height="20">
               </span>
               <span class="hide-menu">Tasks</span>
             </a>
           </li>
+        
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+            <a routerLink="/admin/TimeOffTracker" class="sidebar-link"  aria-expanded="false">
               <span>
-                <i class="ti ti-typography"></i>
+                <img src="assets\BackOffice\images\leave\LeaveIcon.png" height="20">
               </span>
-              <span class="hide-menu">Profile</span>
+              <span class="hide-menu">Time off Tracker</span>
+              
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="/admin/expenses" aria-expanded="false">
+              <span>
+                <img src="assets\BackOffice\images\icons\expense.png" height="20">
+              </span>
+              <span class="hide-menu">Expense</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="/admin/rec" aria-expanded="false">
+              <span>
+                <img src="assets\BackOffice\images\icons\recruitment.png" height="20">
+              </span>
+              <span class="hide-menu">Recruitment</span>
             </a>
           </li>
           <li class="nav-small-cap">
@@ -91,17 +106,7 @@
             </a>
           </li>
         </ul>
-        <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
-          <div class="d-flex">
-            <div class="unlimited-access-title me-3">
-              <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-              <a href="#" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-            </div>
-            <div class="unlimited-access-img">
-              <img src="../assets/BackOffice/images/backgrounds/rocket.png" alt="" class="img-fluid">
-            </div>
-          </div>
-        </div>
+       
       </nav>
       <!-- End Sidebar navigation -->
     </div>

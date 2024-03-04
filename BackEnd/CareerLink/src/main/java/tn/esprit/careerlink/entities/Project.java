@@ -31,5 +31,4 @@ public class Project implements Serializable {
     @OneToMany (mappedBy = "project")
     Set<Payment> payments;
 
-
 }

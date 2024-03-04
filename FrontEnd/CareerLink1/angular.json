@@ -25,7 +25,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+             
               
 
             ],
@@ -36,7 +38,8 @@
         "src/assets/BackOffice/js/app.min.js",
         "src/assets/BackOffice/libs/apexcharts/dist/apexcharts.min.js",
         "src/assets/BackOffice/libs/simplebar/dist/simplebar.js",
-        "src/assets/BackOffice/js/dashboard.js"
+        "src/assets/BackOffice/js/dashboard.js",
+        "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -97,7 +100,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "../node_modules/sweetalert2/dist/sweetalert2.css"
             ],
             "scripts": [
           ]
