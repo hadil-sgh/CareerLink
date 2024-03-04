@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
     this.createForm();
+    console.log(this.userForm)
   }
   
 
@@ -40,7 +41,7 @@ export class UserComponent implements OnInit {
         role: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         login: ['', Validators.required],
-        pwd: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16), Validators.pattern('[a-zA-Z0-9]*')]]
+        pwd: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]{8}')]]
       });
     }
   
@@ -51,6 +52,7 @@ export class UserComponent implements OnInit {
         response => {
           console.log('success, addUser', response);
           this.loadUsers();
+          this.userForm.reset();
         },
         error => console.error('error, addUser', error)
       );
@@ -81,7 +83,8 @@ export class UserComponent implements OnInit {
             this.loadUsers();
             this.userForm.reset();
             this.selectedUser=null;
-          },
+            
+           },
           error => console.error('error, updateUser', error)
         );
       }
@@ -101,5 +104,4 @@ export class UserComponent implements OnInit {
         error => console.error('error, deleteUser', error)
       )
     }
-  
 }
