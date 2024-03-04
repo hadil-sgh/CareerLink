@@ -32,7 +32,10 @@
       </tbody>
     </table>
     </div>
-    
+    </div>
+    </div>
+
+
     <style>
       .separator {
       height: 100px; }
@@ -45,8 +48,9 @@
     }
     
     </style>
-    </div>
-    </div>
+
+
+
     <div class="separator"></div>
     <div class="card">
       <div class="card-body"> 
@@ -67,17 +71,25 @@
           </select>
           </div>
         </div>
-
+        <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['type'].invalid && this.timeoffForm.controls['type'].touched">
+          <div *ngIf="this.timeoffForm.controls['type'].hasError('required')"> Type is required !</div>
+        </div>
         
       
         <div class="form-group">
           <label for="description">Description:</label>
           <input type="text" formControlName="description" class="form-control" id="description">
         </div>
-    
+        <div  *ngIf="this.timeoffForm.controls['description'].invalid && this.timeoffForm.controls['description'].touched">
+          <div class="alert alert-danger"*ngIf="this.timeoffForm.controls['description'].hasError('required')"> Description is required !</div>
+          <div class="alert alert-warning" *ngIf="this.timeoffForm.controls['description'].hasError('minlength')"> Length must be more then 5 letters ! </div>
+          <div class="alert alert-primary " *ngIf="this.timeoffForm.controls['description'].hasError('maxlength')"> Length must be less then 20 letters ! </div>
+
+        </div>
+        
       
         <div class="form-group">
-          <label for="leaveType">Employee:</label>
+          <label for="Employee">Employee:</label>
           <select formControlName="user" class="form-control">
             <ng-container *ngFor="let user of users">
               <option [ngValue]="user">
@@ -86,14 +98,26 @@
             </ng-container>
           </select>
         </div>
+        <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['user'].invalid && this.timeoffForm.controls['user'].touched">
+          <div *ngIf="this.timeoffForm.controls['user'].hasError('required')"> Employee is required !</div>
+        </div>
+
         <div class="form-group">
           <label for="fromDate">From Date:</label>
           <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
         </div>
+        <div  *ngIf="this.timeoffForm.controls['fromDate'].invalid && this.timeoffForm.controls['fromDate'].touched">
+          <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['fromDate'].hasError('required')"> Please specify the start of your leave!</div>
+          <div class="alert alert-warning" *ngIf="this.timeoffForm.controls['fromDate'].hasError('dateGreaterThanToday')"> Please select a valid start date for your leave!</div>
+        </div>
+        
       
         <div class="form-group">
           <label for="toDate">To Date:</label>
           <input type="date" formControlName="toDate" class="form-control" id="toDate">
+        </div>
+        <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['toDate'].invalid && this.timeoffForm.controls['toDate'].touched">
+          <div  *ngIf="this.timeoffForm.controls['toDate'].hasError('required')">  Please specify when you will be back !</div>
         </div>
       
         <div class="separator1"></div>
