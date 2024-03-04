@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-body">
+      <div>
+        <h1 style="text-align: center;">Team Information</h1>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Team Name</th>
+              <th>Department</th>
+              <th>Project</th>
+              <th>Users</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let team of teams">
+              <td>{{ team.name }}</td>
+              <td>{{ team.department }}</td>
+              <td>{{ team.project  }}</td>
+              <td>
+                <!-- Display the list of users associated with the team -->
+                <ul>
+                  <li *ngFor="let user of team.users">{{ user.firstName }} {{ user.lastName }}</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        
+        </table>
+      </div>
+    </div>
+  </div>

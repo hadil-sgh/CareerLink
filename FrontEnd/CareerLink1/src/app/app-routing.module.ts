@@ -5,6 +5,7 @@ import { AllTemplateBackComponent }from "./BackOffice/all-template-back/all-temp
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
 import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
+import { TeamComponent } from './components/team/team.component';
 const routes: Routes = [
   {
   path:"Employee",
@@ -12,8 +13,6 @@ const routes: Routes = [
   children:[
     
     ]
-
-
   },
   {
   path:"admin",
@@ -21,8 +20,8 @@ const routes: Routes = [
   children:[
 
     {path:"user",component:UserComponent},  
-
-    { path:"TimeOffTracker",component:TimeofftrackerComponent}
+    { path:"TimeOffTracker",component:TimeofftrackerComponent},
+    { path:"teams",component:TeamComponent}
     ]
   }
 ];
