@@ -1,5 +1,6 @@
 package tn.esprit.careerlink.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,9 +22,11 @@ public class Team implements Serializable {
     Integer id;
     String name;
     @ManyToMany
+    @JsonIgnore
     Set<User> users;
-    @ManyToOne
-    Department department;
     @ManyToMany
+    @JsonIgnore
     Set<Project> projects;
+    @Enumerated(EnumType.STRING)
+    Department department;
 }
