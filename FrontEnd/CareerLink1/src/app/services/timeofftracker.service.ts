@@ -2,12 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
+import { User } from '../models/User';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeofftrackerService {
   private baseUrl: string = 'http://localhost:8086/spring2024/TimeOffTracker/';
+
+ 
+  
 
   constructor(private http :HttpClient) { }
 
@@ -24,4 +29,5 @@ export class TimeofftrackerService {
   deleteTiMEOff(id: number): Observable<void> {
         return this.http.delete<void> (this.baseUrl + 'delete/' + id);
     }
+
 }

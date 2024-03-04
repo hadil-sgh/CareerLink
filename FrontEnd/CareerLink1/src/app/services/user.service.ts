@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { User } from '../models/User';
 
 @Injectable({
@@ -27,5 +27,9 @@ export class UserService {
     return this.http.delete <void> ( this.baseUrl + 'delete/' + id )
   }
   
-
+  /* findoneuser(id: number): Observable<User> {
+    return this.http.get<User[]>(this.baseUrl + 'getOne/' + id).pipe(
+      map(users => users[0])
+    );
+  } */
 }

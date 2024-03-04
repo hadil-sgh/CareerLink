@@ -31,7 +31,7 @@ import { TimeofftrackerComponent } from './components/timeofftracker/timeofftrac
     HeaderFrontComponent,
     UserComponent,
     TimeofftrackerComponent,
-    
+ 
   ],
   imports: [
     BrowserModule,
