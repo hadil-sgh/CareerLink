@@ -17,13 +17,13 @@
             <tr *ngFor="let team of teams">
               <td>{{ team.name }}</td>
               <td>{{ team.department }}</td>
-              <td>{{ team.project  }}</td>
+              <td>{{ team.projects  }}</td>
               
            <td>
                 <td>
                   <button type="submit" class="btn btn-outline-success  m-1"  >Edit</button>
                   <span class="button-space1"></span> 
-                  <button type="submit" class="btn btn-outline-danger m-1" >Delete</button>
+                  <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteTeam(team.id)">Delete</button>
                   
                 </td>
                 <!-- Display the list of users associated with the team -->
