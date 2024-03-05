@@ -10,7 +10,6 @@
           <table class="table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Phone Number</th>
@@ -18,14 +17,12 @@
                 <th>Birthday</th>
                 <th>Role</th>
                 <th>Email</th>
-                <th>Login</th>
-                <th>Password</th>
+                
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
               <tr *ngFor="let user of users">
-                <td>{{ user.id }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.phoneNumber }}</td>
@@ -39,7 +36,6 @@
                   <button type="submit" class="btn btn-outline-primary  m-1" (click)="editUser(user)"  >Edit</button>
                   <span class="button-space1"></span> 
                   <button type="submit" class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
-
                 </td>
               </tr>
             </tbody>
