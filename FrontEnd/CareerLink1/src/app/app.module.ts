@@ -18,7 +18,6 @@ import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 import { TeamComponent } from './components/team/team.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +32,7 @@ import { TeamComponent } from './components/team/team.component';
     UserComponent,
     TimeofftrackerComponent,
     TeamComponent,
+    
     
 
   ],

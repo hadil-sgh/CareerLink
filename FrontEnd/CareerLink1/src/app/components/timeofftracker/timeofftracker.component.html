@@ -23,7 +23,7 @@
           <td>{{timeoff.toDate}}</td>
           <td>{{timeoff.status}}</td>
           <td>
-            <button type="submit" class="btn btn-outline-success  m-1"  >Edit</button>
+            <button type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="popUpModal()">Edit</button>
             <span class="button-space1"></span> 
             <button type="submit" class="btn btn-outline-danger m-1" (click)="deletetimeOff(timeoff.id)">Delete</button>
             
@@ -42,10 +42,16 @@
       .separator1 {
       height: 10px; }
       .button-space {
-      margin: 0 10px; }
+      margin: 0 10px; } 
       .button-space1 {
       margin: 0 5px; 
     }
+    .swal-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
     
     </style>
 
@@ -77,7 +83,7 @@
         
       
         <div class="form-group">
-          <label for="description">Description:</label>
+          <label class="form-label"for="description">Description:</label>
           <input type="text" formControlName="description" class="form-control" id="description">
         </div>
         <div  *ngIf="this.timeoffForm.controls['description'].invalid && this.timeoffForm.controls['description'].touched">
@@ -89,7 +95,7 @@
         
       
         <div class="form-group">
-          <label for="Employee">Employee:</label>
+          <label class="form-label" for="Employee">Employee:</label>
           <select formControlName="user" class="form-control">
             <ng-container *ngFor="let user of users">
               <option [ngValue]="user">
@@ -103,7 +109,7 @@
         </div>
 
         <div class="form-group">
-          <label for="fromDate">From Date:</label>
+          <label class="form-label" for="fromDate">From Date:</label>
           <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
         </div>
         <div  *ngIf="this.timeoffForm.controls['fromDate'].invalid && this.timeoffForm.controls['fromDate'].touched">
@@ -113,11 +119,12 @@
         
       
         <div class="form-group">
-          <label for="toDate">To Date:</label>
+          <label class="form-label" for="toDate">To Date:</label>
           <input type="date" formControlName="toDate" class="form-control" id="toDate">
         </div>
-        <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['toDate'].invalid && this.timeoffForm.controls['toDate'].touched">
-          <div  *ngIf="this.timeoffForm.controls['toDate'].hasError('required')">  Please specify when you will be back !</div>
+        <div  *ngIf="this.timeoffForm.controls['toDate'].invalid && this.timeoffForm.controls['toDate'].touched">
+          <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['toDate'].hasError('required')">  Please specify when you will be back !</div>
+          <div class="alert alert-warning" *ngIf="this.timeoffForm.controls['toDate'].hasError('toDateValidator')"> Please select a valid return date !</div>
         </div>
       
         <div class="separator1"></div>
@@ -133,3 +140,74 @@
     
   </div>
 </div>
+
+
+
+<!-- Large modal -->
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+      
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="timeoffForm" >
+          <div class="mb-3">
+            <div class="form-group">
+  
+            <label for="type" class="form-label">Leave Type</label>
+             <select id="type" class="form-select" formControlName="type">
+              <option value="Casual">Casual</option>
+              <option value="Compassionate">Compassionate</option>
+              <option value="Medical">Medical </option>
+              <option value="Maternity">Maternity</option>
+              <option value="Unpaid">Unpaid</option>
+              <option value="Other">Other</option>
+            </select>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="Employee">Employee:</label>
+            <select formControlName="user" class="form-control">
+              <ng-container *ngFor="let user of users">
+                <option [ngValue]="user">
+                  {{ user.firstName }} {{ user.lastName }}
+                </option>
+              </ng-container>
+            </select>
+          </div>
+        
+          <div class="form-group">
+            <label class="form-label"for="description">Description:</label>
+            <input type="text" formControlName="description" class="form-control" id="description">
+          </div>
+         
+  
+          <div class="form-group">
+            <label class="form-label" for="fromDate">From Date:</label>
+            <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
+          </div>
+          
+        
+          <div class="form-group">
+            <label class="form-label" for="toDate">To Date:</label>
+            <input type="date" formControlName="toDate" class="form-control" id="toDate">
+          </div>
+         
+        
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-primary m-1" >Edit</button>
+        <button type="button" class="btn btn-outline-secondary m-1" (click)="cancel()">Clear</button>
+        <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
