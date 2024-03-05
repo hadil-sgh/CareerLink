@@ -11,6 +11,7 @@ import tn.esprit.careerlink.services.IProjectService;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/Project")
 public class ProjectController {

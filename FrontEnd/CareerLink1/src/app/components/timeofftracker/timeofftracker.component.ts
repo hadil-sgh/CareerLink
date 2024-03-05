@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup ,Validators} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup ,Validators} from '@angular/forms';
 import { TimeOffTracker } from 'src/app/models/TimeOffTracker';
+import { User } from 'src/app/models/User';
 import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
+import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-timeofftracker',
@@ -11,58 +14,212 @@ import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
 })
 
 export class TimeofftrackerComponent {
-
+  selectedtimesOff: TimeOffTracker | null = null;
    timesOff:TimeOffTracker[]=[];
    timeoffForm ! :FormGroup;
    leaveType :String[]=['Casual','Compassionate','Medical','Maternity','Other'];
    leaveStatus :String[]=['Pending','Accepted','Rejected'];
-
-
+   users: User[] = [];
+   
    ngOnInit() :void {
      this.LoadListOfTimesOf();
      this.createForm();
+     this.loadUsers();
+   
    }
+   constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }
+   
+   updateTimeOff(): void {
 
-   constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder) {   
+    if (this.selectedtimesOff && this.timeoffForm.valid) {
+      const updateleave= { ...this.selectedtimesOff, ...this.timeoffForm.value } as TimeOffTracker;
+      this.timeoffService.updateTiMEOff(updateleave).subscribe(
+        response => {
+          console.log('success, updateUser', response);
+          this.loadUsers();
+          this.timeoffForm.reset();
+          this.selectedtimesOff=null;
+        },
+        error => console.error('error, updateUser', error)
+      );
+    }
   }
-   createForm() :void{
-    this.timeoffForm = this.formbilder.group({
-    
-      leaveType: ['', Validators.required],
-      description : ['', Validators.required],
-      fromDate : ['', Validators.required],
-      toDate : ['', Validators.required],
-      user: ['', Validators.required],
-      
+  editTimeOff(timeoff :TimeOffTracker): void {
+    this.selectedtimesOff = timeoff;
+    this.timeoffForm.patchValue({
+      type: timeoff.type,
+      description: timeoff.description,
+      fromDate: timeoff.fromDate,
+      toDate:timeoff.toDate,
+      user: timeoff.user
+     
     });
-   }
-   LoadListOfTimesOf() : void{  //Always add subscribe because observables are lazy 
+  }
+
+
+
+   LoadListOfTimesOf() : void{ 
+
       this.timeoffService.findAllTimesOff().subscribe( (timesOff:TimeOffTracker[] )=> {
         this.timesOff=  timesOff;
       } );
    }
+   createForm(): void {
+    this.timeoffForm = this.formbilder.group({
+      type: ['', Validators.required],
+      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      fromDate: ['', [Validators.required, this.dateGreaterThanTodayValidator]],
+      toDate: ['', [Validators.required/* , this.toDateValidator */]],
+      user: ['', Validators.required],
+    });
+  }
+
+  popUpModal() {
+    const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
+    if (modalElement) {
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+      document.body.classList.add('modal-open');
+    }
+  }  
+  
+  closeModal() {
+    const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
+    if (modalElement) {
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    }
+  }
+  
+  
+ 
 
    addTimeOff(): void {
+    
     const newtimeoff = this.timeoffForm.value;
+   
+
     this.timeoffService.TakeTiMEOff(newtimeoff)
     .subscribe(
-      response => {
+      response => {  
         console.log('success, add', response);
         this.LoadListOfTimesOf();
       },
+      
       error => console.error('error, add', error)
     );
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        popup: 'swal-center',
+      },
+    });
+    
+  } 
+
+
+ deletetimeOff(id: number):void {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.timeoffService.deleteTiMEOff(id).subscribe ( ():void => {
+    
+        this.LoadListOfTimesOf();
+        });
+      Swal.fire({
+        title: "Deleted!",
+        text: "this time Off rquest has been deleted.",
+        icon: "success"
+      });
+    }
+  });
+  
+  }
+ 
+  cancel(): void {
+    this.timeoffForm.reset(); 
+    this.closeModal(); 
   }
   
  
- deletetimeOff(id: number):void {
-  this.timeoffService.deleteTiMEOff(id).subscribe ( ():void => {
-  this.LoadListOfTimesOf();
-  });
+ loadUsers(): void{
+  this.userService.findAllUsers()
+  .subscribe(
+    users => this.users = users,
+    error => console.error('error, getall', error)
+  );
+}
+
+
+
+//form control functions
+
+
+getMaxAllowedDays(type: string): number {
+  switch (type) {
+    case 'Casual':
+      return 1;
+    case 'Medical':
+      return 7;
+    case 'Maternity':
+      return 30; 
+    default:
+      return 0;
   }
- cancel():void {
- this.timeoffForm.reset();
- }
+}
+
+
+dateGreaterThanTodayValidator(control: FormControl) {
+  const selectedDate = new Date(control.value);
+
+  if (isNaN(selectedDate.getTime())) {
+    // Return null if the date is not a valid date
+    return null;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate date comparison
+
+  return selectedDate >= today ? null : { dateGreaterThanToday: true };
+}
+
+toDateValidator(control: FormControl) {
+  const toDate = new Date(control.value);
+  const fromDate = new Date(this.timeoffForm.controls['fromDate'].value);
+  const leaveType = this.timeoffForm.controls['type'].value;
+
+  if (leaveType === 'Casual' || leaveType === 'Medical' || leaveType === 'Maternity') {
+    const maxAllowedDays = this.getMaxAllowedDays(leaveType);
+
+    if (!isNaN(toDate.getTime()) && !isNaN(fromDate.getTime())) {
+      const differenceInDays = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      return differenceInDays <= maxAllowedDays ? null : { maxAllowedDaysExceeded: true };
+    }
+  }
+
+  return null;
+}
+
+
+
+
+
+
+
+
 
 }
  

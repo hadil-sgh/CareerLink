@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, ReactiveFormsModule, FormGroup , Validators, FormControl } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user',
@@ -19,6 +20,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
     this.createForm();
+    console.log(this.userForm)
   }
   
 
@@ -40,7 +42,7 @@ export class UserComponent implements OnInit {
         role: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         login: ['', Validators.required],
-        pwd: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16), Validators.pattern('[a-zA-Z0-9]*')]]
+        pwd: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]{8}')]]
       });
     }
   
@@ -51,6 +53,7 @@ export class UserComponent implements OnInit {
         response => {
           console.log('success, addUser', response);
           this.loadUsers();
+          this.userForm.reset();
         },
         error => console.error('error, addUser', error)
       );
@@ -81,7 +84,8 @@ export class UserComponent implements OnInit {
             this.loadUsers();
             this.userForm.reset();
             this.selectedUser=null;
-          },
+            
+           },
           error => console.error('error, updateUser', error)
         );
       }
@@ -92,14 +96,38 @@ export class UserComponent implements OnInit {
       this.selectedUser=null;
     }
 
-    deleteUser(id :number): void {
-      this.userService.deleteUser(id).subscribe(
-        response => {
-          console.log('success, deleteUser', response);
-          this.loadUsers();
-        },
-        error => console.error('error, deleteUser', error)
-      )
+    deleteUser(id: number): void {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You want to delete this user?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userService.deleteUser(id).subscribe(
+            response => {
+              console.log('success, deleteUser', response);
+              this.loadUsers();
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            },
+            error => {
+              console.error('error, deleteUser', error);
+              Swal.fire({
+                title: "Error!",
+                text: "Failed to delete user.",
+                icon: "error"
+              });
+            }
+          );
+        }
+      });
     }
   
 }

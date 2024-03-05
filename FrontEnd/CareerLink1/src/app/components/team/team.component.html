@@ -1,0 +1,94 @@
+<div class="card">
+    <div class="card-body">
+      <div>
+        <h1 style="text-align: center;">Team Information</h1>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Team Name</th>
+              <th>Department</th>
+              <th>Project</th>
+              <th>Users</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let team of teams">
+              <td>{{ team.name }}</td>
+              <td>{{ team.department }}</td>
+              <td>{{ team.project  }}</td>
+              
+           <td>
+                <td>
+                  <button type="submit" class="btn btn-outline-success  m-1"  >Edit</button>
+                  <span class="button-space1"></span> 
+                  <button type="submit" class="btn btn-outline-danger m-1" >Delete</button>
+                  
+                </td>
+                <!-- Display the list of users associated with the team -->
+                
+          
+            </tr>
+          </tbody>
+        
+        </table>
+      </div>
+      <style>
+        .separator {
+        height: 100px; }
+        .separator1 {
+        height: 10px; }
+        .button-space {
+        margin: 0 10px; }
+        .button-space1 {
+        margin: 0 5px; 
+      }
+      
+      </style>
+      </div>
+      </div>
+      <div class="separator"></div>
+      <div class="card">
+        <div class="card-body"> 
+      <div class="container">
+        <h1 style="text-align: center;"></h1>   
+        <form [formGroup]="teamForm" (ngSubmit)="addTeams()">
+          <div class="mb-3">
+            <div class="form-group">
+  
+            <label for="department" class="form-label">Department</label>
+             <select id="department" class="form-select" formControlName="department">
+              <option value=" MARKETING"> MARKETING</option>
+              <option value="SOFTWARE_DEVELOPMENT">SOFTWARE_DEVELOPMENT</option>
+              <option value=" IT_OPERATIONS"> IT_OPERATIONS </option>
+              <option value="PROJECT_MANAGEMENT">PROJECT_MANAGEMENT</option>
+              
+            </select>
+            </div>
+          </div>
+  
+          
+        
+          <div class="form-group">
+<<<<<<< HEAD
+            <label for="teamname">Team Name:</label>
+            <input type="text" formControlName="teamname" class="form-control" id="teamname">
+=======
+            <label for="teamname">teamname:</label>
+            <input type="text" formControlName="name" class="form-control" id="name">
+>>>>>>> 3dc7b6a8969c78e74c2ea2331dd17901e2ea83c9
+          </div>
+
+          <div class="separator1"></div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" >Add</button>
+          <span class="button-space"></span>
+          <button type="button" class="btn btn-secondary" >clear</button>
+        </div>
+      </form>
+    
+    
+  </div>     
+   
+ </div>
