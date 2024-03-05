@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IExpenseService {
     Expense addExpense (Expense expense);
+    Expense addExpenseAndAffect(Integer idProject, Integer idStock, Expense expense);
     Expense updateExpense (Expense expense);
     void deleteExpense (Integer idexpense);
     List<Expense> getAllExpense();
