@@ -14,7 +14,4 @@ export class Expense {
     stock!: Stock; // Vous devrez spécifier le type correct selon votre logique
 
     project!: Project; // Vous devrez spécifier le type correct selon votre logique
-  //  stock!: Stock; // Vous devrez spécifier le type correct selon votre logique
-
-    //project!: any; // Vous devrez spécifier le type correct selon votre logique
 }

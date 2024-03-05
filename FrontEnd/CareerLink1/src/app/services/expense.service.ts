@@ -14,13 +14,10 @@ export class ExpenseService {
   findAllExpense(): Observable<Expense[]>{
     return this.http.get<Expense[]> ( this.baseUrl + 'getAll' )
   }
-<<<<<<< HEAD
   addExpenseAndAffect(idProject: number, idStock: number, expense: Expense): Observable<Expense> {
     return this.http.post<Expense>(`${this.baseUrl}addAndAffect/${idProject}/${idStock}`, expense);
   }
-  
-=======
->>>>>>> eeba9af5cbccc19b71a1c1112c2e2050c0ddfd7b
+
 
   addExpense(expense: Expense) : Observable<Expense> {
     return this.http.post<Expense> ( this.baseUrl + 'add', expense );
