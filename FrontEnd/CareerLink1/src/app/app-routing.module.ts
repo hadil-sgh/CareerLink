@@ -11,7 +11,7 @@ const routes: Routes = [
   path:"Employee",
   component: AllTemplateFrontComponent,
   children:[
-    
+    { path:"TimeOffTracker",component:TimeofftrackerComponent},
     ]
   },
   {
@@ -20,7 +20,6 @@ const routes: Routes = [
   children:[
 
     {path:"user",component:UserComponent},  
-    { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"teams",component:TeamComponent}
     ]
   }
