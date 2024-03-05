@@ -22,14 +22,14 @@ public class User implements Serializable {
     Integer id;
     String firstName;
     String lastName;
+    Integer cin;
     Long phoneNumber;
     String address;
     Date birthday;
+    Date recdate;
     @Enumerated(EnumType.STRING)
     Role role;
     String email;
-    String login;
-    String pwd;
 
     @JsonIgnore
     @OneToMany (mappedBy = "user")
