@@ -7,6 +7,7 @@ export class Team{
     name!:String;
     users!:User[];
     department!:Department;
+<<<<<<< HEAD
     projects!: Project;
 
 
@@ -16,4 +17,7 @@ export class Team{
     
     
    
+=======
+    project!: Project;  
+>>>>>>> 75ff48f004f5f573799108eea16980cb4f1d994f
 }

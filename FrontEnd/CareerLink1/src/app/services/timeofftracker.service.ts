@@ -29,5 +29,7 @@ export class TimeofftrackerService {
   deleteTiMEOff(id: number): Observable<void> {
         return this.http.delete<void> (this.baseUrl + 'delete/' + id);
     }
-
+    updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
+      return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff);
+    }
 }

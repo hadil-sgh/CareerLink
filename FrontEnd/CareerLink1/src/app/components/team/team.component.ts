@@ -11,17 +11,6 @@ import { Department } from 'src/app/models/Department';
   styleUrls: ['./team.component.css']
 })
 export class TeamComponent {
-  
-  ngOnInit() :void {
-    this.loadTeams();
-    this.createForm();
-    
-   
-    
-   
-  }
-
-
 
   teams: Team[] = [];
   teamForm!: FormGroup;
@@ -31,7 +20,12 @@ export class TeamComponent {
     'IT_OPERATIONS',
     'PROJECT_MANAGEMENT'
     ];
-
+  
+  ngOnInit() :void {
+    this.loadTeams();
+    this.createForm();
+   
+  }
 
     constructor(private teamService :TeamService , private formbilder: FormBuilder) {   
 
@@ -41,7 +35,7 @@ export class TeamComponent {
         .subscribe(
           teams => {
             this.teams = teams;
-            console.log('Teams:', teams); // Log the teams to the console
+            console.log('Teams:', teams); 
           },
           error => console.error('Error while fetching teams:', error)
         );

@@ -14,6 +14,10 @@ export class ExpenseService {
   findAllExpense(): Observable<Expense[]>{
     return this.http.get<Expense[]> ( this.baseUrl + 'getAll' )
   }
+  addExpenseAndAffect(idProject: number, idStock: number, expense: Expense): Observable<Expense> {
+    return this.http.post<Expense>(`${this.baseUrl}addAndAffect/${idProject}/${idStock}`, expense);
+  }
+
 
   addExpense(expense: Expense) : Observable<Expense> {
     return this.http.post<Expense> ( this.baseUrl + 'add', expense );
