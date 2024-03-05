@@ -18,6 +18,7 @@ import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { StockComponent } from './components/stock/stock.component';
+import { DepenseComponent } from './components/depense/depense.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { StockComponent } from './components/stock/stock.component';
     TimeofftrackerComponent,
     ExpenseComponent,
     StockComponent,
+    DepenseComponent,
     
   ],
   imports: [

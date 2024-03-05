@@ -17,7 +17,7 @@ public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Integer idProject;
     String name;
     String description;
     Date dueDate;

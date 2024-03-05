@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Expense } from 'src/app/models/Expense';
+import { Project } from 'src/app/models/Project';
 import { ExpenseService } from 'src/app/services/expense.service';
 
 @Component({
@@ -39,10 +40,12 @@ export class ExpenseComponent {
   }
   createForm(): void {
     this.expenseForm = this.fb.group({
-      date: ['', [Validators.required]],
+      
       category: ['', [Validators.required]],
+      date: ['', [Validators.required]],
       amount: [null, [Validators.required]], 
       methodPayment: ['', [Validators.required]]
+      
     });
   }
   
@@ -67,6 +70,7 @@ export class ExpenseComponent {
         category: expense.category,
         methodPayment:expense.methodPayment, 
         date: new Date(expense.date),
+      
        
       });
     }
@@ -84,6 +88,19 @@ export class ExpenseComponent {
         );
       }
     }
+    addExpenseAndAffect(): void {
+      const { idProject, idStock, ...expenseData } = this.expenseForm.value;
+      this.expenseService.addExpenseAndAffect(idProject, idStock, expenseData)
+        .subscribe(
+          response => {
+            console.log('success, addExpenseAndAffect', response);
+            this.loadExpenses();
+          },
+          error => console.error('error, addExpenseAndAffect', error)
+        );
+    }
+    
+    
 
 
 }

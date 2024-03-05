@@ -7,11 +7,13 @@ import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { StockComponent } from './components/stock/stock.component';
+import { DepenseComponent } from './components/depense/depense.component';
 const routes: Routes = [
   {
   path:"Employee",
   component: AllTemplateFrontComponent,
   children:[
+    { path:"expense",component:DepenseComponent},
     
     ]
 
