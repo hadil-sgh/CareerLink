@@ -5,13 +5,20 @@ import { AllTemplateBackComponent }from "./BackOffice/all-template-back/all-temp
 import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
 import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
+import { ExpenseComponent } from './components/expense/expense.component';
+import { StockComponent } from './components/stock/stock.component';
+import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 const routes: Routes = [
   {
   path:"Employee",
   component: AllTemplateFrontComponent,
   children:[
+
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
+
+    { path:"expense",component:DepenseComponent},
+    
     ]
   },
   {
@@ -20,6 +27,12 @@ const routes: Routes = [
   children:[
 
     {path:"user",component:UserComponent},  
+
+    { path:"TimeOffTracker",component:TimeofftrackerComponent},
+    { path:"expense",component:ExpenseComponent},
+    { path:"stock",component:StockComponent},
+
+    { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"teams",component:TeamComponent}
     ]
   }
