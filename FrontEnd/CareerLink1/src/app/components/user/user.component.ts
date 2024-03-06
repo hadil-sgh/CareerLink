@@ -36,13 +36,13 @@ export class UserComponent implements OnInit {
       this.userForm = this.fb.group({
         firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
         lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
+        cin: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
         phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
         address: ['', Validators.required],
         birthday: ['', Validators.required],
+        recdate: ['', Validators.required],
         role: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        login: ['', Validators.required],
-        pwd: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]{8}')]]
       });
     }
   
@@ -65,13 +65,14 @@ export class UserComponent implements OnInit {
       this.userForm.patchValue({
         firstName: user.firstName,
         lastName: user.lastName,
+        cin:user.cin,
         phoneNumber: user.phoneNumber,
         address:user.address,
         birthday: new Date(user.birthday),
+        recdate: new Date(user.recdate),
         role: user.role,
         email: user.email,
-        login: user.login,
-        pwd:user.pwd
+        
       });
     }
 
