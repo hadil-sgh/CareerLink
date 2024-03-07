@@ -1,38 +1,36 @@
-<div class="separator"></div>
-  
-    <!-- ======= Services Section ======= -->
-    <section id="services" class="services">
+
+
+    <!-- ======= time off history Section ======= -->
+    <section id="services" class="services" >
       <div class="container" data-aos="fade-up">
         <link rel="stylesheet" href="/assets/BackOffice/css/styles.min.css" />
         <div class="section-title">
           <h2>your leave History</h2>
-       
+         
         </div>
+       
 
-        <div class="row">
+        <div class="row" >
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" *ngFor="let timeoff of timesOff">
-            <div class="icon-box" [ngStyle]="{'max-width': '400px', 'padding': '60px', 'margin-bottom': '20px', 'box-shadow': '0px 0px 10px 0px rgba(0, 0, 0, 0.1)'}" >
-              <p>this leave request is corrently </p>
-              <h4>{{timeoff.status}}</h4>
-             
+            <div class="icon-box" [ngStyle]="{'max-width': '300px', 'padding': '60px', 'margin-bottom': '20px', 'box-shadow': '0px 0px 10px 0px rgba(0, 0, 0, 0.1)'}" >
+              <h4 [ngStyle]="{'color': getStatusColor(timeoff.status)}">
+                <img [src]="getStatusIcon(timeoff.status)" alt="{{timeoff.status}} icon" class="status-icon" />
+                {{timeoff.status}}
+              </h4>
                 <p>Type Of Leave   : {{timeoff.type}}</p>                     
                 <p>Description   :  {{timeoff.description}}</p>
                 <p>From :{{timeoff.fromDate}} </p>
                 <p>To  :{{timeoff.toDate}}</p>
-                <button type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="popUpModal()">Edit</button>
-                <span class="button-space1"></span> 
+                <button *ngIf="timeoff.status === 'Pending'" type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="popUpModal()">Edit</button>
+                <button *ngIf="timeoff.status !== 'Pending'" type="button" class="btn btn-outline-success m-1"  (click)="showAlert()">Edit</button>   
+                                        <span class="button-space1"></span> 
                 <button type="submit" class="btn btn-outline-danger m-1" (click)="deletetimeOff(timeoff.id)">Delete</button>
             </div>
           </div>
         </div>
       </div>
-    </section><!-- End Services Section -->
-
-
-
-
-
-
+    </section><!-- End time off history Section -->
+    <div class="separator"></div>
     <!-- ======= Take leave Section ======= -->
     <section id="about" class="about">
       <div class="container" data-aos="fade-up">
@@ -147,6 +145,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.status-icon {
+  width: 20px; /* Adjust the width to your desired size */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 5px; /* Optional: Add margin for spacing */
+}
+
 
     
     </style>

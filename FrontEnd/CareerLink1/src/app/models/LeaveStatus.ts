@@ -1,5 +1,5 @@
-export enum LeaveStatus{
-    Pending,
-     Accepted , 
-     Rejected
+export enum LeaveStatus {
+  Pending = 'Pending',
+  Approved = 'Accepted',
+  Rejected = 'Rejected',
 }

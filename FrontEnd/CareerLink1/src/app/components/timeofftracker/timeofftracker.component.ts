@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup ,Validators} from '@angular/forms';
+import { LeaveStatus } from 'src/app/models/LeaveStatus';
 import { TimeOffTracker } from 'src/app/models/TimeOffTracker';
 import { User } from 'src/app/models/User';
 import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
@@ -56,7 +57,43 @@ export class TimeofftrackerComponent {
     });
   }
 
-
+  getStatusIcon(status: LeaveStatus): string {
+    switch (status) {
+      case LeaveStatus.Pending:
+        return "/assets/FrontOffice/img/pending.png"; 
+      case LeaveStatus.Approved:
+        return "/assets/FrontOffice/img/approved.png"; 
+      case LeaveStatus.Rejected:
+        return "/assets/FrontOffice/img/rejected.png"; 
+      default:
+        return ''; 
+    }
+  }
+  showAlert(): void {
+    Swal.fire({
+      icon: 'info',
+      title: "Can't edit ",
+      text: 'This time off request has already been treated.',
+      showCancelButton: false,
+      confirmButtonText: 'OK',
+    });
+  }
+  getStatusColor(status: LeaveStatus): string {
+    console.log('Status:', status);
+  
+    switch (status) {
+      case LeaveStatus.Pending:
+        return '#edb95e';
+      case LeaveStatus.Approved:
+        return '#82dd55'; // RGB representation for green
+      case LeaveStatus.Rejected:
+        return '#e23636';
+      default:
+        return 'black'; // or any default color
+    }
+  }
+  
+  
 
    LoadListOfTimesOf() : void{ 
 
