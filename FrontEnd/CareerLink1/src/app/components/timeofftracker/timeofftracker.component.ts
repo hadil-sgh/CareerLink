@@ -15,17 +15,21 @@ import Swal from 'sweetalert2';
 })
 
 export class TimeofftrackerComponent {
+ 
   selectedtimesOff: TimeOffTracker | null = null;
    timesOff:TimeOffTracker[]=[];
    timeoffForm ! :FormGroup;
    leaveType :String[]=['Casual','Compassionate','Medical','Maternity','Other'];
    leaveStatus :String[]=['Pending','Accepted','Rejected'];
    users: User[] = [];
-   
+   p : number = 1 ;
+   itemsPerPage:number =6;
+   totalldisplay:any;
    ngOnInit() :void {
      this.LoadListOfTimesOf();
      this.createForm();
      this.loadUsers();
+     this.totalldisplay 
    
    }
    constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }

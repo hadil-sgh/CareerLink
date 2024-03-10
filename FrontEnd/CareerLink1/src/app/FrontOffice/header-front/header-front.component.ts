@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+
+import { Component, HostListener, Renderer2, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-header-front',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./header-front.component.css']
 })
 export class HeaderFrontComponent {
-
+  
 }
