@@ -21,6 +21,7 @@ import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { HomeComponent } from './components/home/home.component';
     TeamComponent,
     TaketimeoffComponent,
     HomeComponent,
+    TakeofftraitmentComponent,
 
   ],
   imports: [

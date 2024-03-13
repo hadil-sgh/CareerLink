@@ -10,6 +10,7 @@ import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 const routes: Routes = [
   {
   path:"Employee",
@@ -30,7 +31,7 @@ const routes: Routes = [
 
     {path:"user",component:UserComponent},  
 
-    { path:"TimeOffTracker",component:TimeofftrackerComponent},
+    { path:"TimeOffTracker",component:TakeofftraitmentComponent},
     { path:"expense",component:ExpenseComponent},
     { path:"stock",component:StockComponent},
 
