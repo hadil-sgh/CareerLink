@@ -12,11 +12,6 @@
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>CIN</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Birthday</th>
-                <th>Recruitment Date</th>
                 <th>Role</th>
                 <th>Email</th>
                 
@@ -27,11 +22,6 @@
               <tr *ngFor="let user of users">
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
-                <td>{{ user.cin }}</td>
-                <td>{{ user.phoneNumber }}</td>
-                <td>{{ user.address }}</td>
-                <td>{{ user.birthday | date }}</td>
-                <td>{{ user.recdate | date }}</td>
                 <td>{{ user.role }}</td>
                 <td>{{ user.email }}</td>
                 
@@ -73,47 +63,11 @@
             <div *ngIf="this.userForm.controls['lastName'].hasError('pattern')">Last name must consist only of letters ! </div>
           </div>
           <div class="mb-3">
-            <label for="cin" class="form-label">CIN:</label>
-            <input type="text" id="cin" class="form-control" formControlName="cin">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['cin'].invalid && this.userForm.controls['cin'].touched">
-            <div *ngIf="this.userForm.controls['cin'].hasError('required')"> CIN is required !</div>
-            <div *ngIf="this.userForm.controls['cin'].hasError('pattern')">CIN must consist only of 8 numbers ! </div>
-          </div>
-          <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Phone Number:</label>
-            <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['phoneNumber'].invalid && this.userForm.controls['phoneNumber'].touched">
-            <div *ngIf="this.userForm.controls['phoneNumber'].hasError('required')"> Phone No is required !</div>
-            <div *ngIf="this.userForm.controls['phoneNumber'].hasError('pattern')">Last name must consist only of 8 numbers ! </div>
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">Address:</label>
-            <input type="text" id="address" class="form-control" formControlName="address">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['address'].invalid && this.userForm.controls['address'].touched">
-            <div *ngIf="this.userForm.controls['address'].hasError('required')"> Address is required !</div>
-          </div>
-          <div class="mb-3">
-            <label for="birthday" class="form-label">Birth date:</label>
-            <input type="date" id="birthday" class="form-control" formControlName="birthday">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['birthday'].invalid && this.userForm.controls['birthday'].touched">
-            <div *ngIf="this.userForm.controls['birthday'].hasError('required')"> Birth date is required !</div>
-          </div>
-
-          <div class="mb-3">
-            <label for="recdate" class="form-label">Recruitment Date :</label>
-            <input type="date" id="recdate" class="form-control" formControlName="recdate">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['recdate'].invalid && this.userForm.controls['recdate'].touched">
-            <div *ngIf="this.userForm.controls['recdate'].hasError('required')"> Recruitment Date is required !</div>
-          </div>
-          <div class="mb-3">
             <label for="role" class="form-label">Role:</label>
             <select id="role" class="form-select" formControlName="role">
+              <option value="Admin">Admin</option>
               <option value="HR_manager">HR Manager</option>
+              <option value="Project_manager">Project Manager</option>
               <option value="Consultant">Consultant</option>
               <option value="Sales_manager">Sales Manager</option>
               <option value="Employee">Employee</option>

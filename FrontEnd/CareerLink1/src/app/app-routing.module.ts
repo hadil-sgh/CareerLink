@@ -10,10 +10,15 @@ import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { AuthGuard } from './models/AuthGuard';
 const routes: Routes = [
-  {
-  path:"Employee",
-  component: AllTemplateFrontComponent,
+  { path:'login',component:LoginComponent},
+  {path:'',redirectTo:'/login',pathMatch:'full'},
+  { path:'register',component:RegisterComponent},
+
+  { path:"Employee",component: AllTemplateFrontComponent,
   children:[
 
     { path:"home",component:HomeComponent},
@@ -24,16 +29,14 @@ const routes: Routes = [
     ]
   },
   {
-  path:"admin",
-  component: AllTemplateBackComponent,
+  path:"admin",component: AllTemplateBackComponent,
   children:[
 
-    {path:"user",component:UserComponent},  
+    {path:"user",component:UserComponent,  canActivate: [AuthGuard]},  
 
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"expense",component:ExpenseComponent},
     { path:"stock",component:StockComponent},
-
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"teams",component:TeamComponent}
     ]

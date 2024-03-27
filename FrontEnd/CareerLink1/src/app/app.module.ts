@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { AppComponent } from './app.component';
@@ -21,6 +21,10 @@ import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { AuthGuard } from './models/AuthGuard';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,8 @@ import { HomeComponent } from './components/home/home.component';
     TeamComponent,
     TaketimeoffComponent,
     HomeComponent,
+    LoginComponent,
+    RegisterComponent,
 
   ],
   imports: [
@@ -51,7 +57,10 @@ import { HomeComponent } from './components/home/home.component';
     ReactiveFormsModule,
     NgxPaginationModule,
   ],
-  providers: [],
+  providers: [ 
+   
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

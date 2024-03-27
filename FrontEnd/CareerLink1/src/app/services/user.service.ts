@@ -1,35 +1,73 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { User } from '../models/User';
+import { RegisterRequest } from '../models/RegisterRequest';
+import { AuthenticationResponse } from '../models/AuthenticationResponse';
+import { AuthenticationRequest } from '../models/AuthenticationRequest';
+import { RouteReuseStrategy, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl: string = 'http://localhost:8086/spring2024/User/';
+  private baseUrl: string = 'http://localhost:8086/spring2024/';
 
-  constructor(private http :HttpClient) {  }
+  constructor(private http :HttpClient, private router: Router) {  }
 
-  findAllUsers(): Observable<User[]>{
-    return this.http.get<User[]> ( this.baseUrl + 'getAll' )
+   getToken() {
+    return localStorage.getItem('token');
   }
 
-  addUser(user: User) : Observable<User> {
-    return this.http.post<User> ( this.baseUrl + 'add', user );
+   addTokenToHeaders(headers: HttpHeaders) {
+    const token = this.getToken();
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${token}`);
+    }
+    return headers;
   }
 
-  updateUser(user: User) : Observable<User> {
-    return this.http.put<User> ( this.baseUrl + 'update', user);
-  }
-
-  deleteUser(id: number) : Observable<void> {
-    return this.http.delete <void> ( this.baseUrl + 'delete/' + id )
+findAllUsers(): Observable<User[]> {
+    const headers = this.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<User[]> ( this.baseUrl + 'User/getAll', { headers } )
   }
   
+addUser(user: User) : Observable<User> { const headers = this.addTokenToHeaders(new HttpHeaders()); return this.http.post<User> ( this.baseUrl + 'User/add', user, { headers } ); }
+
+updateUser(user: User) : Observable<User> { const headers = this.addTokenToHeaders(new HttpHeaders()); return this.http.put<User> ( this.baseUrl + 'User/update', user, { headers }); }
+
+deleteUser(id: number) : Observable<void> { const headers = this.addTokenToHeaders(new HttpHeaders()); return this.http.delete <void> ( this.baseUrl + 'User/delete/' + id, { headers } ); }
+
+
+  
   /* findoneuser(id: number): Observable<User> {
-    return this.http.get<User[]>(this.baseUrl + 'getOne/' + id).pipe(
+    return this.http.get<User[]>(this.baseUrl + 'User/getOne/' + id).pipe(
       map(users => users[0])
     );
   } */
+
+  
+
+
+  // Register & Authentication & Logout
+
+  register(registerRequest: RegisterRequest) {
+    return this.http.post<AuthenticationResponse> (`${this.baseUrl}auth/register`, registerRequest);
+  }
+
+  login(authRequest: AuthenticationRequest) {
+    return this.http.post<AuthenticationResponse> (`${this.baseUrl}auth/authenticate`, authRequest);
+  }
+
+  urllogout() {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.delete(`${this.baseUrl}auth/logout`, { headers });
+  }
+
+  logout() {
+    this.urllogout().subscribe(() => {
+      localStorage.removeItem('token');
+      this.router.navigate(['/login']);
+    });
+  }
 }

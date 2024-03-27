@@ -1,5 +1,6 @@
 package tn.esprit.careerlink.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.careerlink.entities.User;
@@ -9,7 +10,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
+@Tag(name = "User")
 @RequestMapping("/User")
 
 public class UserController {

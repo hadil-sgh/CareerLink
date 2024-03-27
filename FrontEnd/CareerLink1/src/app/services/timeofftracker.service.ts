@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
@@ -14,22 +14,25 @@ export class TimeofftrackerService {
  
   
 
-  constructor(private http :HttpClient) { }
+  constructor(private http :HttpClient, private userService:UserService) { }
 
   findAllTimesOff():Observable<TimeOffTracker[]> {
-
-    return this.http.get<TimeOffTracker[]>(this.baseUrl +'getAll')
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<TimeOffTracker[]>(this.baseUrl +'getAll',{headers})
   }
 
   TakeTiMEOff( timeoff :TimeOffTracker) :Observable<TimeOffTracker> {
-
-    return this.http.post<TimeOffTracker>(this.baseUrl +'add',timeoff)
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.post<TimeOffTracker>(this.baseUrl +'add',timeoff,{headers})
   }
   
   deleteTiMEOff(id: number): Observable<void> {
-        return this.http.delete<void> (this.baseUrl + 'delete/' + id);
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+        return this.http.delete<void> (this.baseUrl + 'delete/' + id, {headers});
     }
-    updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
-      return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff);
+    
+  updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+      return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff, {headers});
     }
 }

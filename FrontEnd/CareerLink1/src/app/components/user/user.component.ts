@@ -3,6 +3,7 @@ import { User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, ReactiveFormsModule, FormGroup , Validators, FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -10,7 +11,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  constructor(private userService: UserService , private fb: FormBuilder) { }
+  constructor(private userService: UserService , private fb: FormBuilder, private router:Router) { 
+    }
 
   users: User[] = [];
   userForm!: FormGroup;
@@ -18,11 +20,16 @@ export class UserComponent implements OnInit {
  
  
   ngOnInit(): void {
-    this.loadUsers();
+    this.userService.findAllUsers()
+    .subscribe(
+      users => this.users = users,
+      error => console.error('error, getall', error)
+    );
+
     this.createForm();
     console.log(this.userForm)
   }
-  
+ 
 
     loadUsers(): void{
     this.userService.findAllUsers()
@@ -36,11 +43,6 @@ export class UserComponent implements OnInit {
       this.userForm = this.fb.group({
         firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
         lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
-        cin: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
-        phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
-        address: ['', Validators.required],
-        birthday: ['', Validators.required],
-        recdate: ['', Validators.required],
         role: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
       });
@@ -65,11 +67,6 @@ export class UserComponent implements OnInit {
       this.userForm.patchValue({
         firstName: user.firstName,
         lastName: user.lastName,
-        cin:user.cin,
-        phoneNumber: user.phoneNumber,
-        address:user.address,
-        birthday: new Date(user.birthday),
-        recdate: new Date(user.recdate),
         role: user.role,
         email: user.email,
         
