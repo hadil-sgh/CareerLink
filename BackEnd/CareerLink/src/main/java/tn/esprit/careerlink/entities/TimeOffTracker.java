@@ -22,9 +22,9 @@ public class TimeOffTracker implements Serializable {
     @Enumerated(EnumType.STRING)
     LeaveType type;
     String description;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+
     Date fromDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+
     Date toDate;
     @Enumerated(EnumType.STRING)
     LeaveStatus status;

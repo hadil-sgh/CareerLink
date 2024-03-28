@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./taketimeoff.component.css']
 })
 export class TaketimeoffComponent {
-
+  selectedTimeoff: any;
     selectedtimesOff: TimeOffTracker | null = null;
      timesOff:TimeOffTracker[]=[];
      timeoffForm ! :FormGroup;
@@ -28,21 +28,18 @@ export class TaketimeoffComponent {
      }
      constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }
      
-     updateTimeOff(): void {
-  
-      if (this.selectedtimesOff && this.timeoffForm.valid) {
-        const updateleave= { ...this.selectedtimesOff, ...this.timeoffForm.value } as TimeOffTracker;
-        this.timeoffService.updateTiMEOff(updateleave).subscribe(
-          response => {
-            console.log('success, updateUser', response);
-            this.loadUsers();
-            this.timeoffForm.reset();
-            this.selectedtimesOff=null;
-          },
-          error => console.error('error, updateUser', error)
-        );
-      }
-    }
+   
+     updateTimeOff(timeoff: TimeOffTracker): void {
+       if (timeoff && this.timeoffForm.valid) 
+       { const updatedTimeOff = { ...timeoff, ...this.timeoffForm.value } as TimeOffTracker;
+        this.timeoffService.updateTiMEOff(updatedTimeOff).subscribe( (response: any) => { 
+          console.log('success, updateTimeOff', response); this.loadUsers(); 
+          this.timeoffForm.reset(); this.selectedTimeoff = null; },
+           (error: any) => console.error('error, updateTimeOff', error)
+            ); } }
+
+
+
     editTimeOff(timeoff :TimeOffTracker): void {
       this.selectedtimesOff = timeoff;
       this.timeoffForm.patchValue({
@@ -109,7 +106,13 @@ export class TaketimeoffComponent {
       });
     }
   
-    popUpModal() {
+    popUpModal(timeoff :any) {
+      this.selectedTimeoff = timeoff;
+      this.timeoffForm.patchValue({
+        type: this.selectedTimeoff.type,
+        description: this.selectedTimeoff.description,
+        fromDate: this.selectedTimeoff.fromDate,
+        toDate: this.selectedTimeoff.toDate });
       const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
       if (modalElement) {
         modalElement.classList.add('show');
@@ -147,7 +150,7 @@ export class TaketimeoffComponent {
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Your work has been saved",
+        title: "Your Request has been sumited ",
         showConfirmButton: false,
         timer: 1500,
         customClass: {

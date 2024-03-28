@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="/assets/BackOffice/css/styles.min.css" />
         <div class="section-title">
           <h2>your leave History</h2>
-         
+        
+
         </div>
        
 
@@ -19,9 +20,9 @@
               </h4>
                 <p>Type Of Leave   : {{timeoff.type}}</p>                     
                 <p>Description   :  {{timeoff.description}}</p>
-                <p>From :{{timeoff.fromDate}} </p>
-                <p>To  :{{timeoff.toDate}}</p>
-                <button *ngIf="timeoff.status === 'Pending'" type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="popUpModal()">
+                <p>From :{{timeoff.fromDate | date}} </p>
+                <p>To  :{{timeoff.toDate| date}}</p>
+                <button *ngIf="timeoff.status === 'Pending'" type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="popUpModal(timeoff)">
                   <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
                   Edit
                 </button>
@@ -81,7 +82,9 @@
     
     </style>
 
+<script>
 
+</script>
 
     <div class="separator"></div>
 
@@ -115,16 +118,7 @@
             </div>
 
           </div>
-          <div class="form-group">
-            <label class="form-label" for="Employee">Employee:</label>
-            <select formControlName="user" class="form-control">
-              <ng-container *ngFor="let user of users">
-                <option [ngValue]="user">
-                  {{ user.firstName }} {{ user.lastName }}
-                </option>
-              </ng-container>
-            </select>
-          </div>
+       
         
           <div class="form-group">
             <label class="form-label"for="description">Description:</label>
@@ -148,9 +142,18 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-primary m-1" >Edit</button>
-        <button type="button" class="btn btn-outline-secondary m-1" (click)="cancel()">Clear</button>
-        <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn btn-outline-primary m-1" (click)="updateTimeOff()">
+           <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" /> 
+           Edit 
+          </button>
+        <button type="button" class="btn btn-outline-secondary m-1" (click)="cancel()">
+          <img src="/assets/FrontOffice/img/clear.png" alt="Edit Icon" class="button-icon" />
+          Clear
+        </button>
+        <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">
+          <img src="/assets/FrontOffice/img/rejected.png" alt="Edit Icon" class="button-icon" />
+          Close
+        </button>
       </div>
     </div>
   </div>

@@ -13,6 +13,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { AuthGuard } from './models/AuthGuard';
+import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 const routes: Routes = [
   { path:'login',component:LoginComponent},
   {path:'',redirectTo:'/login',pathMatch:'full'},
@@ -34,7 +35,7 @@ const routes: Routes = [
 
     {path:"user",component:UserComponent,  canActivate: [AuthGuard]},  
 
-    { path:"TimeOffTracker",component:TimeofftrackerComponent},
+    { path:"TimeOffTracker",component:TakeofftraitmentComponent},
     { path:"expense",component:ExpenseComponent},
     { path:"stock",component:StockComponent},
     { path:"TimeOffTracker",component:TimeofftrackerComponent},

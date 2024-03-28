@@ -25,6 +25,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { AuthGuard } from './models/AuthGuard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    TakeofftraitmentComponent,
 
   ],
   imports: [

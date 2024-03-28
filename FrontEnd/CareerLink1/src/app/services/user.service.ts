@@ -15,12 +15,8 @@ export class UserService {
 
   constructor(private http :HttpClient, private router: Router) {  }
 
-   getToken() {
-    return localStorage.getItem('token');
-  }
-
    addTokenToHeaders(headers: HttpHeaders) {
-    const token = this.getToken();
+    const token = localStorage.getItem('token');
     if (token) {
       headers = headers.append('Authorization', `Bearer ${token}`);
     }
@@ -63,11 +59,19 @@ deleteUser(id: number) : Observable<void> { const headers = this.addTokenToHeade
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     return this.http.delete(`${this.baseUrl}auth/logout`, { headers });
   }
-
+  
   logout() {
-    this.urllogout().subscribe(() => {
-      localStorage.removeItem('token');
-      this.router.navigate(['/login']);
-    });
+    this.urllogout()
+      .subscribe(
+        () => {
+          localStorage.removeItem('token');
+          this.router.navigate(['/login']);
+        },
+        (error) => {
+          console.error('Logout error:', error);
+          localStorage.removeItem('token');
+          this.router.navigate(['/login']);
+        }
+      );
   }
 }

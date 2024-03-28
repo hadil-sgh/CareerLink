@@ -25,6 +25,7 @@ export class TimeofftrackerComponent {
    p : number = 1 ;
    itemsPerPage:number =6;
    totalldisplay:any;
+   
    ngOnInit() :void {
      this.LoadListOfTimesOf();
      this.createForm();
@@ -115,14 +116,22 @@ export class TimeofftrackerComponent {
     });
   }
 
-  popUpModal() {
-    const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
-    if (modalElement) {
-      modalElement.classList.add('show');
-      modalElement.style.display = 'block';
-      document.body.classList.add('modal-open');
-    }
-  }  
+popUpModal(timeoff: any) {
+  // Set the form values with the properties of the timeoff object
+  this.timeoffForm.patchValue({
+    type: timeoff.type,
+    description: timeoff.description,
+    fromDate: new Date(timeoff.fromDate),
+    toDate: new Date(timeoff.toDate)
+  });
+
+  const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
+  if (modalElement) {
+    modalElement.classList.add('show');
+    modalElement.style.display = 'block';
+    document.body.classList.add('modal-open');
+  }
+}
   
   closeModal() {
     const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
