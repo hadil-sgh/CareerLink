@@ -24,7 +24,6 @@ import java.util.Arrays;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-import static tn.esprit.careerlink.entities.Permission.*;
 import static tn.esprit.careerlink.entities.Role.*;
 
 @Configuration

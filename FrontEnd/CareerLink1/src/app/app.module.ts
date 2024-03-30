@@ -28,6 +28,8 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { ProfileComponent } from './components/profile/profile.component';
+import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -52,15 +54,17 @@ import { ProfileComponent } from './components/profile/profile.component';
     RegisterComponent,
     TakeofftraitmentComponent,
     ProfileComponent,
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule, //access to functionalities for sending and handling HTTP requests
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    NgxExtendedPdfViewerModule,
+    NgbModule,
+
   ],
   providers: [ 
    

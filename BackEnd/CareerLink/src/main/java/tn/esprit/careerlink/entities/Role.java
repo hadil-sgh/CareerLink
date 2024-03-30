@@ -2,7 +2,6 @@ package tn.esprit.careerlink.entities;
 
 import lombok.RequiredArgsConstructor;
 
-import static tn.esprit.careerlink.entities.Permission.*;
 @RequiredArgsConstructor
 public enum Role {
     Admin,

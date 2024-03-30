@@ -60,6 +60,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Token> tokens;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    Profile profile;
+
 
     @Override
     public List<SimpleGrantedAuthority> getAuthorities() {

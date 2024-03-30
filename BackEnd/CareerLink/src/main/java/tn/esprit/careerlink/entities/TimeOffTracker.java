@@ -30,5 +30,6 @@ public class TimeOffTracker implements Serializable {
     LeaveStatus status;
     @ManyToOne
     User user;
-
+    @Lob
+    String pdfData;
 }

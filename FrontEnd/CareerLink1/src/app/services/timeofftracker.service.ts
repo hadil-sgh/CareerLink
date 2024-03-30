@@ -35,4 +35,10 @@ export class TimeofftrackerService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff, {headers});
     }
+
+    getPdf(id: number) {
+      const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+      return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' ,headers});
+    }
+  
 }

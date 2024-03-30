@@ -17,7 +17,7 @@ import java.util.Date;
 public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+     Integer id;
      String tel;
      Date dob;
      String address;

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TimeOffTracker } from '../models/TimeOffTracker';
 import { TimeofftrackerService } from '../services/timeofftracker.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LeaveStatus } from '../models/LeaveStatus';
 import { UserService } from '../services/user.service';
 import { User } from '../models/User';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-takeofftraitment',
@@ -14,9 +16,10 @@ import { User } from '../models/User';
 export class TakeofftraitmentComponent {
   timesOff:TimeOffTracker[]=[];
   timeoffForm !:FormGroup;
-  constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }
+  constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService, private modalservice: NgbModal) { }
+  @ViewChild('content') popupview !: ElementRef;
   users: User[] = [];
-
+  pdfurl='';
 
   ngOnInit() :void {
     this.LoadListOfTimesOf();
@@ -95,6 +98,56 @@ loadUsers(): void{
   );
 }
 
+pdf(id: number): void {
+  this.timeoffService.getPdf(id).subscribe(
+    (blob: Blob) => { // Change HttpResponse<Blob> to Blob
+      console.log('Response from server:', blob);
+      // Process the Blob data as needed
+      let url = window.URL.createObjectURL(blob);
+
+      // Open the Blob URL in a new tab with the content type set to 'application/pdf'
+      window.open(url, '_blank');
+    
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching PDF:', error);
+      // Handle error, show appropriate message to the user
+      if (error.status === 404) {
+        console.error('PDF not found.');
+        // Additional error handling logic for 404 error
+      } else {
+        console.error('An unexpected error occurred.');
+        // Additional error handling logic for other error codes
+      }
+    }
+  );
+}
 
 
+Preview(id: number) {
+  
+  this.timeoffService.getPdf(id).subscribe(
+    (blob: Blob) => { // Change HttpResponse<Blob> to Blob
+      console.log('Response from server:', blob);
+      // Process the Blob data as needed
+      let url = window.URL.createObjectURL(blob);
+     this.modalservice.open(this.popupview, { size: 'lg' });
+      // Open the Blob URL in a new tab with the content type set to 'application/pdf'
+   
+      this.pdfurl = url;
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching PDF:', error);
+      // Handle error, show appropriate message to the user
+      if (error.status === 404) {
+        console.error('PDF not found.');
+        // Additional error handling logic for 404 error
+      } else {
+        console.error('An unexpected error occurred.');
+        // Additional error handling logic for other error codes
+      }
+    }
+  );
+
+}
 }
