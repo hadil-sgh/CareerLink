@@ -22,6 +22,7 @@ import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
+import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.c
     TaketimeoffComponent,
     HomeComponent,
     TakeofftraitmentComponent,
+   
 
   ],
   imports: [
@@ -51,6 +53,7 @@ import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.c
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    NgxExtendedPdfViewerModule,
 
   ],
   providers: [],

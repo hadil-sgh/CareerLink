@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LeaveStatus } from '../models/LeaveStatus';
 import { UserService } from '../services/user.service';
 import { User } from '../models/User';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-takeofftraitment',
@@ -95,6 +96,29 @@ loadUsers(): void{
   );
 }
 
+pdf(id: number): void {
+  this.timeoffService.getPdf(id).subscribe(
+    (blob: Blob) => { // Change HttpResponse<Blob> to Blob
+      console.log('Response from server:', blob);
+      // Process the Blob data as needed
+      let url = window.URL.createObjectURL(blob);
 
+      // Open the Blob URL in a new tab with the content type set to 'application/pdf'
+      window.open(url, '_blank');
+    
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching PDF:', error);
+      // Handle error, show appropriate message to the user
+      if (error.status === 404) {
+        console.error('PDF not found.');
+        // Additional error handling logic for 404 error
+      } else {
+        console.error('An unexpected error occurred.');
+        // Additional error handling logic for other error codes
+      }
+    }
+  );
+}
 
 }
