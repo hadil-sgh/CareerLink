@@ -18,7 +18,10 @@
                 <img [src]="getStatusIcon(timeoff.status)" alt="{{timeoff.status}} icon" class="status-icon" />
                 {{timeoff.status}}
               </h4>
-                <p>Type Of Leave   : {{timeoff.type}}</p>                     
+              <div class="container1">
+                <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" class="button-icon" (click)="pdf(timeoff.id)"/>
+                <p>Type Of Leave: {{timeoff.type}}</p>
+            </div>                    
                 <p>Description   :  {{timeoff.description}}</p>
                 <p>From :{{timeoff.fromDate | date}} </p>
                 <p>To  :{{timeoff.toDate| date}}</p>
@@ -76,6 +79,14 @@
   width: 20px; /* Adjust the width to your desired size */
   height: auto; /* Maintain aspect ratio */
   margin-right: 5px; /* Optional: Add margin for spacing */
+}
+.container1 {
+    display: flex; /* Use flexbox layout */
+    align-items: center; /* Align items vertically */
+}
+
+.button-icon {
+    margin-right: 10px; /* Adjust margin as needed */
 }
 
 

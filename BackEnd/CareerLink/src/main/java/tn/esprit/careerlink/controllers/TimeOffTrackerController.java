@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/TimeOffTracker")
 
 public class TimeOffTrackerController {
@@ -107,7 +107,7 @@ public class TimeOffTrackerController {
     }
     @GetMapping("/downloadFile/{id}")
     public ResponseEntity<?> downloadFile(@PathVariable("id") Integer id) {
-        String fileCode=  timeOffTrackerService.getOneLeave(id).getPdfData();
+        String fileCode = timeOffTrackerService.getOneLeave(id).getPdfData();
         FileDownloadUtil downloadUtil = new FileDownloadUtil();
 
         Resource resource = null;
@@ -121,14 +121,18 @@ public class TimeOffTrackerController {
             return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
         }
 
-        String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
+        // Set the appropriate content type for PDF files
+        String contentType = "application/pdf";
+
+        // Instead of forcing download, set content disposition to inline
+        String headerValue = "inline; filename=\"" + resource.getFilename() + "\"";
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
                 .body(resource);
     }
+}
 
-    }
+    
 

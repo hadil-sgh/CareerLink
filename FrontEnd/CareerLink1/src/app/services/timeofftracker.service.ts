@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
@@ -29,7 +29,11 @@ export class TimeofftrackerService {
   deleteTiMEOff(id: number): Observable<void> {
         return this.http.delete<void> (this.baseUrl + 'delete/' + id);
     }
-    updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
+  updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
       return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff);
     }
+    getPdf(id: number) {
+      return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' });
+    }
+  
 }

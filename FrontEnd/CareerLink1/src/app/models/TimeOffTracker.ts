@@ -10,4 +10,5 @@ export class TimeOffTracker {
      toDate !: Date;
      status !:LeaveStatus ;
      user !: User;
+     pdf !:File;
 }
