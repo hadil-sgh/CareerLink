@@ -23,6 +23,7 @@ import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.compo
 import { HomeComponent } from './components/home/home.component';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
     ReactiveFormsModule,
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
+    NgbModule,
 
   ],
   providers: [],
