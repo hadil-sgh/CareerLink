@@ -5,11 +5,17 @@ import { AllTemplateBackComponent }from "./BackOffice/all-template-back/all-temp
 import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 import { ExpenseComponent } from './components/expense/expense.component';
-import { StockComponent } from './components/stock/stock.component';
-import { DepenseComponent } from './components/depense/depense.component';
+
+
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { DepenseComponent } from './components/depense/depense.component';
+import { ReclamationComponent } from './components/reclamation/reclamation.component';
+import { AdmrecComponent } from './components/admrec/admrec.component';
+import { ReponseComponent } from './components/reponse/reponse.component';
+import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
+
 const routes: Routes = [
   {
   path:"Employee",
@@ -20,6 +26,11 @@ const routes: Routes = [
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"taketimeoff",component:TaketimeoffComponent},
     { path:"expense",component:DepenseComponent},
+    { path:"checkreponse",component:CheckreponseComponent},
+    
+    { path:"reclamation",component:ReclamationComponent}
+
+   
     
     ]
   },
@@ -29,12 +40,15 @@ const routes: Routes = [
   children:[
 
     {path:"user",component:UserComponent},  
-
+   
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"expense",component:ExpenseComponent},
-    { path:"stock",component:StockComponent},
+   
 
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
+    { path:"reclamation",component:AdmrecComponent},
+    { path:"reponse",component:ReponseComponent},
+    { path: "reponse/:id", component: ReponseComponent }, 
     { path:"teams",component:TeamComponent}
     ]
   }

@@ -1,0 +1,95 @@
+<style>
+    /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
+    .action-column, .action-cell {
+        border-right: 2px solid #c5bebe; /* Ajouter une bordure droite */
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div>
+            <h5 class="card-header">Reponse List</h5>
+            
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        
+                        <th>DATE</th>
+                        <th>REPONSE</th>
+                        <th class="action-column">ACTION</th> <!-- Ajouter la classe action-column à cette colonne -->
+                        <th>DATERECLAMATION</th>
+                        <th>DESCRIPTION</th>
+                        <th class="action-column">TYPE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let reponse of reponses">
+                        <td>{{ reponse.datereponse | date }}</td>
+                        <td>{{ reponse.reponsecontent }}</td>
+                        <td class="action-cell">
+                            <button type="submit" class="btn btn-outline-success m-1" (click)="editReponse(reponse)">Edit</button>
+                            <span class="button-space1"></span> 
+                            <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteReponse(reponse.idrponse)">Delete</button>
+                        </td>
+                        <td>{{ reponse.reclamation.datereclamation | date }}</td>
+                        <td>{{ reponse.reclamation.description }}</td>
+                        <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+        <div class="separator"></div>
+
+        <div class="container">
+            <h5 class="card-header">{{ selectedReponse ? 'Edit Reponse' : 'Add Reponse' }}</h5>
+
+            <form [formGroup]="reponseForm" (ngSubmit)="selectedReponse ? updateReponse() : addReponseAndAffect()">
+                <!-- Champ pour l'ID de la réclamation -->
+                <div class="form-group">
+                    <label for="reclamationId">Reclamation ID:</label>
+                    <select formControlName="reclamationId" class="form-control" id="reclamationId">
+                        <option *ngFor="let reclamation of reclamations" [value]="reclamation.idreclamation">{{ reclamation.idreclamation }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="reponseForm.controls['reclamationId'].invalid && reponseForm.controls['reclamationId'].touched">
+                        <div *ngIf="reponseForm.controls['reclamationId'].hasError('required')"> Reclamation ID is required !</div>
+                    </div>
+                </div>
+                
+                <!-- Afficher les détails de la réclamation sélectionnée -->
+                <div *ngIf="selectedReclamation">
+                    <p>Date de Réclamation: {{ selectedReclamation.datereclamation }}</p>
+                    <p>Description de Réclamation: {{ selectedReclamation.description }}</p>
+                    <p>Type de Réclamation: {{ selectedReclamation.typeReclamation }}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="datereponse">Date:</label>
+                    <input type="date" formControlName="datereponse" class="form-control" id="datereponse">
+                    <div class="alert alert-danger" *ngIf="reponseForm.controls['datereponse'].invalid && reponseForm.controls['datereponse'].touched">
+                        <div *ngIf="reponseForm.controls['datereponse'].hasError('required')"> Date is required !</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reponsecontent">ReponseContent:</label>
+                    <textarea formControlName="reponsecontent" class="form-control" id="reponsecontent" rows="3"></textarea>
+                    <div class="alert alert-danger" *ngIf="reponseForm.controls['reponsecontent'].invalid && reponseForm.controls['reponsecontent'].touched">
+                        <div *ngIf="reponseForm.controls['reponsecontent'].hasError('required')">ReponseContent is required !</div>
+                    </div>
+                </div>
+
+                <div class="separator1"></div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" [disabled]="reponseForm.invalid">{{ selectedReponse ? 'Update Reponse' : 'Add Reponse' }}</button>
+                    <span class="mx-2"></span>
+                    <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

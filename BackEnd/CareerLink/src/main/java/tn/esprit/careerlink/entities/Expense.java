@@ -19,18 +19,21 @@ public class Expense implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idexpense;
+    Float unitPrice;
     Float amount;
-    Date date;
+    Integer quantity;
+    private Date dateexpense;
     String category;
     @Enumerated(EnumType.STRING)
     private MethodPayment methodPayment;
-    @ManyToOne
-    @JsonIgnore
 
-    Stock stock;
 
     @OneToOne
-    @JsonIgnore
+
     Project project;
+
+
+
+
 
 }

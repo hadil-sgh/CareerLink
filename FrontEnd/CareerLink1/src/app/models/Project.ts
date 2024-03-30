@@ -4,13 +4,13 @@ import { Task } from "./Task";
 import { Expense } from "./Expense";
 
 export class Project {
-    id!: number;
+    idProject!: number;
     name!: string;
     description!: string;
     dueDate!: Date;
     price!: number;
     teams!: Team[];
     tasks!: Task[];
-    expense!: Expense;
+    expense!: Expense[];
  
   }   

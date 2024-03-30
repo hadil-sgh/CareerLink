@@ -1,27 +1,34 @@
-<div class="card mt-5 mb-5"> <!-- Ajoutez une marge supérieure pour décaler le tableau vers le bas -->
-   
-        <div class="mx-auto table-container">
-            <h5 class="card-header">Expense List</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped text-center">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>IDEXPENSE</th>
-                            <th>AMOUNT</th>
-                            <th>DATE</th>
-                            <th>CATEGORY</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let expense of expenses">
-                            <td>{{expense.idexpense}}</td>
-                            <td>{{expense.amount}}</td>
-                            <td>{{expense.date | date }}</td>
-                            <td>{{expense.category}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<app-header-front></app-header-front>
+
+<div class="card mt-5 mb-5">
+    <div class="mx-auto table-container">
+        <h6 class="card-header">Expense List</h6>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>AMOUNT</th>
+                        <th>DATE</th>
+                        <th>CATEGORY</th>
+                        <th>ACTION</th> <!-- Ajout de la colonne ACTION -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let expense of expenses">
+                        <td>{{expense.amount}}</td>
+                        <td>{{expense.dateexpense | date }}</td>
+                        <td>{{expense.category}}</td>
+                        <td>
+                            <!-- Ajout du bouton payexpense avec l'événement click -->
+                            <button class="btn btn-primary" (click)="payExpense(expense)">Pay</button>
+                            <!-- Ajout d'un espace entre les boutons en utilisant les marges CSS -->
+                            <button onclick="window.location.href='/Employee/reclamation'" class="btn btn-primary" style="margin-left: 5px;">Reclamer</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    
+    </div>
 </div>
+
+<app-header-front></app-header-front>

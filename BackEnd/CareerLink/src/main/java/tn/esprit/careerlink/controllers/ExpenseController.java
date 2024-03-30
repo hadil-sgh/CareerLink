@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.careerlink.entities.Expense;
-import tn.esprit.careerlink.entities.Stock;
+import tn.esprit.careerlink.entities.Project;
 import tn.esprit.careerlink.services.IExpenseService;
 
 import java.util.List;
@@ -18,14 +18,22 @@ import java.util.List;
 public class ExpenseController {
     @Autowired
  IExpenseService expenseService;
-    @PostMapping("/add")
-    public Expense addStock(@RequestBody Expense expense) {
-        return expenseService.addExpense(expense);
+    @PostMapping("/add/{idProject}")
+    public Expense addExpense(@RequestBody Expense expense, @PathVariable("idProject") Integer idProject) {
+        // Créez un objet Project avec seulement l'ID pour l'associer à l'Expense
+        Project project = new Project();
+        project.setIdProject(idProject);
+        expense.setProject(project);
+        return expenseService.addExpense(expense,idProject);
     }
 
-    @PutMapping("/update")
-    public Expense updateExpense(@RequestBody Expense expense){
-        return expenseService.updateExpense(expense);
+    @PutMapping("/update/{idProject}")
+    public Expense updateExpense(@RequestBody Expense expense, @PathVariable("idProject") Integer idProject){
+        // Créez un objet Project avec seulement l'ID pour l'associer à l'Expense
+        Project project = new Project();
+        project.setIdProject(idProject);
+        expense.setProject(project);
+        return expenseService.updateExpense(expense,idProject);
     }
     @DeleteMapping("/delete/{id}")
     public void deleteExpense(@PathVariable ("id")Integer idexpense) {
@@ -39,14 +47,15 @@ public class ExpenseController {
     public Expense getExpense(@PathVariable ("id") Integer idexpense) {
         return expenseService.getExpense(idexpense);
     }
-    @PostMapping("/addAndAffect/{idProject}/{idStock}")
-    public ResponseEntity<Expense> addExpenseAndAffect(@PathVariable("idProject") Integer idProject, @PathVariable("idStock") Integer idStock, @RequestBody Expense expense) {
-        Expense addExpenseAndAffect =expenseService.addExpenseAndAffect(idProject, idStock, expense);
+    @PostMapping("/{idProject}/addAndAffect")
+    public ResponseEntity<Expense> addExpenseAndAffect(@PathVariable Integer idProject,  @RequestBody Expense expense) {
+        Expense addExpenseAndAffect =expenseService.addExpenseAndAffect(idProject,expense);
         return ResponseEntity.ok(addExpenseAndAffect);
     }
 
 
-
-
-
+    @GetMapping("/tri")
+    List<Expense> tri() {
+        return expenseService.tri();
+    }
 }

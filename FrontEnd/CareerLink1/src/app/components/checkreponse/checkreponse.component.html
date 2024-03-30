@@ -1,0 +1,26 @@
+
+<div class="card mt-4 mb-4">
+    <div class="mx-auto table-container">
+        <h6 class="card-header">Reponse List</h6>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="thead-dark">
+            <tr>
+                <th>DATE</th>
+                <th>REPONSECONTENT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reponse of reponses">
+              <td>{{ reponse.datereponse| date }}</td>
+              <td>{{ reponse.reponsecontent }}</td>
+              
+              <td>
+               
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

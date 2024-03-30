@@ -16,11 +16,16 @@ import { HomeBackComponent } from './BackOffice/home-back/home-back.component';
 import { UserComponent } from './components/user/user.component';
 import { TimeofftrackerComponent } from './components/timeofftracker/timeofftracker.component';
 import { ExpenseComponent } from './components/expense/expense.component';
-import { StockComponent } from './components/stock/stock.component';
-import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { DepenseComponent } from './components/depense/depense.component';
+import { ReclamationComponent } from './components/reclamation/reclamation.component';
+import { AdmrecComponent } from './components/admrec/admrec.component';
+import { ReponseComponent } from './components/reponse/reponse.component';
+import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
+import { StripeComponent } from './components/stripe/stripe.component';
+
 
 @NgModule({
   declarations: [
@@ -36,11 +41,16 @@ import { HomeComponent } from './components/home/home.component';
     UserComponent,
     TimeofftrackerComponent,
     ExpenseComponent,
-    StockComponent,
-    DepenseComponent,
     TeamComponent,
     TaketimeoffComponent,
     HomeComponent,
+    DepenseComponent,
+    ReclamationComponent,
+    AdmrecComponent,
+    ReponseComponent,
+    CheckreponseComponent,
+    StripeComponent,
+   
 
   ],
   imports: [

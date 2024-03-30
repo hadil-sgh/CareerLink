@@ -4,14 +4,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tn.esprit.careerlink.entities.Expense;
 import tn.esprit.careerlink.entities.Project;
-import tn.esprit.careerlink.entities.Stock;
 import tn.esprit.careerlink.repositories.ExpenseRepository;
 import tn.esprit.careerlink.repositories.ProjectRepository;
-import tn.esprit.careerlink.repositories.StockRepository;
 import tn.esprit.careerlink.services.IExpenseService;
 
 import java.util.List;
@@ -27,38 +24,25 @@ public class ExpenseServiceImpl implements IExpenseService {
     ExpenseRepository expenseRepository;
     @Autowired
     ProjectRepository projectRepository;
-    @Autowired
-    StockRepository stockRepository;
+
+
 
 
 
     @Override
-    public Expense addExpense(Expense expense)
-    {
+    public Expense addExpense(Expense expense, Integer idProject)
+    { expense =calculateExpenseAmount(expense);
+        Integer projectId = expense.getProject().getIdProject();
         return expenseRepository.save(expense);
     }
 
-    @Override
-    public Expense addExpenseAndAffect(Integer idProject, Integer idStock, Expense expense) {
-        Optional<Project> projectOptional = projectRepository.findById(idProject);
-        Optional<Stock> stockOptional = stockRepository.findById(idStock);
-        if (projectOptional.isPresent() && stockOptional.isPresent()) {
-           Project project = projectOptional.get();
-            Stock stock = stockOptional.get();
 
-            expense.setProject(project);
-            expense.setStock(stock);
-            return  expenseRepository.save(expense);
-        }else {
-            throw new EntityNotFoundException("project or Stock not found");
-        }
-
-    }
 
 
 
     @Override
-    public Expense updateExpense(Expense expense) {
+    public Expense updateExpense(Expense expense,Integer idProject) {
+        Integer projectId = expense.getProject().getIdProject();
         return expenseRepository.save(expense);
     }
 
@@ -76,4 +60,33 @@ public class ExpenseServiceImpl implements IExpenseService {
     public Expense getExpense(Integer idexpense) {
         return expenseRepository.findById(idexpense).orElse(null);
     }
+
+    @Override
+    public Expense calculateExpenseAmount(Expense expense) {
+        expense.setAmount(expense.getUnitPrice() * expense.getQuantity());
+
+        return expense;
+    }
+    @Override
+    public Expense addExpenseAndAffect(Integer idProject, Expense expense) {
+        Optional<Project> projectOptional = projectRepository.findById(idProject);
+
+        if (projectOptional.isPresent() ) {
+            Project project = projectOptional.get();
+
+
+            expense.setProject(project);
+
+            return  expenseRepository.save(expense);
+        }else {
+            throw new EntityNotFoundException("project not found");
+        }
+
+    }
+
+    @Override
+    public List<Expense> tri() {
+        return expenseRepository.findAllByOrderByDateexpense();
+    }
+
 }

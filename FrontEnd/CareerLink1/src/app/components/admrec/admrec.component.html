@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-body">
+      <div>
+        <h5 class="card-header">Reclamation List</h5>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+               
+              <th>DATE</th>
+              <th>DESCRIPTION</th>
+              <th>TYPE</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reclamation of reclamations">
+                
+              <td>{{ reclamation.datereclamation | date }}</td>
+              <td>{{ reclamation.description }}</td>
+              <td>{{ reclamation.typeReclamation }}</td>
+              <td>
+                <button type="button" class="btn btn-outline-info m-1" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
+
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

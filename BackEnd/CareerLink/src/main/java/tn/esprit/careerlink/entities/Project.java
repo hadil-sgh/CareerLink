@@ -1,4 +1,5 @@
 package tn.esprit.careerlink.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,7 +27,8 @@ public class Project implements Serializable {
     Set<Team> teams;
     @OneToMany
     Set<Task> tasks;
-    @OneToOne (mappedBy = "project")
+    @JsonIgnore
+    @OneToOne
     Expense expense;
     @OneToMany (mappedBy = "project")
     Set<Payment> payments;

@@ -1,11 +1,10 @@
 package tn.esprit.careerlink.entities;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -13,13 +12,14 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Stock {
+public class Reponse implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer idstock;
-    String name;
-    Integer quantityAvailable;
-    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
-            @JsonIgnore
-    Set<Expense> expense;
+    Integer idrponse;
+    LocalDate datereponse;
+    String reponsecontent;
+    @OneToOne
+    Reclamation reclamation;
+
 }
