@@ -17,7 +17,7 @@ export class TakeofftraitmentComponent {
   timeoffForm !:FormGroup;
   constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }
   users: User[] = [];
-
+  pdfurl='';
 
   ngOnInit() :void {
     this.LoadListOfTimesOf();
@@ -121,4 +121,31 @@ pdf(id: number): void {
   );
 }
 
+
+Preview(id: number) {
+  
+  this.timeoffService.getPdf(id).subscribe(
+    (blob: Blob) => { // Change HttpResponse<Blob> to Blob
+      console.log('Response from server:', blob);
+      // Process the Blob data as needed
+      let url = window.URL.createObjectURL(blob);
+
+      // Open the Blob URL in a new tab with the content type set to 'application/pdf'
+      window.open(url, '_blank');
+      this.pdfurl = url;
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching PDF:', error);
+      // Handle error, show appropriate message to the user
+      if (error.status === 404) {
+        console.error('PDF not found.');
+        // Additional error handling logic for 404 error
+      } else {
+        console.error('An unexpected error occurred.');
+        // Additional error handling logic for other error codes
+      }
+    }
+  );
+
+}
 }

@@ -23,6 +23,8 @@ import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.compo
 import { HomeComponent } from './components/home/home.component';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
+
+
 @NgModule({
   declarations: [
     AppComponent,
