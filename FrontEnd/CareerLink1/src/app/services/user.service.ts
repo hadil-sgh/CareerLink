@@ -28,24 +28,32 @@ findAllUsers(): Observable<User[]> {
     return this.http.get<User[]> ( this.baseUrl + 'User/getAll', { headers } )
   }
   
-addUser(user: User) : Observable<User> { const headers = this.addTokenToHeaders(new HttpHeaders()); return this.http.post<User> ( this.baseUrl + 'User/add', user, { headers } ); }
+addUser(user: User) : Observable<User> { 
+  const headers = this.addTokenToHeaders(new HttpHeaders()); 
+  return this.http.post<User> ( this.baseUrl + 'User/add', user, { headers } ); 
+}
 
-updateUser(user: User) : Observable<User> { const headers = this.addTokenToHeaders(new HttpHeaders()); return this.http.put<User> ( this.baseUrl + 'User/update', user, { headers }); }
+updateUser(user: User) : Observable<User> { 
+  const headers = this.addTokenToHeaders(new HttpHeaders()); 
+  return this.http.put<User> ( this.baseUrl + 'User/update', user, { headers }); 
+}
 
-deleteUser(id: number) : Observable<void> { const headers = this.addTokenToHeaders(new HttpHeaders()); return this.http.delete <void> ( this.baseUrl + 'User/delete/' + id, { headers } ); }
+deleteUser(id: number) : Observable<void> { 
+  const headers = this.addTokenToHeaders(new HttpHeaders()); 
+  return this.http.delete <void> ( this.baseUrl + 'User/delete/' + id, { headers } ); 
+}
 
 
   
-  /* findoneuser(id: number): Observable<User> {
-    return this.http.get<User[]>(this.baseUrl + 'User/getOne/' + id).pipe(
-      map(users => users[0])
-    );
-  } */
+   getUser(id:number): Observable<User[]> {
+    const headers = this.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<User[]> ( this.baseUrl + 'User/getOne' + id, { headers } )
+  } 
 
   
 
 
-  // Register & Authentication & Logout
+  // Register & Login & Logout
 
   register(registerRequest: RegisterRequest) {
     return this.http.post<AuthenticationResponse> (`${this.baseUrl}auth/register`, registerRequest);
@@ -59,7 +67,7 @@ deleteUser(id: number) : Observable<void> { const headers = this.addTokenToHeade
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     return this.http.delete(`${this.baseUrl}auth/logout`, { headers });
   }
-  
+
   logout() {
     this.urllogout()
       .subscribe(

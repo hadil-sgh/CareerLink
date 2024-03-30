@@ -1,43 +1,33 @@
-<div class="row">
-  <div class="col-lg-12 d-flex align-items-stretch">
-    <div class="card w-100">
-      <div class="card-body p-4">
-        <div class="mb-4">
-          <h5 class="card-title fw-semibold">...</h5>
-        </div>
-        <h5 class="card-header">Employee List</h5>
-        <div class="table-responsive text-nowrap">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
-                <th>Email</th>
-                
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-              <tr *ngFor="let user of users">
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.email }}</td>
-                
-                <td>
-                  <button type="submit" class="btn btn-outline-primary  m-1" (click)="editUser(user)"  >Edit</button>
-                  <span class="button-space1"></span> 
-                  <button type="submit" class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="table-responsive text-nowrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      <tr *ngFor="let user of pagedUsers">
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button type="submit" class="btn btn-outline-primary m-1" (click)="editUser(user)">Edit</button>
+          <button type="submit" class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
+          <button type="submit" class="btn btn-outline-secondary" routerLink="/admin/profile">Details</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<pagination-controls (pageChange)="currentPage = $event" class="my-3"></pagination-controls>
+
 
 <div class="row mt-3">
   <div class="col-md-7">

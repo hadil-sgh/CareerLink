@@ -14,6 +14,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { AuthGuard } from './models/AuthGuard';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
+import { ProfileComponent } from './components/profile/profile.component';
 const routes: Routes = [
   { path:'login',component:LoginComponent},
   {path:'',redirectTo:'/login',pathMatch:'full'},
@@ -26,6 +27,7 @@ const routes: Routes = [
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"taketimeoff",component:TaketimeoffComponent},
     { path:"expense",component:DepenseComponent},
+
     
     ]
   },
@@ -39,7 +41,10 @@ const routes: Routes = [
     { path:"expense",component:ExpenseComponent},
     { path:"stock",component:StockComponent},
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
-    { path:"teams",component:TeamComponent}
+    { path:"teams",component:TeamComponent},
+    { path:"profile",component:ProfileComponent}
+
+  
     ]
   }
 ];

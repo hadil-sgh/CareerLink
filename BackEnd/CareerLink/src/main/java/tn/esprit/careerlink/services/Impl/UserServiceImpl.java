@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
             existingUser.setRole(updatedUser.getRole());
             return userRepository.save(existingUser);
         } else {
-            throw new RuntimeException("User not found.");
+            throw new RuntimeException("User not found");
         }
     }
 

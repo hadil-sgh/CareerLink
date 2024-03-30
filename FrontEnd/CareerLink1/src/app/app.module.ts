@@ -26,6 +26,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { AuthGuard } from './models/AuthGuard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
+import { ErrorInterceptor } from './services/error.interceptor';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.c
     LoginComponent,
     RegisterComponent,
     TakeofftraitmentComponent,
+    ProfileComponent,
 
   ],
   imports: [
@@ -61,7 +64,9 @@ import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.c
   ],
   providers: [ 
    
-    AuthGuard
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+
   ],
   bootstrap: [AppComponent]
 })

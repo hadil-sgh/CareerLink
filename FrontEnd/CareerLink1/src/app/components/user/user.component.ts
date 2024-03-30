@@ -17,12 +17,15 @@ export class UserComponent implements OnInit {
   users: User[] = [];
   userForm!: FormGroup;
   selectedUser: User | null = null;
+  pagedUsers: User[] = []; 
+  currentPage: number = 1; 
+  pageSize: number = 3;
  
  
   ngOnInit(): void {
     this.userService.findAllUsers()
     .subscribe(
-      users => this.users = users,
+      users => this.pagedUsers = users,
       error => console.error('error, getall', error)
     );
 
@@ -31,13 +34,24 @@ export class UserComponent implements OnInit {
   }
  
 
-    loadUsers(): void{
-    this.userService.findAllUsers()
+    loadUsers(): void {
+  this.userService.findAllUsers()
     .subscribe(
-      users => this.users = users,
+      users => {
+        // Mettre à jour la liste complète des utilisateurs
+        this.pagedUsers = users;
+
+        // Calculer l'index de début et de fin des utilisateurs pour la page actuelle
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+
+        // Extraire les utilisateurs de la page actuelle à partir de la liste complète des utilisateurs
+        this.pagedUsers = this.users.slice(startIndex, endIndex);
+      },
       error => console.error('error, getall', error)
     );
-  }
+}
+
 
      createForm(): void {
       this.userForm = this.fb.group({

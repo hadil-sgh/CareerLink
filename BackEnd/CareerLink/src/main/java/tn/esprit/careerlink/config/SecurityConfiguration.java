@@ -4,7 +4,10 @@ package tn.esprit.careerlink.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +24,7 @@ import java.util.Arrays;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static tn.esprit.careerlink.entities.Permission.*;
 import static tn.esprit.careerlink.entities.Role.*;
 
 @Configuration
@@ -55,6 +59,16 @@ public class SecurityConfiguration {
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers("/auth/**")
                                 .permitAll()
+                                .requestMatchers("/User/**").hasAnyAuthority("Admin", "HR_manager")
+                                .requestMatchers("/Expense/**").hasAnyAuthority("Admin", "Consultant")
+                                .requestMatchers("/Stock/**").hasAnyAuthority("Admin", "Consultant", "Sales_manager")
+                                .requestMatchers("/Client/**").hasAnyAuthority("Admin", "Sales_manager")
+                                .requestMatchers("/Project/**").hasAnyAuthority("Admin", "Project_manager")
+                                .requestMatchers("/Performance/**").hasAnyAuthority("Admin", "HR_manager","Consultant")
+                                .requestMatchers("/Team/**").hasAnyAuthority("Admin", "HR_manager")
+                                .requestMatchers("/Recruitment/**").hasAnyAuthority("Admin", "HR_manager")
+                                .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
+                                .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee")
                                 .anyRequest()
                                 .authenticated()
 
