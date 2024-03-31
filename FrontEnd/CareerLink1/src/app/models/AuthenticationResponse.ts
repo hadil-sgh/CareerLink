@@ -3,5 +3,7 @@ import { Role } from "./Role";
 export interface AuthenticationResponse {
     accessToken?: string;
     refreshToken?:String;
-    userRoles?:Role
+    userRoles?:Role;
+    mfaEnabled?: string;
+    secretImageUri?: string;
 }

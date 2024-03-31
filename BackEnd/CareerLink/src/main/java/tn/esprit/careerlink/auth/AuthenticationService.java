@@ -1,7 +1,9 @@
 package tn.esprit.careerlink.auth;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.authentication.BadCredentialsException;
 import tn.esprit.careerlink.config.JwtService;
 import tn.esprit.careerlink.entities.*;
 import tn.esprit.careerlink.repositories.TokenRepository;
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tn.esprit.careerlink.tfa.TwoFactorAuthenticationService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -27,6 +30,7 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final TwoFactorAuthenticationService tfaService;
   @Value("${application.security.jwt.refresh-token.expiration}")
   private long cookieExpiry;
 
@@ -34,10 +38,15 @@ public class AuthenticationService {
     Optional<User> existingUserOptional = repository.findByEmail(request.getEmail());
     if (existingUserOptional.isPresent()) {
       User existingUser = existingUserOptional.get();
-      if (existingUser.getPwd() != null) {
+      if (existingUser.getPwd() != null ) {
         throw new RuntimeException("Failed to register user. User already registered with password.");
       }
       existingUser.setPwd(passwordEncoder.encode(request.getPwd()));
+      existingUser.setMfaEnabled(request.isMfaEnabled());
+
+      if (request.isMfaEnabled()) {
+         existingUser.setSecret(tfaService.generateNewSecret());
+      }
       repository.save(existingUser);
     }else {
       throw new RuntimeException("Failed to register user. User does not exist in your database.");
@@ -47,8 +56,10 @@ public class AuthenticationService {
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
+            .secretImageUri(tfaService.generateQrCodeImageUri(user.getSecret()))
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
+            .mfaEnabled(user.isMfaEnabled())
             .build();
   }
 
@@ -65,6 +76,13 @@ public class AuthenticationService {
 
     User user = repository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
+    if (user.isMfaEnabled()) {
+      return AuthenticationResponse.builder()
+              .accessToken("")
+              .refreshToken("")
+              .mfaEnabled(true)
+              .build();
+    }
 
     String jwtToken = jwtService.generateToken(user);
     String refreshToken = jwtService.generateRefreshToken(user);
@@ -85,6 +103,7 @@ public class AuthenticationService {
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .userRole(user.getRole())
+            .mfaEnabled(false)
             .build();
   }
 
@@ -133,9 +152,29 @@ public class AuthenticationService {
         var authResponse = AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .mfaEnabled(false)
                 .build();
         new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
       }
     }
+  }
+
+  public AuthenticationResponse verifyCode(
+          VerificationRequest verificationRequest
+  ) {
+    User user = repository
+            .findByEmail(verificationRequest.getEmail())
+            .orElseThrow(() -> new EntityNotFoundException(
+                    String.format("No user found with %S", verificationRequest.getEmail()))
+            );
+    if (tfaService.isOtpNotValid(user.getSecret(), verificationRequest.getCode())) {
+
+      throw new BadCredentialsException("Code is not correct");
+    }
+    var jwtToken = jwtService.generateToken(user);
+    return AuthenticationResponse.builder()
+            .accessToken(jwtToken)
+            .mfaEnabled(user.isMfaEnabled())
+            .build();
   }
 }

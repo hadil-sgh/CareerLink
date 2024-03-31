@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationResponse } from 'src/app/models/AuthenticationResponse';
 import { RegisterRequest } from 'src/app/models/RegisterRequest';
+import { VerificationRequest } from 'src/app/models/VerificationRequest';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,6 +15,8 @@ export class RegisterComponent {
   registerRequest: RegisterRequest = {};
   authResponse: AuthenticationResponse = {};
   message = '';
+  otpCode = '';
+
 
   constructor(
     private userService: UserService,
@@ -27,15 +30,32 @@ export class RegisterComponent {
         next: (response) => {
           if (response) {
             this.authResponse = response;
-            console.log('Registration Successful');
+          } else {
+            // inform the user
             this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
-          setTimeout(() => {
+            setTimeout(() => {
               this.router.navigate(['login']);
             }, 3000)
           }
-        },
-        error: (error) => {
-          console.error('Error during registration:', error);
+        }
+      });
+  }
+
+
+  verifyTfa() {
+    this.message = '';
+    const verifyRequest: VerificationRequest = {
+      email: this.registerRequest.email,
+      code: this.otpCode
+    };
+    this.userService.verifyCode(verifyRequest)
+      .subscribe({
+        next: (response) => {
+          this.message = 'Account created successfully\nYou will be redirected to the Welcome page in 3 seconds';
+          setTimeout(() => {
+            localStorage.setItem('token', response.accessToken as string);
+            this.router.navigate(['login']);
+          }, 3000);
         }
       });
   }

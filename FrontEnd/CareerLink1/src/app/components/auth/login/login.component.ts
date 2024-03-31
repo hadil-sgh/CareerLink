@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationRequest } from 'src/app/models/AuthenticationRequest';
 import { AuthenticationResponse } from 'src/app/models/AuthenticationResponse';
+import { VerificationRequest } from 'src/app/models/VerificationRequest';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,6 +14,8 @@ export class LoginComponent {
 
   authRequest: AuthenticationRequest = {};
   authResponse: AuthenticationResponse = {};
+  otpCode = '';
+
 
   constructor(
     private userService: UserService,
@@ -24,17 +27,24 @@ export class LoginComponent {
     this.userService.login(this.authRequest)
       .subscribe({
         next: (response) => {
-          if (response.accessToken) {
-            this.authResponse = response;
+          this.authResponse = response;
+          if (!this.authResponse.mfaEnabled) {
             localStorage.setItem('token', response.accessToken as string);
-            console.log('Token saved in localStorage')
             this.router.navigate(['admin/user']);
-          } else {
-            console.error('Access token is missing in the response');
           }
-        },
-        error: (error) => {
-          console.error(error);
+        }
+      });
+  }
+  verifyCode() {
+    const verifyRequest: VerificationRequest = {
+      email: this.authRequest.email,
+      code: this.otpCode
+    };
+    this.userService.verifyCode(verifyRequest)
+      .subscribe({
+        next: (response) => {
+          localStorage.setItem('token', response.accessToken as string);
+          this.router.navigate(['admin/user']);
         }
       });
   }

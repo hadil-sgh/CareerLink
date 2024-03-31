@@ -30,6 +30,8 @@ public class User implements UserDetails {
     Role role;
     String email;
     String pwd;
+    boolean mfaEnabled;
+    String secret;
 
     @JsonIgnore
     @OneToMany (mappedBy = "user",  cascade = CascadeType.ALL)
@@ -61,6 +63,7 @@ public class User implements UserDetails {
     List<Token> tokens;
 
     @OneToOne(cascade = CascadeType.ALL)
+            @JsonIgnore
     Profile profile;
 
 

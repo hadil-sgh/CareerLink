@@ -59,6 +59,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/auth/**")
                                 .permitAll()
                                 .requestMatchers("/User/**").hasAnyAuthority("Admin", "HR_manager")
+                               // .requestMatchers("/Profile/**").hasAnyAuthority("Admin", "HR_manager")
                                 .requestMatchers("/Expense/**").hasAnyAuthority("Admin", "Consultant")
                                 .requestMatchers("/Stock/**").hasAnyAuthority("Admin", "Consultant", "Sales_manager")
                                 .requestMatchers("/Client/**").hasAnyAuthority("Admin", "Sales_manager")

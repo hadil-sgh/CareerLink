@@ -1,5 +1,6 @@
 package tn.esprit.careerlink.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,8 @@ public class Profile implements Serializable {
      String jobHistory;
      String training;
      String cv;
+     String img;
     @OneToOne
+            @JsonIgnore
     User user;
 }

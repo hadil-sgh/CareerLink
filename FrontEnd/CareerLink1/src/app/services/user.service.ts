@@ -6,6 +6,7 @@ import { RegisterRequest } from '../models/RegisterRequest';
 import { AuthenticationResponse } from '../models/AuthenticationResponse';
 import { AuthenticationRequest } from '../models/AuthenticationRequest';
 import { RouteReuseStrategy, Router } from '@angular/router';
+import { VerificationRequest } from '../models/VerificationRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,11 @@ deleteUser(id: number) : Observable<void> {
     return this.http.post<AuthenticationResponse> (`${this.baseUrl}auth/authenticate`, authRequest);
   }
 
+
+  verifyCode(verificationRequest: VerificationRequest) {
+    return this.http.post<AuthenticationResponse> (`${this.baseUrl}auth/verify`, verificationRequest);
+  }
+  
   urllogout() {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     return this.http.delete(`${this.baseUrl}auth/logout`, { headers });

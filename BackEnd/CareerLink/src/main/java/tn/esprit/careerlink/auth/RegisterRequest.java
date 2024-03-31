@@ -20,4 +20,6 @@ public class RegisterRequest {
   private Role role;
   private String email;
   private String pwd;
+  private boolean mfaEnabled;
+  String secret;
 }
