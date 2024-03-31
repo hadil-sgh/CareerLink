@@ -75,7 +75,7 @@
                                             name="validationCode"
                                             required [(ngModel)]="otpCode">
                                         </div>
-                                        <button class=" btn-outline-success "  (click)="verifyTfa()"[class.button-disabled]="otpCode.length < 6">Verify code</button>
+                                        <button type="submit" class="btnVerify"   (click)="verifyTfa()"[class.button-disabled]="otpCode.length < 6">Verify code</button>
                                       </div>
                                 </div>
                                 

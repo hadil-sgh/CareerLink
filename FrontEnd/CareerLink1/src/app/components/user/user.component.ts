@@ -37,16 +37,16 @@ export class UserComponent implements OnInit {
     loadUsers(): void {
   this.userService.findAllUsers()
     .subscribe(
-      users => {
+      pagedUsers => {
         // Mettre à jour la liste complète des utilisateurs
-        this.pagedUsers = users;
+        this.pagedUsers = pagedUsers;
 
         // Calculer l'index de début et de fin des utilisateurs pour la page actuelle
         const startIndex = (this.currentPage - 1) * this.pageSize;
         const endIndex = startIndex + this.pageSize;
 
         // Extraire les utilisateurs de la page actuelle à partir de la liste complète des utilisateurs
-        this.pagedUsers = this.users.slice(startIndex, endIndex);
+        this.pagedUsers = this.pagedUsers.slice(startIndex, endIndex);
       },
       error => console.error('error, getall', error)
     );
