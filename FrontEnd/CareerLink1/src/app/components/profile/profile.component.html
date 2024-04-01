@@ -1,53 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="row mt-3">
+    <div class="col-md-7">
+    <div class="card w-100">
+      <div class="card-body p-4">
+{{userId}}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="profile.component.css">
-</head>
-
-<body>
-    <table id="user-table">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>John</td>
-                <td>Doe</td>
-                <td>Developer</td>
-                <td>john@example.com</td>
-                <td><button class="show-details">Details</button></td>
-            </tr>
-            <!-- Ajoutez d'autres lignes de données ici si nécessaire -->
-        </tbody>
-    </table>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const showDetailButtons = document.querySelectorAll('.show-details');
-            showDetailButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const row = button.closest('tr');
-                    const firstName = row.cells[0].textContent;
-                    const lastName = row.cells[1].textContent;
-                    const role = row.cells[2].textContent;
-                    const email = row.cells[3].textContent;
-                    
-                    // Redirection vers la page de détails avec les données récupérées
-                    window.location.href = `profile_details.html?firstName=${firstName}&lastName=${lastName}&role=${role}&email=${email}`;
-                });
-            });
-        });
-    </script>
-</body>
-
-</html>
+      </div>
+    </div>
+    </div>
+</div>    

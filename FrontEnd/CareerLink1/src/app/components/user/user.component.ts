@@ -20,36 +20,36 @@ export class UserComponent implements OnInit {
   pagedUsers: User[] = []; 
   currentPage: number = 1; 
   pageSize: number = 3;
- 
+  totalUsers: number = 0;
+
  
   ngOnInit(): void {
     this.userService.findAllUsers()
     .subscribe(
-      users => this.pagedUsers = users,
-      error => console.error('error, getall', error)
+      users => {
+        this.totalUsers = users.length;
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = Math.min(startIndex + this.pageSize, this.totalUsers);
+        this.pagedUsers = users.slice(startIndex, endIndex);
+      },
+      error => console.error('Error while fetching users', error)
     );
 
     this.createForm();
+    this.selectedUser=null;
     console.log(this.userForm)
   }
  
 
     loadUsers(): void {
-  this.userService.findAllUsers()
-    .subscribe(
-      pagedUsers => {
-        // Mettre à jour la liste complète des utilisateurs
-        this.pagedUsers = pagedUsers;
-
-        // Calculer l'index de début et de fin des utilisateurs pour la page actuelle
-        const startIndex = (this.currentPage - 1) * this.pageSize;
-        const endIndex = startIndex + this.pageSize;
-
-        // Extraire les utilisateurs de la page actuelle à partir de la liste complète des utilisateurs
-        this.pagedUsers = this.pagedUsers.slice(startIndex, endIndex);
-      },
-      error => console.error('error, getall', error)
-    );
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+  const endIndex = Math.min(startIndex + this.pageSize, this.totalUsers);
+  this.userService.findAllUsers().subscribe(
+    users => {
+      this.pagedUsers = users.slice(startIndex, endIndex);
+    },
+    error => console.error('Error while fetching users', error)
+  );
 }
 
 
@@ -64,14 +64,14 @@ export class UserComponent implements OnInit {
   
     addUser(): void {
       const user = this.userForm.value;
-      this.userService.addUser(user)
+    this.userService.addUser(user)
       .subscribe(
         response => {
-          console.log('success, addUser', response);
+          console.log('Success, user added', response);
           this.loadUsers();
           this.userForm.reset();
         },
-        error => console.error('error, addUser', error)
+        error => console.error('Error, failed to add user', error)
       );
     }
      
@@ -95,9 +95,8 @@ export class UserComponent implements OnInit {
             console.log('success, updateUser', response);
             this.loadUsers();
             this.userForm.reset();
-            this.selectedUser=null;
-            
-           },
+            this.selectedUser = null;
+          },
           error => console.error('error, updateUser', error)
         );
       }
@@ -141,5 +140,28 @@ export class UserComponent implements OnInit {
         }
       });
     }
+
+
+    goToPreviousPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.loadUsers();
+  }
+}
+    
+    goToNextPage(): void {
+      var totalPages = Math.ceil(this.totalUsers / this.pageSize);
+      if (this.currentPage < totalPages) {
+        this.currentPage++;
+        this.loadUsers();
+      }
+    }
+    
+    pageChanged(page: number): void {
+      this.currentPage = page;
+      this.loadUsers();
+    }
+
+    
   
 }

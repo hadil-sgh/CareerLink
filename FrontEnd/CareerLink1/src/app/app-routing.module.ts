@@ -36,13 +36,12 @@ const routes: Routes = [
   children:[
 
     {path:"user",component:UserComponent,  canActivate: [AuthGuard]},  
-
     { path:"TimeOffTracker",component:TakeofftraitmentComponent},
     { path:"expense",component:ExpenseComponent},
     { path:"stock",component:StockComponent},
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"teams",component:TeamComponent},
-    { path:"profile",component:ProfileComponent}
+    { path:"profile/:id",component:ProfileComponent}
 
   
     ]

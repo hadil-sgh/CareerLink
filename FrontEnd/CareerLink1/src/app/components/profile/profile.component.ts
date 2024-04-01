@@ -27,10 +27,10 @@ export class ProfileComponent {
       users => this.users = users,
       error => console.error('error, getall', error)
     );
-   /*  this.userId = +this.route.snapshot.paramMap.get('id');
+    this.userId = this.route.snapshot.params['id'];
     this.profileService.getProfile(this.userId).subscribe(profile => {
       this.profile = profile;
-    }); */
+    }); 
   }
 
   addProfile(profile: Profile): void {
