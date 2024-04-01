@@ -19,7 +19,7 @@
                 {{timeoff.status}}
               </h4>
               <div class="container1">
-                <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" class="button-icon" (click)="pdf(timeoff.id)"/>
+                <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" class="button-icon" (click)="Preview(timeoff.id)"/>
                 <p>Type Of Leave: {{timeoff.type}}</p>
             </div>                    
                 <p>Description   :  {{timeoff.description}}</p>
@@ -105,58 +105,58 @@
 <!-- Large modal -->
 
 
+<!-- Your existing HTML code -->
+
+<!-- Large modal -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-       
-      
-      </div>
+      <div class="modal-header"></div>
       <div class="modal-body">
-        <form [formGroup]="timeoffForm" >
+        <form [formGroup]="timeoffForm">
           <div class="mb-3">
             <div class="form-group">
-  
-            <label for="type" class="form-label">Leave Type</label>
-             <select id="type" class="form-select" formControlName="type">
-              <option value="Casual">Casual</option>
-              <option value="Compassionate">Compassionate</option>
-              <option value="Medical">Medical </option>
-              <option value="Maternity">Maternity</option>
-              <option value="Unpaid">Unpaid</option>
-              <option value="Other">Other</option>
-            </select>
+              <label for="type" class="form-label">Leave Type</label>
+              <select id="type" class="form-select" formControlName="type">
+                <option value="Casual">Casual</option>
+                <option value="Compassionate">Compassionate</option>
+                <option value="Medical">Medical</option>
+                <option value="Maternity">Maternity</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
-
+            <div class="alert alert-danger" *ngIf="timeoffForm.get('type')?.invalid && timeoffForm.get('type')?.touched">
+              <div *ngIf="timeoffForm.get('type')?.hasError('required')">Type is required !</div>
+            </div>
           </div>
-       
-        
+
           <div class="form-group">
-            <label class="form-label"for="description">Description:</label>
+            <label class="form-label" for="description">Description:</label>
             <input type="text" formControlName="description" class="form-control" id="description">
           </div>
-         
-  
+          <div *ngIf="timeoffForm.get('description')?.invalid && timeoffForm.get('description')?.touched">
+            <div class="alert alert-danger" *ngIf="timeoffForm.get('description')?.hasError('required')">Description is required !</div>
+            <div class="alert alert-warning" *ngIf="timeoffForm.get('description')?.hasError('minlength')">Length must be more than 5 letters!</div>
+            <div class="alert alert-primary" *ngIf="timeoffForm.get('description')?.hasError('maxlength')">Length must be less than 20 letters!</div>
+          </div>
+
           <div class="form-group">
             <label class="form-label" for="fromDate">From Date:</label>
             <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
           </div>
-          
-        
+
           <div class="form-group">
             <label class="form-label" for="toDate">To Date:</label>
             <input type="date" formControlName="toDate" class="form-control" id="toDate">
           </div>
-         
-        
-          
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-primary m-1" (click)="updateTimeOff()">
-           <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" /> 
-           Edit 
-          </button>
+        <button type="button" class="btn btn-outline-primary m-1" (click)="updateTimeOff()">
+          <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" /> 
+          Edit 
+        </button>
         <button type="button" class="btn btn-outline-secondary m-1" (click)="cancel()">
           <img src="/assets/FrontOffice/img/clear.png" alt="Edit Icon" class="button-icon" />
           Clear
@@ -170,3 +170,32 @@
   </div>
 </div>
 
+<!-- Your existing HTML code -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">the attached pdf file: <b></b></h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<ngx-extended-pdf-viewer [src]="pdfurl"></ngx-extended-pdf-viewer>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
+	</div>
+</ng-template>

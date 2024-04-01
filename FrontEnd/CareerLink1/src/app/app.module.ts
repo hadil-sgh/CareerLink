@@ -30,6 +30,8 @@ import { ErrorInterceptor } from './services/error.interceptor';
 import { ProfileComponent } from './components/profile/profile.component';
 import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalpopComponent } from './modalpop/modalpop.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RegisterComponent,
     TakeofftraitmentComponent,
     ProfileComponent,
+    ModalpopComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -64,6 +68,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     NgbModule,
+    MatDialogModule,
 
   ],
   providers: [ 

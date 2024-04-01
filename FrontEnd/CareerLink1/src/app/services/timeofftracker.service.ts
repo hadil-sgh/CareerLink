@@ -21,9 +21,15 @@ export class TimeofftrackerService {
     return this.http.get<TimeOffTracker[]>(this.baseUrl +'getAll',{headers})
   }
 
-  TakeTiMEOff( timeoff :TimeOffTracker) :Observable<TimeOffTracker> {
+ /*  TakeTiMEOff( timeoff :TimeOffTracker) :Observable<TimeOffTracker> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
-    return this.http.post<TimeOffTracker>(this.baseUrl +'add',timeoff,{headers})
+    return this.http.post<TimeOffTracker>(this.baseUrl +'add',timeoff,{headers});
+  } */
+
+  TakeTiMEOff(formData: FormData): Observable<any> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.post<any>(this.baseUrl + 'add', formData,{headers});
   }
   
   deleteTiMEOff(id: number): Observable<void> {
