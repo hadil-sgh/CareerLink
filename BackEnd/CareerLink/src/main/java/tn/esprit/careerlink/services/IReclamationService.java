@@ -11,4 +11,5 @@ public interface IReclamationService {
     void deleteReclamation (Integer idreclamation);
     List<Reclamation> getAllReclamation();
     Reclamation getReclamation (Integer idreclamation);
+    Reclamation addReclamationAndAffect(Integer idexpense, Reclamation reclamation);
 }

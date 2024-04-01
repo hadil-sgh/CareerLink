@@ -1,5 +1,6 @@
 
 import {Project } from "./Project";
+import { Reclamation } from "./Reclamation";
 
 import { MethodPayment } from "./methodPayment";
 export class Expense {
@@ -16,6 +17,7 @@ export class Expense {
     
 
     project: Project = new Project(); 
+    reclamation!:Reclamation[];
     
    
 }

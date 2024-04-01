@@ -25,8 +25,9 @@ public class ReponseController {
     }
 
     @PutMapping("/update")
-    public Reponse updateReponse(@RequestBody Reponse reponse){
-        return iReponseService.updateReponse(reponse);
+    public ResponseEntity<Reponse> updateReponse(@RequestBody Reponse reponse) {
+        Reponse updateReponse = iReponseService.updateReponse(reponse);
+        return ResponseEntity.ok(updateReponse);
     }
     @DeleteMapping("/delete/{id}")
     public void deleteReponse(@PathVariable ("id")Integer idreponse) {

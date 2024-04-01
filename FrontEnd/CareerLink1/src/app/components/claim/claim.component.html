@@ -1,0 +1,39 @@
+<div class="card mt-5 mb-5">
+    <div class="mx-auto table-container">
+        <h6 class="card-header">{{ selectedReclamation ? 'Edit Reclamation' : 'Reclamation List' }}</h6>
+        <div class="separator"></div>
+
+        <ng-container *ngIf="!selectedReclamation; else editForm">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>DATE</th>
+                            <th>DESCRIPTION</th>
+                            <th>TYPE</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let reclamation of reclamations">
+                            <td>{{ reclamation.datereclamation | date }}</td>
+                            <td>{{ reclamation.description }}</td>
+                            <td>{{ reclamation.typeReclamation }}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary m-1" (click)="editReclamation(reclamation)">Edit</button>
+                                <button type="button" class="btn btn-outline-danger m-1" (click)="deleteReclamation(reclamation.idreclamation)">Delete</button>
+                                <button type="button" class="btn btn-outline-info m-1" [routerLink]="['/Employee/checkreponse']">Check Answer</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+
+        <ng-template #editForm>
+            <div class="container">
+                <!-- Insérez ici votre formulaire de réclamation -->
+            </div>
+        </ng-template>
+    </div>
+</div>

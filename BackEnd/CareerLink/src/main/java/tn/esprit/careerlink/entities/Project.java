@@ -28,8 +28,8 @@ public class Project implements Serializable {
     @OneToMany
     Set<Task> tasks;
     @JsonIgnore
-    @OneToOne
-    Expense expense;
+    @OneToMany( mappedBy="project")
+    Set<Expense> expense;
     @OneToMany (mappedBy = "project")
     Set<Payment> payments;
 

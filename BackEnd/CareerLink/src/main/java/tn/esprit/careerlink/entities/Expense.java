@@ -28,11 +28,12 @@ public class Expense implements Serializable {
     private MethodPayment methodPayment;
 
 
-    @OneToOne
+    @ManyToOne
 
     Project project;
-
-
+    @JsonIgnore
+    @OneToOne
+    Reclamation reclamation;
 
 
 

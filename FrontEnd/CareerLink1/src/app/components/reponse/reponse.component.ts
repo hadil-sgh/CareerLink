@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
-import { StatuReclamation } from 'src/app/models/statuReclamation';
+import { MethodPayment } from 'src/app/models/methodPayment';
 import { TypeReclamation } from 'src/app/models/typeReclamation';
 import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
@@ -93,8 +93,9 @@ export class ReponseComponent implements OnInit {
         datereclamation: new Date(), 
         description: '', 
         typeReclamation: TypeReclamation.EXCESSIVE_EXPENSES, 
-        statuReclamation: StatuReclamation.ACHEVE, 
-        reponse: [] 
+        reponse: [],
+        expense: { idexpense: 0, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD,  project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
+        
       }
     };
   
@@ -119,7 +120,13 @@ export class ReponseComponent implements OnInit {
       reponsecontent: reponse.reponsecontent,
       datereponse: new Date(reponse.datereponse)
     });
+    if (this.selectedReponse) {
+      this.reponseForm.get('reclamationId')!.disable(); // Désactiver le champ reclamationId
+    } else {
+      this.reponseForm.get('reclamationId')!.enable(); // Activer le champ reclamationId
+    }
   }
+  
 
   updateReponse(): void {
     if (this.selectedReponse && this.reponseForm.valid) {

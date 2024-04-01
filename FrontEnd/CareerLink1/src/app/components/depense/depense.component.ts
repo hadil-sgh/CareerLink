@@ -5,6 +5,7 @@ import { Expense } from 'src/app/models/Expense';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { StripeComponent } from '../stripe/stripe.component'; // Importez le composant StripeComponent
 import { HttpClient } from '@angular/common/http';
+import { Project } from 'src/app/models/Project';
 
 @Component({
   selector: 'app-depense',
@@ -16,6 +17,7 @@ export class DepenseComponent implements OnInit {
   expenseForm!: FormGroup;
   selectedExpense: Expense | null = null;
   stripeComponent: StripeComponent; // Déclarez une variable pour contenir l'instance du composant StripeComponent
+  projects: Project[] = [];
 
   constructor(
     private expenseService: ExpenseService, 
@@ -23,12 +25,14 @@ export class DepenseComponent implements OnInit {
     private ac: ActivatedRoute,
     private router: Router,
     private http: HttpClient // Injectez HttpClient
+    
   ) {
     this.stripeComponent = new StripeComponent(http, ac, router); // Créez une instance de StripeComponent avec les dépendances
   }
 
   ngOnInit(): void {
     this.loadExpenses();
+    this.loadProjects();
   }
 
   loadExpenses(): void {
@@ -36,6 +40,13 @@ export class DepenseComponent implements OnInit {
       .subscribe(
         expenses => this.expenses = expenses,
         error => console.error('error, getallExp', error)
+      );
+  }
+  loadProjects(): void {
+    this.expenseService.getAllProjects()
+      .subscribe(
+        projects => this.projects = projects,
+        error => console.error('error, getAllProjects', error)
       );
   }
 

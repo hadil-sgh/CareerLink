@@ -31,7 +31,17 @@ public class ReponseServiceImpl implements IReponseService {
 
     @Override
     public Reponse updateReponse(Reponse reponse) {
-        return reponseRecRepository.save(reponse);
+        Optional<Reponse> existingReponseOptional = reponseRecRepository.findById(reponse.getIdrponse());
+
+        if (existingReponseOptional.isPresent()) {
+            Reponse existingReponse = existingReponseOptional.get();
+            existingReponse.setDatereponse(reponse.getDatereponse());
+            existingReponse.setReponsecontent(reponse.getReponsecontent());
+
+            return  reponseRecRepository.save(existingReponse);
+        } else {
+            throw new EntityNotFoundException("Expense not found");
+        }
     }
 
     @Override

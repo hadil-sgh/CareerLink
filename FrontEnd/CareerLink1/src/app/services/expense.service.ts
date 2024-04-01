@@ -9,9 +9,7 @@ import { Project } from '../models/Project';
 })
 export class ExpenseService {
   constructor(private http :HttpClient) {  }
-  getAllProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>('http://localhost:8086/spring2024/Project/getAll');
-  }
+  
 
   private baseUrl: string = 'http://localhost:8086/spring2024/Expense/';
   
@@ -23,7 +21,9 @@ export class ExpenseService {
   }
   
  
-
+  getAllProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>('http://localhost:8086/spring2024/Project/getAll');
+  }
 
   addExpense(expense: Expense, projectId: number): Observable<Expense> {
     
@@ -32,8 +32,8 @@ export class ExpenseService {
   
   
 
-  updateExpense(expense: Expense, projectId: number) : Observable<Expense> {
-    expense.project.idProject= projectId;
+  updateExpense(expense: Expense) : Observable<Expense> {
+   
     return this.http.put<Expense> ( this.baseUrl + 'update', expense);
   }
 

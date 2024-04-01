@@ -89,8 +89,10 @@ export class ExpenseComponent {
       unitPrice: unitPrice,
       quantity: quantity,
       amount: amount,
+      
       // Définir la réclamation si nécessaire, sinon null
-      project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] }
+      project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},
+      reclamation:[]
     };
   
     this.expenseService.addExpenseAndAffect(projectId, expense) // Utilisez la fonction addExpenseAndAffect() du service
@@ -120,15 +122,20 @@ export class ExpenseComponent {
       quantity: expense.quantity,
       methodPayment: expense.methodPayment,
       dateexpense: new Date(expense.dateexpense),
-      amount: expense.amount,
-      projectId: expense.project.idProject // Mettre à jour la valeur du champ projectId
+      amount: expense.amount
     });
+    if (this.selectedExpense) {
+      this.expenseForm.get('projectId')!.disable(); // Désactiver le champ projectId
+    } else {
+      this.expenseForm.get('projectId')!.enable(); // Activer le champ projectId
+    }
   }
+  
 
   updateExpense(): void {
     if (this.selectedExpense && this.expenseForm.valid) {
       const updatedExpense = { ...this.selectedExpense, ...this.expenseForm.value } as Expense;
-      this.expenseService.updateExpense(updatedExpense, updatedExpense.project.idProject)
+      this.expenseService.updateExpense(updatedExpense)
         .subscribe(
           response => {
             console.log('success, updateExpense', response);

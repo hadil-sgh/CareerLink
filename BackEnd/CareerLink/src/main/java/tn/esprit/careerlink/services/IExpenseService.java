@@ -6,9 +6,9 @@ import tn.esprit.careerlink.entities.Project;
 import java.util.List;
 
 public interface IExpenseService {
-    Expense addExpense(Expense expense, Integer idProject);
 
-    Expense updateExpense(Expense expense, Integer idProject);
+
+    Expense updateExpense(Expense expense);
     void deleteExpense (Integer idexpense);
     List<Expense> getAllExpense();
     Expense getExpense (Integer idexpense);

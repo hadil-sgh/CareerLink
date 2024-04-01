@@ -7,6 +7,7 @@
             <table class="table table-bordered table-striped text-center">
                 <thead class="thead-dark">
                     <tr>
+                        <th>PROJECT</th>
                         <th>AMOUNT</th>
                         <th>DATE</th>
                         <th>CATEGORY</th>
@@ -15,6 +16,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let expense of expenses">
+                        <td>{{expense.project ? expense.project.name : 'N/A'}}</td>
                         <td>{{expense.amount}}</td>
                         <td>{{expense.dateexpense | date }}</td>
                         <td>{{expense.category}}</td>
@@ -22,8 +24,7 @@
                             <!-- Ajout du bouton payexpense avec l'événement click -->
                             <button class="btn btn-primary" (click)="payExpense(expense)">Pay</button>
                             <!-- Ajout d'un espace entre les boutons en utilisant les marges CSS -->
-                            <button onclick="window.location.href='/Employee/reclamation'" class="btn btn-primary" style="margin-left: 5px;">Reclamer</button>
-                        </td>
+                            <button type="button" class="btn btn-outline-info m-1" [routerLink]="['/Employee/reclamation', expense.idexpense]">claim</button>                        </td>
                     </tr>
                 </tbody>
             </table>

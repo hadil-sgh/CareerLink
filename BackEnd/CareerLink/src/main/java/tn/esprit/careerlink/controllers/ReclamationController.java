@@ -2,7 +2,9 @@ package tn.esprit.careerlink.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.careerlink.entities.Expense;
 import tn.esprit.careerlink.entities.Reclamation;
 import tn.esprit.careerlink.services.IReclamationService;
 
@@ -20,10 +22,16 @@ public class ReclamationController {
     public Reclamation addReclamation(@RequestBody Reclamation reclamation) {
         return iReclamationService.addReclamation(reclamation);
     }
+    @PostMapping("/{idexpense}/addAndAffect")
+    public ResponseEntity<Reclamation> addReclamationAndAffect(@PathVariable Integer idexpense, @RequestBody Reclamation reclamation) {
+        Reclamation addReclamationAndAffect =iReclamationService.addReclamationAndAffect(idexpense,reclamation);
+        return ResponseEntity.ok(addReclamationAndAffect);
+    }
 
     @PutMapping("/update")
-    public Reclamation updateReclamation(@RequestBody Reclamation reclamation){
-        return iReclamationService.updateReclamation(reclamation);
+    public ResponseEntity<Reclamation> updateReclamation(@RequestBody Reclamation reclamation) {
+        Reclamation updatedReclamation = iReclamationService.updateReclamation(reclamation);
+        return ResponseEntity.ok(updatedReclamation);
     }
     @DeleteMapping("/delete/{id}")
     public void deleteReclamation(@PathVariable ("id")Integer idreclamation) {

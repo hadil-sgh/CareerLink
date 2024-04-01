@@ -21,14 +21,14 @@ public class Reclamation implements Serializable {
     Integer idreclamation;
     LocalDate datereclamation;
     String description;
-    @Enumerated(EnumType.STRING)
-    private StatuReclamation statuReclamation;
+
     @Enumerated(EnumType.STRING)
     private TypeReclamation typeReclamation;
     @JsonIgnore
     @OneToOne
     Reponse reponse;
-
+    @OneToOne
+    Expense expense;
 
 
 }

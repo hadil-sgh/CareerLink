@@ -29,22 +29,31 @@ public class ExpenseServiceImpl implements IExpenseService {
 
 
 
-    @Override
-    public Expense addExpense(Expense expense, Integer idProject)
-    { expense =calculateExpenseAmount(expense);
-        Integer projectId = expense.getProject().getIdProject();
-        return expenseRepository.save(expense);
-    }
+
 
 
 
 
 
     @Override
-    public Expense updateExpense(Expense expense,Integer idProject) {
-        Integer projectId = expense.getProject().getIdProject();
-        return expenseRepository.save(expense);
+    public Expense updateExpense(Expense expense) {
+
+        Optional<Expense> existingExpenseOptional = expenseRepository.findById(expense.getIdexpense());
+
+        if (existingExpenseOptional.isPresent()) {
+            Expense existingExpense = existingExpenseOptional.get();
+            existingExpense.setAmount(expense.getAmount());
+            existingExpense.setDateexpense(expense.getDateexpense());
+            existingExpense.setCategory(expense.getCategory());
+            existingExpense.setMethodPayment(expense.getMethodPayment());
+            existingExpense.setUnitPrice(expense.getUnitPrice());
+            existingExpense.setQuantity(expense.getQuantity());
+            return expenseRepository.save(existingExpense);
+        } else {
+            throw new EntityNotFoundException("Expense not found");
+        }
     }
+
 
     @Override
     public void deleteExpense(Integer idexpense) {
@@ -69,6 +78,7 @@ public class ExpenseServiceImpl implements IExpenseService {
     }
     @Override
     public Expense addExpenseAndAffect(Integer idProject, Expense expense) {
+        expense =calculateExpenseAmount(expense);
         Optional<Project> projectOptional = projectRepository.findById(idProject);
 
         if (projectOptional.isPresent() ) {

@@ -15,6 +15,7 @@ import { ReclamationComponent } from './components/reclamation/reclamation.compo
 import { AdmrecComponent } from './components/admrec/admrec.component';
 import { ReponseComponent } from './components/reponse/reponse.component';
 import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
+import { ClaimComponent } from './components/claim/claim.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,10 @@ const routes: Routes = [
     { path:"taketimeoff",component:TaketimeoffComponent},
     { path:"expense",component:DepenseComponent},
     { path:"checkreponse",component:CheckreponseComponent},
-    
+    { path: "reclamation/:id", component: ReclamationComponent }, 
+    { path:"claim",component:ClaimComponent},
+    { path: 'Employee/reclamation/:id', component: ReclamationComponent } ,// Ajoutez cette route avec un paramètre ID
+
     { path:"reclamation",component:ReclamationComponent}
 
    
@@ -49,6 +53,7 @@ const routes: Routes = [
     { path:"reclamation",component:AdmrecComponent},
     { path:"reponse",component:ReponseComponent},
     { path: "reponse/:id", component: ReponseComponent }, 
+    
     { path:"teams",component:TeamComponent}
     ]
   }

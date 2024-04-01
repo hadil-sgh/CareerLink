@@ -80,7 +80,7 @@
         <div class="form-group">
           <label for="projectId">Project Name:</label>
           <select formControlName="projectId" class="form-control" id="projectId">
-            <option *ngFor="let project of projects" [value]="project.idProject">{{ project.idProject }}</option>
+            <option *ngFor="let project of projects" [value]="project.idProject">{{ project.name }}</option>
           </select>
         </div>
         <div class="separator1"></div>

@@ -1,7 +1,9 @@
 package tn.esprit.careerlink.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.careerlink.entities.Expense;
@@ -18,23 +20,13 @@ import java.util.List;
 public class ExpenseController {
     @Autowired
  IExpenseService expenseService;
-    @PostMapping("/add/{idProject}")
-    public Expense addExpense(@RequestBody Expense expense, @PathVariable("idProject") Integer idProject) {
-        // Créez un objet Project avec seulement l'ID pour l'associer à l'Expense
-        Project project = new Project();
-        project.setIdProject(idProject);
-        expense.setProject(project);
-        return expenseService.addExpense(expense,idProject);
+
+    @PutMapping("/update")
+    public ResponseEntity<Expense> updateExpense(@RequestBody Expense expense) {
+        Expense updatedExpense = expenseService.updateExpense(expense);
+        return ResponseEntity.ok(updatedExpense);
     }
 
-    @PutMapping("/update/{idProject}")
-    public Expense updateExpense(@RequestBody Expense expense, @PathVariable("idProject") Integer idProject){
-        // Créez un objet Project avec seulement l'ID pour l'associer à l'Expense
-        Project project = new Project();
-        project.setIdProject(idProject);
-        expense.setProject(project);
-        return expenseService.updateExpense(expense,idProject);
-    }
     @DeleteMapping("/delete/{id}")
     public void deleteExpense(@PathVariable ("id")Integer idexpense) {
         expenseService.deleteExpense(idexpense);

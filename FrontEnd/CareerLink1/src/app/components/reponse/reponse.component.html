@@ -32,7 +32,7 @@
                             <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteReponse(reponse.idrponse)">Delete</button>
                         </td>
                         <td>{{ reponse.reclamation.datereclamation | date }}</td>
-                        <td>{{ reponse.reclamation.description }}</td>
+                        <td>{{ reponse.reclamation.description}}</td>
                         <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
                     </tr>
                 </tbody>
@@ -49,15 +49,7 @@
 
             <form [formGroup]="reponseForm" (ngSubmit)="selectedReponse ? updateReponse() : addReponseAndAffect()">
                 <!-- Champ pour l'ID de la réclamation -->
-                <div class="form-group">
-                    <label for="reclamationId">Reclamation ID:</label>
-                    <select formControlName="reclamationId" class="form-control" id="reclamationId">
-                        <option *ngFor="let reclamation of reclamations" [value]="reclamation.idreclamation">{{ reclamation.idreclamation }}</option>
-                    </select>
-                    <div class="alert alert-danger" *ngIf="reponseForm.controls['reclamationId'].invalid && reponseForm.controls['reclamationId'].touched">
-                        <div *ngIf="reponseForm.controls['reclamationId'].hasError('required')"> Reclamation ID is required !</div>
-                    </div>
-                </div>
+              
                 
                 <!-- Afficher les détails de la réclamation sélectionnée -->
                 <div *ngIf="selectedReclamation">
