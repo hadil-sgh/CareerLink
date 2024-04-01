@@ -24,7 +24,7 @@ import { HomeComponent } from './components/home/home.component';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { ModalpopComponent } from './modalpop/modalpop.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TaketimeoffComponent,
     HomeComponent,
     TakeofftraitmentComponent,
-   
+    ModalpopComponent,
 
   ],
   imports: [
@@ -58,6 +58,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     NgbModule,
+
 
   ],
   providers: [],

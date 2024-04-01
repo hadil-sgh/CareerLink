@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup ,Validators} from '@angular/forms';
 import { LeaveStatus } from 'src/app/models/LeaveStatus';
 import { TimeOffTracker } from 'src/app/models/TimeOffTracker';
@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./taketimeoff.component.css']
 })
 export class TaketimeoffComponent {
+@ViewChild('fileInput') fileInput!: ElementRef; 
   selectedTimeoff: any;
     selectedtimesOff: TimeOffTracker | null = null;
      timesOff:TimeOffTracker[]=[];
@@ -19,6 +20,7 @@ export class TaketimeoffComponent {
      leaveType :String[]=['Casual','Compassionate','Medical','Maternity','Other'];
      leaveStatus :String[]=['Pending','Accepted','Rejected'];
      users: User[] = [];
+     selectedFile!:File;
      
      ngOnInit() :void {
        this.LoadListOfTimesOf();
@@ -131,34 +133,47 @@ export class TaketimeoffComponent {
     }
     
     
-   
-  
-     addTimeOff(): void {
-      
+    onFileSelected (event: any){
+    this.selectedFile=event.target.files [0];
+}
+
+ 
+    addTimeOff(): void {
       const newtimeoff = this.timeoffForm.value;
-     
+      const formData = new FormData();
   
-      this.timeoffService.TakeTiMEOff(newtimeoff)
-      .subscribe(
-        response => {  
-          console.log('success, add', response);
-          this.LoadListOfTimesOf();
-        },
-        
-        error => console.error('error, add', error)
-      );
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Your Request has been sumited ",
-        showConfirmButton: false,
-        timer: 1500,
-        customClass: {
-          popup: 'swal-center',
-        },
-      });
-      
-    } 
+      // Append form data fields
+      formData.append('type', newtimeoff.type);
+      formData.append('description', newtimeoff.description);
+      formData.append('fromDate', newtimeoff.fromDate);
+      formData.append('toDate', newtimeoff.toDate);
+      formData.append('user', newtimeoff.user.id);
+  
+      // Append the file to the FormData object
+      if (this.fileInput.nativeElement.files.length > 0) {
+        formData.append('pdf', this.selectedFile);
+      }
+  
+      this.timeoffService.TakeTiMEOff(formData)
+        .subscribe(
+          response => {  
+            console.log('success, add', response);
+            this.LoadListOfTimesOf();
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Your Request has been submitted",
+              showConfirmButton: false,
+              timer: 1500,
+              customClass: {
+                popup: 'swal-center',
+              },
+            });
+          },
+          error => console.error('error, add', error)
+        );
+    }
+  
   
   
    deletetimeOff(id: number):void {

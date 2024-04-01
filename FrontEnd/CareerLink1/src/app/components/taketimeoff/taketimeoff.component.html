@@ -13,7 +13,7 @@
                 <div class="form-group">
       
                 <label for="type" class="form-label">Leave Type</label>
-                 <select id="type" class="form-select" formControlName="type">
+                 <select id="type" class="form-select" formControlName="type" >
                   <option value="Casual">Casual</option>
                   <option value="Compassionate">Compassionate</option>
                   <option value="Medical">Medical </option>
@@ -72,6 +72,12 @@
                 <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['toDate'].hasError('required')">  Please specify when you will be back !</div>
                 <div class="alert alert-warning" *ngIf="this.timeoffForm.controls['toDate'].hasError('toDateValidator')"> Please select a valid return date !</div>
               </div>
+
+              <div class="form-group">
+                <label for="formFile" class="form-label">Upload PDF:</label>
+                <input #fileInput type="file" class="form-control" id="formFile" formControlName="pdf" (change)="onFileSelected($event)">
+              </div>
+              
             
               <div class="separator1"></div>
               <div class="text-center">
