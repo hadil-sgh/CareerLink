@@ -25,6 +25,7 @@ import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.c
 import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalpopComponent } from './modalpop/modalpop.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import { ModalpopComponent } from './modalpop/modalpop.component';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     NgbModule,
-
+    MatDialogModule,
 
   ],
   providers: [],

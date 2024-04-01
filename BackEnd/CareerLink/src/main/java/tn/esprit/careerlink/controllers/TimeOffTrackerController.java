@@ -20,9 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import tn.esprit.careerlink.services.Impl.TimeOffTrackerServiceImpl;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,12 +35,12 @@ public class TimeOffTrackerController {
      TimeOffTrackerRepository leaveRepository;
      IUserService userService;
     @PostMapping("/add")
-    public TimeOffTracker addLeave(@RequestParam("leaveType") LeaveType leaveType,
+    public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
-                                   @RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
-                                   @RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd") Date to,
+                                   @RequestParam("fromDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
+                                   @RequestParam("toDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date to,
                                    @RequestParam("user") User user,
-                                   @RequestParam("file") MultipartFile file) {
+                                   @RequestParam("pdf") MultipartFile file) {
         try {
             TimeOffTracker newtimeoff =new TimeOffTracker();
             newtimeoff.setType(leaveType);
@@ -134,5 +132,5 @@ public class TimeOffTrackerController {
     }
 }
 
-    
+
 
