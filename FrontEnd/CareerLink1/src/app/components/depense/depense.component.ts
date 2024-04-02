@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Project } from 'src/app/models/Project';
 import { QrcodeService } from 'src/app/services/qrcode.service';
 import { Subscription } from 'rxjs';
+import { StatusPayment } from 'src/app/models/statuspayment';
 
 @Component({
   selector: 'app-depense',
@@ -57,14 +58,34 @@ export class DepenseComponent implements OnInit {
   }
 
   payExpense(expense: Expense): void {
-    if (expense.methodPayment === 'CARD') {
+    if (expense.statusPayment === 'PAYE') {
+      alert("Le paiement a déjà été effectué.");
+    } else if (expense.methodPayment === 'CARD') {
       this.stripeComponent.amount = expense.amount; // Définissez le montant dans StripeComponent
       this.stripeComponent.pay(); // Appelez la méthode pay() de StripeComponent pour effectuer le paiement
-      this.sendEmail();
+      this.stripeComponent.paymentSuccessful.subscribe(() => {
+        // Mettre à jour le statut de paiement ici
+        expense.statusPayment = StatusPayment.PAYE;
+
+        // Appeler le service ou la fonction pour mettre à jour l'expense dans la base de données
+        this.expenseService.updateExpense(expense).subscribe(
+          () => {
+            console.log('Statut de paiement mis à jour avec succès.');
+            alert("Statut de paiement mis à jour avec succès.");
+          },
+          error => {
+            console.error('Erreur lors de la mise à jour du statut de paiement : ', error);
+            alert("failed");
+          }
+        );
+        this.sendEmail(); // Envoyer l'e-mail après la mise à jour du statut de paiement
+      });
     } else {
       alert("Vous devez payer en espèces.");
     }
   }
+  
+  
   
   sendEmail() {
     
@@ -85,7 +106,7 @@ export class DepenseComponent implements OnInit {
  // depense.component.ts
 
 generateQrCode(expense: Expense): void {
-  if (expense.methodPayment === 'CARD') {
+  if (expense.statusPayment === 'PAYE') {
     // Générer le contenu du QR code avec les informations de la dépense
     const qrCodeContent = `Amount: ${expense.amount}, Date: ${expense.dateexpense}, Project: ${expense.project ? expense.project.name : 'N/A'}, Category: ${expense.category}, Method: ${expense.methodPayment}`;
 
@@ -103,7 +124,8 @@ generateQrCode(expense: Expense): void {
       }
     );
   } else {
-    alert('cash payment. Cannot generate QR code.'); // Alert subscription status
+    alert('Please pay first. Cannot generate QR code.');
+
   }
 }
 

@@ -3,6 +3,7 @@ import {Project } from "./Project";
 import { Reclamation } from "./Reclamation";
 
 import { MethodPayment } from "./methodPayment";
+import { StatusPayment } from "./statuspayment";
 export class Expense {
 
    idexpense!:number;
@@ -14,7 +15,7 @@ export class Expense {
     methodPayment!:MethodPayment;
     qrCodeData!:string;
      qrCodeImageUrl!:string;
-  
+    statusPayment!:StatusPayment;
    
     project: Project = new Project(); 
     reclamation!:Reclamation[];

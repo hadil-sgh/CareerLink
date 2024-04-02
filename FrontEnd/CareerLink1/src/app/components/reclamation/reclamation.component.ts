@@ -6,6 +6,7 @@ import { Project } from 'src/app/models/Project';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
 import { MethodPayment } from 'src/app/models/methodPayment';
+import {  StatusPayment } from 'src/app/models/statuspayment';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { ReclamationService } from 'src/app/services/reclamation.service';
 
@@ -86,7 +87,7 @@ export class ReclamationComponent {
       typeReclamation: typeReclamation,
       reponse: [],
       expense: { idexpense: idexpense, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD, qrCodeData:'',
-      qrCodeImageUrl:'', project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
+      qrCodeImageUrl:'',  statusPayment:StatusPayment.NONPAYE ,project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
     };
 
     const CommentaireData: Reclamation = this.reclamationForm.value;

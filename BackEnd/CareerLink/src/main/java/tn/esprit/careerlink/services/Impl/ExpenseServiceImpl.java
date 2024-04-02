@@ -48,6 +48,7 @@ public class ExpenseServiceImpl implements IExpenseService {
             existingExpense.setMethodPayment(expense.getMethodPayment());
             existingExpense.setUnitPrice(expense.getUnitPrice());
             existingExpense.setQuantity(expense.getQuantity());
+            existingExpense.setStatusPayment((expense.getStatusPayment()));
             return expenseRepository.save(existingExpense);
         } else {
             throw new EntityNotFoundException("Expense not found");

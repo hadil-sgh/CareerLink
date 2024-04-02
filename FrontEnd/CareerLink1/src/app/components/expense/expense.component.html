@@ -85,7 +85,8 @@
                 <th>CATEGORY</th>
                 <th>METHODPAYMENT</th>
                 <th>PROJECT</th>
-                <th>Action</th>
+                <th>STATUSPAYMENT</th>
+               <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -96,6 +97,7 @@
                   <td>{{expense.category}}</td>
                   <td>{{expense.methodPayment}}</td>
                   <td>{{expense.project ? expense.project.name : 'N/A'}}</td>
+                  <td>{{expense? expense.statusPayment : 'N/A'}}</td>
                   <td>
                     <button type="submit" class="btn btn-outline-success m-1" (click)="editExpense(expense)">Edit</button>
                     <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteExpense(expense.idexpense)">Delete</button>
@@ -148,6 +150,14 @@
                 <option *ngFor="let project of projects" [value]="project.idProject">{{ project.name }}</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="statusPayment">Statu Payment:</label>
+              <select formControlName="statusPayment" class="form-control" id="statusPayment">
+                
+                <option value="NONPAYE">Non Payé</option>
+              </select>
+            </div>
+            
             <div class="separator1"></div>
             <div class="text-center">
               <button type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid">

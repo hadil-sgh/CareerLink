@@ -24,11 +24,14 @@ public class Expense implements Serializable {
     Integer quantity;
     private Date dateexpense;
     String category;
+
     private String qrCodeData;
     private String qrCodeImageUrl;
 
     @Enumerated(EnumType.STRING)
     private MethodPayment methodPayment;
+    @Enumerated(EnumType.STRING)
+    private StatusPayment statusPayment;
 
 
     @ManyToOne

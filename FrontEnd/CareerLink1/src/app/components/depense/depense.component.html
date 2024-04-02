@@ -12,6 +12,7 @@
                         <th>DATE</th>
                         <th>CATEGORY</th>
                         <th>METHODPAYMENT</th>
+                        <th>STATUSPAYMENT</th>
                         <th>ACTIONS</th> <!-- Ajout de la colonne ACTIONS -->
                     </tr>
                 </thead>
@@ -22,6 +23,7 @@
                         <td>{{expense.dateexpense | date }}</td>
                         <td>{{expense.category}}</td>
                         <td>{{expense.methodPayment}}</td>
+                        <td>{{expense? expense.statusPayment : 'N/A'}}</td>
                         <td>
                             <!-- Bouton Pay -->
                             <button class="btn btn-lg btn-success" (click)="payExpense(expense)">Pay</button>

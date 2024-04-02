@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
 import { MethodPayment } from 'src/app/models/methodPayment';
+import {  StatusPayment } from 'src/app/models/statuspayment';
 import { TypeReclamation } from 'src/app/models/typeReclamation';
 import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
@@ -95,7 +96,7 @@ export class ReponseComponent implements OnInit {
         typeReclamation: TypeReclamation.EXCESSIVE_EXPENSES, 
         reponse: [],
         expense: { idexpense: 0, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD,  qrCodeData:'',
-        qrCodeImageUrl:'',  project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
+        qrCodeImageUrl:'', statusPayment:StatusPayment.NONPAYE , project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
         
       }
     };

@@ -6,6 +6,7 @@ import { ExpenseService } from 'src/app/services/expense.service';
 import { combineLatest } from 'rxjs';
 
 
+
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
@@ -62,8 +63,9 @@ export class ExpenseComponent {
       unitPrice: ['', [Validators.required]],
       quantity: ['', [Validators.required]],
       amount: ['', [Validators.required]],
-      projectId: ['', [Validators.required]] // Modifier le type de projectId en string
-
+      projectId: ['', [Validators.required]],
+      statusPayment: ['NONPAYE', [Validators.required]]   // Modifier le type de projectId en string
+     
     });
 
     // Observer les changements dans les champs quantity et unitPrice
@@ -79,7 +81,7 @@ export class ExpenseComponent {
   }
 
   addExpenseAndAffect(): void {
-    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,qrCodeData,qrCodeImageUrl } = this.expenseForm.value;
+    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,qrCodeData,qrCodeImageUrl,statusPayment } = this.expenseForm.value;
   
     const expense: Expense = {
       idexpense: 0, // Définir l'idexpense, ou la valeur appropriée si elle est générée automatiquement
@@ -91,7 +93,7 @@ export class ExpenseComponent {
       amount: amount,
       qrCodeData:  qrCodeData,
         qrCodeImageUrl: qrCodeImageUrl,
-      
+        statusPayment:statusPayment ,
       // Définir la réclamation si nécessaire, sinon null
       project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},
       reclamation:[]
@@ -125,6 +127,7 @@ export class ExpenseComponent {
       quantity: expense.quantity,
       methodPayment: expense.methodPayment,
       dateexpense: new Date(expense.dateexpense).toISOString().split('T')[0],
+      statusPayment:expense.statusPayment,
       amount: expense.amount
     });
     if (this.selectedExpense) {
@@ -132,6 +135,7 @@ export class ExpenseComponent {
     } else {
       this.expenseForm.get('projectId')!.enable(); // Activer le champ projectId
     }
+    this.expenseForm.get('statusPayment')!.disable();
   }
   
 
