@@ -1,41 +1,47 @@
 <style>
-  /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
-  .action-column, .action-cell {
-      border-right: 2px solid #c5bebe; /* Ajouter une bordure droite */
+  /* Ajouter une classe CSS pour encadrer le tableau */
+  .custom-table {
+    border: 1px solid #000000; /* Ajouter une bordure */
+    border-radius: 5px; /* Ajouter un arrondi aux coins */
+    overflow: hidden; /* Masquer tout contenu dépassant de la bordure */
+  }
+
+  /* Ajouter une bordure droite à la colonne d'action */
+  .action-column {
+    border-right: 1px solid #000000;
+    padding-right: 20px;
+  }
+
+  /* Déplacer le tableau vers le bas */
+  .table-container {
+    margin-top: 50px; /* Ajuster cette valeur selon vos besoins */
   }
 </style>
+
 <div class="card mt-4 mb-4">
-    <div class="mx-auto table-container">
-        <h6 class="card-header">Reponse List</h6>
-        <div class="table-responsive">
-          <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    
-                    
-                    <th>DATERECLAMATION</th>
-                    <th>DESCRIPTION</th>
-                    <th class="action-column">Type</th>
-                    <th>REPONSE</th>
-                    <th>DATE</th>
-                   
-                  
-                   
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let reponse of reponses">
-                    
-                    <td>{{ reponse.reclamation.datereclamation | date }}</td>
-                    <td>{{ reponse.reclamation.description }}</td>
-                    <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
-                    <td >{{ reponse.reponsecontent }}</td>
-                    <td>{{ reponse.datereponse | date }}</td>
-                    
-                    
-                </tr>
-            </tbody>
-        </table>
-      </div>
+  <div class="mx-auto table-container">
+    <h6 class="card-header bg-dark text-white">Reponse List</h6>
+    <div class="table-responsive custom-table">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>DATERECLAMATION</th>
+            <th>DESCRIPTION</th>
+            <th class="action-column">TYPE</th>
+            <th>REPONSE</th>
+            <th>DATE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reponse of reponses">
+            <td>{{ reponse.reclamation.datereclamation | date }}</td>
+            <td>{{ reponse.reclamation.description }}</td>
+            <td class="action-column">{{ reponse.reclamation.typeReclamation }}</td>
+            <td>{{ reponse.reponsecontent }}</td>
+            <td>{{ reponse.datereponse | date }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>

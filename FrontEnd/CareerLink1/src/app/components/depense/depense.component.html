@@ -11,7 +11,8 @@
                         <th>AMOUNT</th>
                         <th>DATE</th>
                         <th>CATEGORY</th>
-                        <th>ACTION</th> <!-- Ajout de la colonne ACTION -->
+                        <th>METHODPAYMENT</th>
+                        <th>ACTIONS</th> <!-- Ajout de la colonne ACTIONS -->
                     </tr>
                 </thead>
                 <tbody>
@@ -20,16 +21,24 @@
                         <td>{{expense.amount}}</td>
                         <td>{{expense.dateexpense | date }}</td>
                         <td>{{expense.category}}</td>
+                        <td>{{expense.methodPayment}}</td>
                         <td>
-                            <!-- Ajout du bouton payexpense avec l'événement click -->
-                            <button class="btn btn-primary" (click)="payExpense(expense)">Pay</button>
-                            <!-- Ajout d'un espace entre les boutons en utilisant les marges CSS -->
-                            <button type="button" class="btn btn-outline-info m-1" [routerLink]="['/Employee/reclamation', expense.idexpense]">claim</button>                        </td>
+                            <!-- Bouton Pay -->
+                            <button class="btn btn-lg btn-success" (click)="payExpense(expense)">Pay</button>
+                            <!-- Bouton Claim -->
+                            <button type="button" class="btn btn-lg btn-warning m-1" [routerLink]="['/Employee/reclamation', expense.idexpense]">Claim</button>
+                            <!-- Bouton Generate QR Code -->
+                            <div>
+                                <button type="button" class="btn btn-dark" (click)="generateQrCode(expense)">Generate QR Code</button>
+                            </div>
+                            <!-- Affichage de l'image QR Code -->
+                            <div class="mt-3 text-center">
+                                <img *ngIf="expense.qrCodeImageUrl" [src]="expense.qrCodeImageUrl" alt="QR Code" class="img-fluid">
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-<app-header-front></app-header-front>

@@ -1,32 +1,31 @@
 <div class="card">
-    <div class="card-body">
-      <div>
-        <h5 class="card-header">Reclamation List</h5>
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-               
-              <th>DATE</th>
-              <th>DESCRIPTION</th>
-              <th>TYPE</th>
-              <th>ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let reclamation of reclamations">
-                
-              <td>{{ reclamation.datereclamation | date }}</td>
-              <td>{{ reclamation.description }}</td>
-              <td>{{ reclamation.typeReclamation }}</td>
-              <td>
-                <button type="button" class="btn btn-outline-info m-1" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
-
-
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <h5 class="card-header">Reclamation List</h5>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>DATE</th>
+            <th>DESCRIPTION</th>
+            <th>TYPE</th>
+            <th class="text-center align-middle">ACTION</th> <!-- Ajuster la colonne Action -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reclamation of reclamations">
+            <td>{{ reclamation.datereclamation | date }}</td>
+            <td>{{ reclamation.description }}</td>
+            <td>{{ reclamation.typeReclamation }}</td>
+            <td class="text-center align-middle">
+              <button type="button" class="btn btn-lg btn-info" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
+            </td>
+          </tr>
+          <!-- Ajouter une condition si la liste de réclamations est vide -->
+          <tr *ngIf="reclamations.length === 0">
+            <td colspan="4" class="text-center">No reclamations found.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  
+</div>

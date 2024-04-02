@@ -25,7 +25,7 @@ import { AdmrecComponent } from './components/admrec/admrec.component';
 import { ReponseComponent } from './components/reponse/reponse.component';
 import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
 import { StripeComponent } from './components/stripe/stripe.component';
-import { ClaimComponent } from './components/claim/claim.component';
+
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import { ClaimComponent } from './components/claim/claim.component';
     ReponseComponent,
     CheckreponseComponent,
     StripeComponent,
-    ClaimComponent,
+    
    
 
   ],

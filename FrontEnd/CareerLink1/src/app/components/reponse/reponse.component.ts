@@ -94,7 +94,8 @@ export class ReponseComponent implements OnInit {
         description: '', 
         typeReclamation: TypeReclamation.EXCESSIVE_EXPENSES, 
         reponse: [],
-        expense: { idexpense: 0, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD,  project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
+        expense: { idexpense: 0, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD,  qrCodeData:'',
+        qrCodeImageUrl:'',  project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
         
       }
     };
@@ -103,10 +104,13 @@ export class ReponseComponent implements OnInit {
       .subscribe(
         () => {
           console.log('success, addReponseAndAffect');
+          alert('response added successfully');
           this.loadReponses();
           this.reponseForm.reset();
         },
         error => console.error('error, addReponseAndAffect', error)
+        
+
       );
   }
 
@@ -118,7 +122,7 @@ export class ReponseComponent implements OnInit {
     this.selectedReponse = reponse;
     this.reponseForm.patchValue({
       reponsecontent: reponse.reponsecontent,
-      datereponse: new Date(reponse.datereponse)
+      datereponse: new Date(reponse.datereponse).toISOString().split('T')[0],
     });
     if (this.selectedReponse) {
       this.reponseForm.get('reclamationId')!.disable(); // Désactiver le champ reclamationId
@@ -134,11 +138,13 @@ export class ReponseComponent implements OnInit {
       this.reponseService.updateReponse(updatedReponse).subscribe(
         response => {
           console.log('success, updatReponse', response);
+          alert('response updated successfully');
           this.loadReponses();
           this.reponseForm.reset();
           this.selectedReponse = null;
         },
         error => console.error('error, updateReponse', error)
+        
       );
     }
   }

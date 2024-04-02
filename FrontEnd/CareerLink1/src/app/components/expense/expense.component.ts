@@ -79,7 +79,7 @@ export class ExpenseComponent {
   }
 
   addExpenseAndAffect(): void {
-    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId } = this.expenseForm.value;
+    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,qrCodeData,qrCodeImageUrl } = this.expenseForm.value;
   
     const expense: Expense = {
       idexpense: 0, // Définir l'idexpense, ou la valeur appropriée si elle est générée automatiquement
@@ -89,6 +89,8 @@ export class ExpenseComponent {
       unitPrice: unitPrice,
       quantity: quantity,
       amount: amount,
+      qrCodeData:  qrCodeData,
+        qrCodeImageUrl: qrCodeImageUrl,
       
       // Définir la réclamation si nécessaire, sinon null
       project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},
@@ -99,6 +101,7 @@ export class ExpenseComponent {
       .subscribe(
         () => {
           console.log('success, addExpenseAndAffect');
+          alert('expense added successfully');
           this.loadExpenses();
           this.expenseForm.reset();
         },
@@ -121,7 +124,7 @@ export class ExpenseComponent {
       unitPrice: expense.unitPrice,
       quantity: expense.quantity,
       methodPayment: expense.methodPayment,
-      dateexpense: new Date(expense.dateexpense),
+      dateexpense: new Date(expense.dateexpense).toISOString().split('T')[0],
       amount: expense.amount
     });
     if (this.selectedExpense) {
@@ -139,6 +142,7 @@ export class ExpenseComponent {
         .subscribe(
           response => {
             console.log('success, updateExpense', response);
+            alert('expense updated successfully');
             this.loadExpenses();
             this.expenseForm.reset();
             this.selectedExpense = null;

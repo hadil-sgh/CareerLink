@@ -12,10 +12,10 @@ export class Expense {
     dateexpense!: Date;
     category!: string;
     methodPayment!:MethodPayment;
-   
+    qrCodeData!:string;
+     qrCodeImageUrl!:string;
   
-    
-
+   
     project: Project = new Project(); 
     reclamation!:Reclamation[];
     

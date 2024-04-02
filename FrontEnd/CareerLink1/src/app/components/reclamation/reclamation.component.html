@@ -1,82 +1,79 @@
-<div class="card mt-5 mb-5">
-    <div class="mx-auto table-container">
-        <h6 class="card-header">Reclamation List</h6>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped text-center">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>DATE</th>
-                        <th>DESCRIPTION</th>
-                        <th>TYPE</th>
-                        
-                        <th>ACTION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let reclamation of reclamations">
-                        <td>{{ reclamation.datereclamation | date }}</td>
-                        <td>{{ reclamation.description }}</td>
-                        <td>{{ reclamation.typeReclamation }}</td>
-                        
-
-
-                        <td>
-                            <button type="button" class="btn btn-outline-primary m-1" (click)="editReclamation(reclamation)">Edit</button>
-                            <button type="button" class="btn btn-outline-danger m-1" (click)="deleteReclamation(reclamation.idreclamation)">Delete</button>
-                            <button type="button" class="btn btn-outline-info m-1" [routerLink]="['/Employee/checkreponse']">CheckAnswer</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    Reclamation List
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped text-center">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>DATE</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>TYPE</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let reclamation of reclamations">
+                                    <td>{{ reclamation.datereclamation | date }}</td>
+                                    <td>{{ reclamation.description }}</td>
+                                    <td>{{ reclamation.typeReclamation }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success m-1" (click)="editReclamation(reclamation)">Edit</button> <!-- Vert -->
+                                        <button type="button" class="btn btn-dark m-1" (click)="deleteReclamation(reclamation.idreclamation)">Delete</button> <!-- Noir -->
+                                        <button type="button" class="btn btn-warning m-1" [routerLink]="['/Employee/checkreponse']">Check Answer</button> <!-- Jaune -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="separator"></div>
-
-        <div class="container">
-            <h5 class="card-header">{{ selectedReclamation ? 'Edit Reclamation' : 'Add Reclamation' }}</h5>
-
-            <form [formGroup]="reclamationForm" (ngSubmit)="selectedReclamation ? updateReclamation() : addReclamationAndAffect()">
-                
-
-                
-                
-                <div class="form-group">
-                    <label for="datereclamation">Date:</label>
-                    <input type="date" formControlName="datereclamation" class="form-control" id="datereclamation">
-                    <div class="alert alert-danger" *ngIf="reclamationForm.controls['datereclamation'].invalid && reclamationForm.controls['datereclamation'].touched">
-                        <div *ngIf="reclamationForm.controls['datereclamation'].hasError('required')"> Date is required !</div>
-                    </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    {{ selectedReclamation ? 'Edit Reclamation' : 'Add Reclamation' }}
                 </div>
-                
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea formControlName="description" class="form-control" id="description" rows="3"></textarea>
-                    <div class="alert alert-danger" *ngIf="reclamationForm.controls['description'].invalid && reclamationForm.controls['description'].touched">
-                        <div *ngIf="reclamationForm.controls['description'].hasError('required')"> Description is required !</div>
-                    </div>
+                <div class="card-body">
+                    <form [formGroup]="reclamationForm" (ngSubmit)="selectedReclamation ? updateReclamation() : addReclamationAndAffect()">
+                        <div class="form-group">
+                            <label for="datereclamation">Date:</label>
+                            <input type="date" formControlName="datereclamation" class="form-control" id="datereclamation">
+                            <div class="invalid-feedback" *ngIf="reclamationForm.controls['datereclamation'].invalid && reclamationForm.controls['datereclamation'].touched">
+                                Date is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea formControlName="description" class="form-control" id="description" rows="6"></textarea>
+                            <div class="invalid-feedback" *ngIf="reclamationForm.controls['description'].invalid && reclamationForm.controls['description'].touched">
+                                Description is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="typeReclamation">Type:</label>
+                            <select formControlName="typeReclamation" class="form-control" required>
+                                <option value="EXCESSIVE_EXPENSES">Excessive Expenses</option>
+                                <option value="INCORRECT_BILLING">Incorrect Billing</option>
+                                <option value="UNAUTHORIZED_CHARGES">Unauthorized Charges</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="reclamationForm.controls['typeReclamation'].invalid && reclamationForm.controls['typeReclamation'].touched">
+                                Type is required.
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success mr-2" [disabled]="reclamationForm.invalid">{{ selectedReclamation ? 'Update Reclamation' : 'Add Reclamation' }}</button> <!-- Vert -->
+                            <span class="mx-2"></span>
+                            <button type="button" class="btn btn-secondary" (click)="cancel()">{{ selectedReclamation ? 'Cancel' : 'Clear' }}</button> <!-- Noir -->
+                        </div>
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <label for="typeReclamation">Type:</label>
-                    <select formControlName="typeReclamation" class="form-control" required>
-                        <option value="EXCESSIVE_EXPENSES">Excessive Expenses</option>
-                        <option value="INCORRECT_BILLING">Incorrect Billing</option>
-                        <option value="UNAUTHORIZED_CHARGES">Unauthorized Charges</option>
-                        <option value="OTHER">Other</option>
-                    </select>
-                    <div class="alert alert-danger" *ngIf="reclamationForm.controls['typeReclamation'].invalid && reclamationForm.controls['typeReclamation'].touched">
-                        <div *ngIf="reclamationForm.controls['typeReclamation'].hasError('required')"> Type is required !</div>
-                    </div>
-                </div>
-
-                <div class="separator1"></div>
-                
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary" [disabled]="reclamationForm.invalid">{{ selectedReclamation ? 'Update Reclamation' : 'Add Reclamation' }}</button>
-                    <span class="mx-2"></span>
-                    <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

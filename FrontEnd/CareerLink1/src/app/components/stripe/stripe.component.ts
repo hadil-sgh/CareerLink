@@ -22,7 +22,7 @@ export class StripeComponent implements OnInit {
       data => {
         this.clientSecret = data;
         // Afficher une alerte de réussite
-        alert("Paiement réussi !");
+        alert("Paiement réussi ! Un email a été envoyé. Veuillez vérifier votre boîte de réception.");
       },
       error => {
         console.error('Une erreur est survenue lors de la requête:', error);

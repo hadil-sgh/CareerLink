@@ -1,97 +1,174 @@
-<div class="card">
-  <div class="card-body">
-    <div>
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" 
-            placeholder="Search" aria-label="Search" [(ngModel)]="search"
-            aria-describedby="basic-addon2">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary"
-                type="button">Search</button>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Style pour les alertes */
+    .alert {
+      margin-top: 5px;
+    }
+
+    /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
+    .action-column,
+    .action-cell {
+      border-right: 2px solid #c5bebe;
+      /* Ajouter une bordure droite */
+    }
+
+    /* Espace entre les boutons */
+    .button-space {
+      margin-right: 10px;
+    }
+
+    /* Espace entre les boutons de la première ligne */
+    .button-space1 {
+      margin-right: 20px;
+    }
+
+    /* Style pour encadrer le contenu */
+    .custom-card {
+      border-radius: 5px;
+      /* Ajouter un arrondi aux coins */
+      padding: 10px;
+      /* Ajouter un espace intérieur */
+      margin-bottom: 20px;
+      /* Ajouter un espace en bas */
+      background-color: #ffffff;
+      /* Fond blanc */
+    }
+
+    /* Style pour le bouton de tri */
+    .btn-tri {
+      background-color: #ffc107 !important; /* Couleur de fond */
+      color: #ffffff !important; /* Couleur du texte */
+      border-color: #ffc107 !important; /* Couleur de la bordure */
+      padding: 10px 20px; /* Ajuster le rembourrage */
+      font-size: 18px; /* Ajuster la taille de la police */
+      display: block; /* Pour centrer */
+      margin: 0 auto; /* Pour centrer */
+    }
+
+    .btn-tri:hover {
+      background-color: #e0a800 !important; /* Couleur de fond au survol */
+      border-color: #e0a800 !important; /* Couleur de la bordure au survol */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="container custom-card"> <!-- Déplacer la classe custom-card ici -->
+        <div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" 
+                placeholder="Search" aria-label="Search" [(ngModel)]="search"
+                aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary"
+                    type="button">Search</button>
+            </div>
+          </div>
+          <h5 class="card-header">Expense List</h5>
+          <td><button class="btn btn-tri"(click)="tri()">Tri</button></td>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>AMOUNT</th>
+                <th>DATE</th>
+                <th>CATEGORY</th>
+                <th>METHODPAYMENT</th>
+                <th>PROJECT</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let expense of expenses">
+                <ng-container *ngIf="expense.project.name.includes(search) || search === ''">
+                  <td>{{expense.amount}}</td>
+                  <td>{{expense.dateexpense | date}}</td>
+                  <td>{{expense.category}}</td>
+                  <td>{{expense.methodPayment}}</td>
+                  <td>{{expense.project ? expense.project.name : 'N/A'}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-outline-success m-1" (click)="editExpense(expense)">Edit</button>
+                    <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteExpense(expense.idexpense)">Delete</button>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="container">
+          <h5 class="card-header">{{ selectedExpense ? 'Edit Expense' : 'Add Expense' }}</h5>
+          <form [formGroup]="expenseForm" (ngSubmit)="selectedExpense ? updateExpense() : addExpenseAndAffect()">
+            
+            <div class="form-group">
+              <label for="dateexpense">Date:</label>
+              <input type="date" formControlName="dateexpense" class="form-control" id="dateexpense">
+            </div>
+            <div class="form-group">
+              <label for="unitPrice">Unit Price:</label>
+              <input type="number" formControlName="unitPrice" class="form-control" id="unitPrice">
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['unitPrice'].invalid && expenseForm.controls['unitPrice'].touched">
+                <div *ngIf="expenseForm.controls['unitPrice'].hasError('required')"> Unit Price is required !</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="quantity">Quantity:</label>
+              <input type="number" formControlName="quantity" class="form-control" id="quantity">
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['quantity'].invalid && expenseForm.controls['quantity'].touched">
+                <div *ngIf="expenseForm.controls['quantity'].hasError('required')"> Quantity is required !</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount:</label>
+              <input type="number" formControlName="amount" class="form-control" id="amount" readonly>
+            </div>
+            <div class="form-group">
+              <label for="category">Category:</label>
+              <input type="text" formControlName="category" class="form-control" id="category">
+            </div>
+            <div class="form-group">
+              <label for="methodPayment">Method of Payment:</label>
+              <select formControlName="methodPayment" class="form-control" id="methodPayment">
+                <option value="CARD">Card</option>
+                <option value="CASH">Cash</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="projectId">Project Name:</label>
+              <select formControlName="projectId" class="form-control" id="projectId">
+                <option *ngFor="let project of projects" [value]="project.idProject">{{ project.name }}</option>
+              </select>
+            </div>
+            <div class="separator1"></div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid">
+                {{ selectedExpense ? 'Update Expense' : 'Add Expense' }}
+              </button>
+              <span class="mx-2"></span>
+              <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
+            </div>
+          </form>
         </div>
       </div>
-      <h5 class="card-header">Expense List</h5>
-      <td><button class="btn btn-warning"(click)="tri()">Tri</button></td>
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th>AMOUNT</th>
-            <th>DATE</th>
-            <th>CATEGORY</th>
-            <th>METHODPAYMENT</th>
-            <th>PROJECT</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let expense of expenses">
-            <ng-container *ngIf="expense.project.name.includes(search) || search === ''">
-              <td>{{expense.amount}}</td>
-              <td>{{expense.dateexpense | date}}</td>
-              <td>{{expense.category}}</td>
-              <td>{{expense.methodPayment}}</td>
-              <td>{{expense.project ? expense.project.name : 'N/A'}}</td>
-              <td>
-                <button type="submit" class="btn btn-outline-success m-1" (click)="editExpense(expense)">Edit</button>
-                <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteExpense(expense.idexpense)">Delete</button>
-              </td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="container">
-      <h5 class="card-header">{{ selectedExpense ? 'Edit Expense' : 'Add Expense' }}</h5>
-      <form [formGroup]="expenseForm" (ngSubmit)="selectedExpense ? updateExpense() : addExpenseAndAffect()">
-        
-        <div class="form-group">
-          <label for="dateexpense">Date:</label>
-          <input type="date" formControlName="dateexpense" class="form-control" id="dateexpense">
-        </div>
-        <div class="form-group">
-          <label for="unitPrice">Unit Price:</label>
-          <input type="number" formControlName="unitPrice" class="form-control" id="unitPrice">
-          <div class="alert alert-danger" *ngIf="expenseForm.controls['unitPrice'].invalid && expenseForm.controls['unitPrice'].touched">
-            <div *ngIf="expenseForm.controls['unitPrice'].hasError('required')"> Unit Price is required !</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="quantity">Quantity:</label>
-          <input type="number" formControlName="quantity" class="form-control" id="quantity">
-          <div class="alert alert-danger" *ngIf="expenseForm.controls['quantity'].invalid && expenseForm.controls['quantity'].touched">
-            <div *ngIf="expenseForm.controls['quantity'].hasError('required')"> Quantity is required !</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="amount">Amount:</label>
-          <input type="number" formControlName="amount" class="form-control" id="amount" readonly>
-        </div>
-        <div class="form-group">
-          <label for="category">Category:</label>
-          <input type="text" formControlName="category" class="form-control" id="category">
-        </div>
-        <div class="form-group">
-          <label for="methodPayment">Method of Payment:</label>
-          <select formControlName="methodPayment" class="form-control" id="methodPayment">
-            <option value="CARD">Card</option>
-            <option value="CASH">Cash</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="projectId">Project Name:</label>
-          <select formControlName="projectId" class="form-control" id="projectId">
-            <option *ngFor="let project of projects" [value]="project.idProject">{{ project.name }}</option>
-          </select>
-        </div>
-        <div class="separator1"></div>
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid">
-            {{ selectedExpense ? 'Update Expense' : 'Add Expense' }}
-          </button>
-          <span class="mx-2"></span>
-          <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
-        </div>
-      </form>
     </div>
   </div>
-</div>
+
+  <!-- Scripts -->
+  <!-- Angular Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

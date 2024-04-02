@@ -6,6 +6,8 @@ import { ExpenseService } from 'src/app/services/expense.service';
 import { StripeComponent } from '../stripe/stripe.component'; // Importez le composant StripeComponent
 import { HttpClient } from '@angular/common/http';
 import { Project } from 'src/app/models/Project';
+import { QrcodeService } from 'src/app/services/qrcode.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-depense',
@@ -13,6 +15,9 @@ import { Project } from 'src/app/models/Project';
   styleUrls: ['./depense.component.css']
 })
 export class DepenseComponent implements OnInit {
+  email= 'aziz.abidi@esprit.tn'; 
+  subject= 'Confirmation de votre payement'; 
+  corp= 'Cher Utilisateur,votre payement a ete effectue avec succes '; 
   expenses: Expense[] = [];
   expenseForm!: FormGroup;
   selectedExpense: Expense | null = null;
@@ -20,6 +25,7 @@ export class DepenseComponent implements OnInit {
   projects: Project[] = [];
 
   constructor(
+    private qrservice: QrcodeService,
     private expenseService: ExpenseService, 
     private fb: FormBuilder,
     private ac: ActivatedRoute,
@@ -51,7 +57,56 @@ export class DepenseComponent implements OnInit {
   }
 
   payExpense(expense: Expense): void {
-    this.stripeComponent.amount = expense.amount; // Définissez le montant dans StripeComponent
-    this.stripeComponent.pay(); // Appelez la méthode pay() de StripeComponent pour effectuer le paiement
+    if (expense.methodPayment === 'CARD') {
+      this.stripeComponent.amount = expense.amount; // Définissez le montant dans StripeComponent
+      this.stripeComponent.pay(); // Appelez la méthode pay() de StripeComponent pour effectuer le paiement
+      this.sendEmail();
+    } else {
+      alert("Vous devez payer en espèces.");
+    }
+  }
+  
+  sendEmail() {
+    
+  
+     
+      
+    this.expenseService.sendEmail(this.email, this.subject, this.corp).subscribe(
+      response => {
+        console.log('Email envoyé avec succès :', response);
+        // Traitez la réponse de l'API
+      },
+      error => {
+        console.error('Erreur lors de l\'envoi de l\'email :', error);
+        // Gérez l'erreur
+      }
+    );
+  }
+ // depense.component.ts
+
+generateQrCode(expense: Expense): void {
+  if (expense.methodPayment === 'CARD') {
+    // Générer le contenu du QR code avec les informations de la dépense
+    const qrCodeContent = `Amount: ${expense.amount}, Date: ${expense.dateexpense}, Project: ${expense.project ? expense.project.name : 'N/A'}, Category: ${expense.category}, Method: ${expense.methodPayment}`;
+
+    this.qrservice.generateQrCode(qrCodeContent).subscribe(
+      (qrCodeBlob: Blob) => {
+        const reader = new FileReader();
+        reader.onload = (event: any) => {
+          expense.qrCodeImageUrl = event.target.result;
+        };
+        reader.readAsDataURL(qrCodeBlob);
+      },
+      (error) => {
+        console.error('Error generating QR code:', error);
+        alert('Error generating QR code: ' + error); // Alert error message
+      }
+    );
+  } else {
+    alert('cash payment. Cannot generate QR code.'); // Alert subscription status
   }
 }
+
+}
+
+

@@ -19,7 +19,15 @@ export class ExpenseService {
   findAllExpense(): Observable<Expense[]>{
     return this.http.get<Expense[]> ( this.baseUrl + 'getAll' )
   }
-  
+  sendEmail(email: string, subject: string, corp: string): Observable<any> {
+    const request = {
+      email: email,
+      subject: subject,
+      corp: corp
+    };
+    
+    return this.http.post<any>('http://localhost:8086/spring2024/Mail/send-email',request, { responseType: 'text' as 'json' });
+  }
  
   getAllProjects(): Observable<Project[]> {
     return this.http.get<Project[]>('http://localhost:8086/spring2024/Project/getAll');
