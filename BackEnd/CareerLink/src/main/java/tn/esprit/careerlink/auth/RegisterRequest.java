@@ -15,9 +15,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-  private String firstName;
-  private String lastName;
-  private Role role;
+//  private String firstName;
+//  private String lastName;
+//  private Role role;
   private String email;
   private String pwd;
   private boolean mfaEnabled;

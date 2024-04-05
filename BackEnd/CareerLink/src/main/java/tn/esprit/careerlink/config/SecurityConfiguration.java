@@ -59,7 +59,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/auth/**")
                                 .permitAll()
                                 .requestMatchers("/User/**").hasAnyAuthority("Admin", "HR_manager")
-                               // .requestMatchers("/Profile/**").hasAnyAuthority("Admin", "HR_manager")
+                                // .requestMatchers("/Profile/**").hasAnyAuthority("Admin", "HR_manager")
                                 .requestMatchers("/Expense/**").hasAnyAuthority("Admin", "Consultant")
                                 .requestMatchers("/Stock/**").hasAnyAuthority("Admin", "Consultant", "Sales_manager")
                                 .requestMatchers("/Client/**").hasAnyAuthority("Admin", "Sales_manager")
@@ -68,7 +68,8 @@ public class SecurityConfiguration {
                                 .requestMatchers("/Team/**").hasAnyAuthority("Admin", "HR_manager")
                                 .requestMatchers("/Recruitment/**").hasAnyAuthority("Admin", "HR_manager")
                                 .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
-                                .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee")
+                                .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee","Admin")
+
                                 .anyRequest()
                                 .authenticated()
 

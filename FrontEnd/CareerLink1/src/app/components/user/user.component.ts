@@ -21,7 +21,7 @@ export class UserComponent implements OnInit {
   currentPage: number = 1; 
   pageSize: number = 3;
   totalUsers: number = 0;
-
+  
  
   ngOnInit(): void {
     this.userService.findAllUsers()
@@ -52,7 +52,6 @@ export class UserComponent implements OnInit {
   );
 }
 
-
      createForm(): void {
       this.userForm = this.fb.group({
         firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
@@ -74,6 +73,7 @@ export class UserComponent implements OnInit {
         error => console.error('Error, failed to add user', error)
       );
     }
+    
      
 
     editUser(user: User): void {
@@ -88,7 +88,7 @@ export class UserComponent implements OnInit {
     }
 
     updateUser(): void {
-      if (this.selectedUser && this.userForm.valid) {
+      if (this.selectedUser) {
         const updatedUser = { ...this.selectedUser, ...this.userForm.value } as User;
         this.userService.updateUser(updatedUser).subscribe(
           response => {

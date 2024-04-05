@@ -4,7 +4,7 @@ import {Project } from "./Project";
 import { MethodPayment } from "./methodPayment";
 export class Expense {
 
-   idexpense!:number;
+    idexpense!:number;
     amount!: number;
     date!: Date;
     category!: string;

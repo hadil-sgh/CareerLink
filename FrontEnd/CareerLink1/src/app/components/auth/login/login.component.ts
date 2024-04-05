@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationRequest } from 'src/app/models/AuthenticationRequest';
 import { AuthenticationResponse } from 'src/app/models/AuthenticationResponse';
+import { Role } from 'src/app/models/Role';
 import { VerificationRequest } from 'src/app/models/VerificationRequest';
 import { UserService } from 'src/app/services/user.service';
 
@@ -15,6 +16,7 @@ export class LoginComponent {
   authRequest: AuthenticationRequest = {};
   authResponse: AuthenticationResponse = {};
   otpCode = '';
+  userRole!:Role;
 
 
   constructor(
@@ -30,7 +32,8 @@ export class LoginComponent {
           this.authResponse = response;
           if (!this.authResponse.mfaEnabled) {
             localStorage.setItem('token', response.accessToken as string);
-            this.router.navigate(['admin/user']);
+            localStorage.setItem('userRole', JSON.stringify(this.authResponse.userRole));
+            this.router.navigate(['Employee/home']);
           }
         }
       });

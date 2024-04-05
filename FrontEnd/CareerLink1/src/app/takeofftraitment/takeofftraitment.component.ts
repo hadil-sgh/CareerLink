@@ -24,11 +24,8 @@ export class TakeofftraitmentComponent {
   ngOnInit() :void {
     this.LoadListOfTimesOf();
     this.loadUsers();
-
-
   
   }
-
  
   LoadListOfTimesOf() : void{ 
 

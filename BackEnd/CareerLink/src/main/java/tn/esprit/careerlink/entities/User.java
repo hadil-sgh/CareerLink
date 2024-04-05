@@ -63,7 +63,7 @@ public class User implements UserDetails {
     List<Token> tokens;
 
     @OneToOne(cascade = CascadeType.ALL)
-            @JsonIgnore
+    @JsonIgnore
     Profile profile;
 
 

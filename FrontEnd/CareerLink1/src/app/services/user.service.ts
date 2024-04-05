@@ -46,9 +46,9 @@ deleteUser(id: number) : Observable<void> {
 
 
   
-   getUser(id:number): Observable<User[]> {
+   getUser(id:number): Observable<User> {
     const headers = this.addTokenToHeaders(new HttpHeaders());
-    return this.http.get<User[]> ( this.baseUrl + 'User/getOne' + id, { headers } )
+    return this.http.get<User> ( this.baseUrl + 'User/getOne' + id, { headers } )
   } 
 
   

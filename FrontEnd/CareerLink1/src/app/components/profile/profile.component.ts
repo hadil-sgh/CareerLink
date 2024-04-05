@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Profile } from 'src/app/models/Profile';
+import { Role } from 'src/app/models/Role';
 import { User } from 'src/app/models/User';
 import { ProfileService } from 'src/app/services/profile.service';
 import { UserService } from 'src/app/services/user.service';
@@ -16,9 +17,17 @@ export class ProfileComponent {
   }
 
   users: User[] = [];
+  selectedUser: User | null = null;
 
-  profile: Profile = new Profile();
+profileForm!:FormGroup;
+  profile: Profile = new Profile(); 
   userId!: number;
+  // firstName!:String;
+  // lastName!:String;
+  // email!:String;
+  // role!:Role;
+
+
 
 
   ngOnInit(): void {
@@ -28,9 +37,30 @@ export class ProfileComponent {
       error => console.error('error, getall', error)
     );
     this.userId = this.route.snapshot.params['id'];
+
     this.profileService.getProfile(this.userId).subscribe(profile => {
       this.profile = profile;
     }); 
+  }
+  
+  createForm(): void {
+    this.profileForm = this.fb.group({
+      // firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
+      // lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
+      // role: ['', Validators.required],
+      // email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  editUser(user: User): void {
+    this.selectedUser = user;
+    this.profileForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      email: user.email,
+      
+    });
   }
 
   addProfile(profile: Profile): void {
@@ -39,6 +69,8 @@ export class ProfileComponent {
       // Rediriger ou afficher un message de succès selon votre besoin
     });
   }
+  
+
 
 
 
