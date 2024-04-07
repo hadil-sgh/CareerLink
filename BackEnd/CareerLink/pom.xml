@@ -39,7 +39,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-<<<<<<< HEAD
+
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
@@ -47,11 +47,7 @@
 
 
 
-=======
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.11.5</version>
-        </dependency>
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
@@ -67,7 +63,6 @@
             <artifactId>totp</artifactId>
             <version>1.7.1</version>
         </dependency>
->>>>>>> 35536b9ad41396233de781ecfab0340132126b63
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-calendar</artifactId>

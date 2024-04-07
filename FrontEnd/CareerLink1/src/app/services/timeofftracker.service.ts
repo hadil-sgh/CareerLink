@@ -36,19 +36,19 @@ export class TimeofftrackerService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
         return this.http.delete<void> (this.baseUrl + 'delete/' + id, {headers});
     }
-<<<<<<< HEAD
     updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
-      return this.http.put<TimeOffTracker>(this.baseUrl+'update/'+ id , timeoff);
+      const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+      return this.http.put<TimeOffTracker>(this.baseUrl+'update/'+ id , timeoff, {headers});
     }
     
-=======
+
     
   updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff, {headers});
     }
 
->>>>>>> 35536b9ad41396233de781ecfab0340132126b63
+
     getPdf(id: number) {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' ,headers});
@@ -58,8 +58,9 @@ export class TimeofftrackerService {
     }
 
     updateStatus(id: number, newStatus: string): Observable<any> {
+      const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       const url = `${this.baseUrl}status/${id}/${newStatus}`; // Constructing the URL properly
-      return this.http.put<any>(url, {});
+      return this.http.put<any>(url, {},{headers});
   }
   
   getLeaveStatistics(year: number): Observable<Map<string, number>> {
