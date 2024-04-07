@@ -1,1 +1,97 @@
-<p>modalpop works!</p>
+<!-- Large modal -->
+<div class="separator"></div>
+
+<section id="about" class="about">
+  <div class="container" style="max-width: 800px; margin: auto;" data-aos="fade-up">
+    <div class="card">
+      <div class="card-body"> 
+        <div class="container">
+          <form   [formGroup]="form" *ngIf="timeoff">
+            <div class="mb-3">
+              <div class="form-group">
+                <label for="type" class="form-label">Leave Type</label>
+                <select id="type" class="form-select" formControlName="type" [(ngModel)]="timeoff.type">
+                  <option value="Casual">Casual</option>
+                  <option value="Compassionate">Compassionate</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Maternity">Maternity</option>
+                  <option value="Unpaid">Unpaid</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label" for="description">Description:</label>
+              <input type="text" formControlName="description" class="form-control" id="description" [(ngModel)]="timeoff.description">
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label" for="fromDate">From Date:</label>
+              <input type="date" formControlName="fromDate" class="form-control" id="fromDate" [(ngModel)]="timeoff.fromDate">
+            </div>
+  
+            <div class="form-group">
+              <label class="form-label" for="toDate">To Date:</label>
+              <input type="date" formControlName="toDate" class="form-control" id="toDate" [(ngModel)]="timeoff.toDate">
+            </div>
+          </form>
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary m-1" (click)="updateTimeOffTracker()">
+              <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" /> 
+              Edit 
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .separator {
+    height: 100px;
+  }
+  
+  .button-space {
+    margin: 0 10px;
+  } 
+  .button-space1 {
+    margin: 0 5px;
+  }
+  
+  .swal-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .status-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 5px;
+  }
+  
+  .ngx-pagination .current {
+    padding: 0.1875rem 0.625rem;
+    background: #edb95e;
+    color: #fefefe;
+    cursor: default;
+  }
+  
+  .button-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 5px;
+  }
+  
+  .container1 {
+    display: flex;
+    align-items: center;
+  }
+  
+  .button-icon {
+    margin-right: 10px;
+  }
+</style>

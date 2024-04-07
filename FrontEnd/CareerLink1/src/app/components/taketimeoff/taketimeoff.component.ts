@@ -21,6 +21,7 @@ export class TaketimeoffComponent {
      leaveStatus :String[]=['Pending','Accepted','Rejected'];
      users: User[] = [];
      selectedFile!:File;
+   
      
      ngOnInit() :void {
        this.LoadListOfTimesOf();
@@ -29,31 +30,8 @@ export class TaketimeoffComponent {
      
      }
      constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }
-     
+    
    
-     updateTimeOff(timeoff: TimeOffTracker): void {
-       if (timeoff && this.timeoffForm.valid) 
-       { const updatedTimeOff = { ...timeoff, ...this.timeoffForm.value } as TimeOffTracker;
-        this.timeoffService.updateTiMEOff(updatedTimeOff).subscribe( (response: any) => { 
-          console.log('success, updateTimeOff', response); this.loadUsers(); 
-          this.timeoffForm.reset(); this.selectedTimeoff = null; },
-           (error: any) => console.error('error, updateTimeOff', error)
-            ); } }
-
-
-
-    editTimeOff(timeoff :TimeOffTracker): void {
-      this.selectedtimesOff = timeoff;
-      this.timeoffForm.patchValue({
-        type: timeoff.type,
-        description: timeoff.description,
-        fromDate: timeoff.fromDate,
-        toDate:timeoff.toDate,
-        user: timeoff.user
-       
-      });
-    }
-  
     getStatusIcon(status: LeaveStatus): string {
       switch (status) {
         case LeaveStatus.Pending:
@@ -269,7 +247,8 @@ export class TaketimeoffComponent {
   
   
   
-  
+ 
+
   
   
   

@@ -10,6 +10,7 @@ import tn.esprit.careerlink.entities.*;
 import tn.esprit.careerlink.repositories.TimeOffTrackerRepository;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
 import tn.esprit.careerlink.services.IUserService;
+import tn.esprit.careerlink.services.Impl.EmailService;
 import tn.esprit.careerlink.services.Impl.FileStorage;
 import java.io.IOException;
 
@@ -20,9 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import tn.esprit.careerlink.services.Impl.TimeOffTrackerServiceImpl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -32,8 +35,10 @@ import java.util.List;
 public class TimeOffTrackerController {
 
      ITimeOffTrackerService timeOffTrackerService;
+     TimeOffTrackerServiceImpl offTrackerService;
      TimeOffTrackerRepository leaveRepository;
      IUserService userService;
+    EmailService emailService;
     @PostMapping("/add")
     public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
@@ -61,10 +66,61 @@ public class TimeOffTrackerController {
             return null; // Or throw an exception
         }
     }
-    @PutMapping("/update")
-    public tn.esprit.careerlink.entities.TimeOffTracker updateleave(@RequestBody tn.esprit.careerlink.entities.TimeOffTracker Leave ){
-        return timeOffTrackerService.updateLeave(Leave);
+
+    @GetMapping("/leave/statistics")
+    public Map<String, Double> getLeaveStatistics(@RequestParam("year") int year) {
+        return offTrackerService.calculateLeaveStatistics(year);
     }
+    @PutMapping("/update/{id}")
+    public TimeOffTracker updateleave(@RequestBody TimeOffTracker lea, @PathVariable int id) {
+        TimeOffTracker leave = timeOffTrackerService.getOneLeave(id);
+        leave.setType(lea.getType());
+        leave.setDescription(lea.getDescription());
+        leave.setFromDate(lea.getFromDate());
+        leave.setToDate(lea.getToDate());
+        return leaveRepository.save(leave);
+    }
+
+
+
+    @PutMapping("/status/{id}/{newStatus}")
+    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @PathVariable LeaveStatus newStatus) {
+        try {
+            timeOffTrackerService.updateStatus(id, newStatus);
+            String recipientEmail = timeOffTrackerService.getOneLeave(id).getUser().getEmail();
+            String name = timeOffTrackerService.getOneLeave(id).getUser().getFirstName();
+            String lastName = timeOffTrackerService.getOneLeave(id).getUser().getLastName();
+
+            String subject = "Your time off request status has been updated";
+            String body = "Dear "+lastName+" "+name+", Your time off request status has been updated to: " + newStatus;
+
+            // Send email
+            emailService.send(recipientEmail, subject, body);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @PostMapping("/send-email")
+    public ResponseEntity<String> sendTestEmail(@RequestParam String recipientEmail ,
+                                               @RequestParam String sub ,
+                                               @RequestParam String emailContent ){
+        try {
+            // Extract email details from the request
+
+            // Call the email sending service
+            emailService.send(recipientEmail, sub,emailContent);
+
+            return ResponseEntity.ok("Test email sent successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send test email.");
+        }
+    }
+
 
     @GetMapping("/getOne/{id}")
     public tn.esprit.careerlink.entities.TimeOffTracker getOneleave(@PathVariable ("id")Integer idLeave){

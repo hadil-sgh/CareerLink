@@ -32,7 +32,8 @@ import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalpopComponent } from './modalpop/modalpop.component';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { RejectComponent } from './traitmentaccept/reject/reject.component';
+import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +58,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     TakeofftraitmentComponent,
     ProfileComponent,
     ModalpopComponent,
+    RejectComponent,
+    LeaveStatisticsComponent,
 
   ],
   imports: [
@@ -69,7 +72,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     NgxExtendedPdfViewerModule,
     NgbModule,
     MatDialogModule,
-
+    
   ],
   providers: [ 
    

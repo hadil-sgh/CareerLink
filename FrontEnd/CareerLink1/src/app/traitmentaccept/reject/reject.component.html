@@ -1,0 +1,62 @@
+<div class="separator"></div>
+<div class="separator"></div>
+
+<div  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Modal header content -->
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="timeoffForm">
+            <div class="mb-3">
+              <div class="form-group">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" class="form-select" formControlName="status">
+                  <option value="Accepted">Accepted</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-primary m-1" (click)="updateStatus()">
+            <img src="/assets/FrontOffice/img/save.png" alt="Edit Icon" class="button-icon" />
+            Save
+          </button>
+          <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">
+            <img src="/assets/FrontOffice/img/rejected.png" alt="Edit Icon" class="button-icon" />
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    .separator {
+    height: 80px; }
+    .separator1 {
+    height: 10px; }
+    .button-space {
+    margin: 0 10px; } 
+    .button-space1 {
+    margin: 0 5px; 
+  }
+  .swal-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+  .button-icon {
+    width: 20px; 
+    height: auto; 
+    margin-right: 5px; 
+  }
+  .status-icon {
+    width: 20px; 
+    height: auto; 
+    margin-right: 5px; 
+  }
+  
+  </style>
