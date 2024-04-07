@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup ,Validators} from '@angular/forms';
 import { LeaveStatus } from 'src/app/models/LeaveStatus';
 import { TimeOffTracker } from 'src/app/models/TimeOffTracker';
@@ -8,6 +8,8 @@ import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -19,9 +21,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class TimeofftrackerComponent {
  
   @ViewChild('content') popupview !: ElementRef;
-
+  selectedTimeoff: any;
+  
+  timeoff:any;
   selectedtimesOff: TimeOffTracker | null = null;
    timesOff:TimeOffTracker[]=[];
+   timeOffTrackers!: TimeOffTracker[];
    timeoffForm ! :FormGroup;
    leaveType :String[]=['Casual','Compassionate','Medical','Maternity','Other'];
    leaveStatus :String[]=['Pending','Accepted','Rejected'];
@@ -30,15 +35,19 @@ export class TimeofftrackerComponent {
    itemsPerPage:number =6;
    totalldisplay:any;
    pdfurl = 'url';
+  id: any;
+  timeOffTracker!: TimeOffTracker;
    
    ngOnInit() :void {
      this.LoadListOfTimesOf();
      this.createForm();
      this.loadUsers();
+     this.retrieveAllTimeOffTrackers();
      this.totalldisplay 
-   
+    
    }
-   constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService, private modalservice: NgbModal) {
+   constructor(private timeoffService :TimeofftrackerService,private dialog: MatDialog , private formbilder: FormBuilder, private userService: UserService, private modalservice: NgbModal,private route: ActivatedRoute,
+    private router: Router,) {
     this.timeoffForm = this.formbilder.group({
       type: ['', Validators.required],
       description: ['', Validators.required],
@@ -46,53 +55,19 @@ export class TimeofftrackerComponent {
       toDate: ['', Validators.required]
     });
     }
-   
-    updateTimeOff(): void {
-      console.log('updateTimeOff() called');
-      console.log('Type control disabled:', this.timeoffForm.get('type')?.disabled);      // Log form control errors
-      const typeControl = this.timeoffForm.get('type');
-      const descriptionControl = this.timeoffForm.get('description');
-      const fromDateControl = this.timeoffForm.get('fromDate');
-      const toDateControl = this.timeoffForm.get('toDate');
+ 
+     
     
-      if (typeControl && descriptionControl && fromDateControl && toDateControl) {
-        console.log('Type control errors:', typeControl.errors);
-        console.log('Description control errors:', descriptionControl.errors);
-        console.log('FromDate control errors:', fromDateControl.errors);
-        console.log('ToDate control errors:', toDateControl.errors);
-      }
-    
-      console.log('Form validity:', this.timeoffForm.valid);
-    
-      if (this.selectedtimesOff && this.timeoffForm && this.timeoffForm.valid) {
-        const typeValue = typeControl ? typeControl.value : null;
-        const descriptionValue = descriptionControl ? descriptionControl.value : null;
-        const fromDateValue = fromDateControl ? fromDateControl.value : null;
-        const toDateValue = toDateControl ? toDateControl.value : null;
-
-        if (typeValue !== null && descriptionValue !== null && fromDateValue !== null && toDateValue !== null) {
-          this.selectedtimesOff.type = typeValue;
-          this.selectedtimesOff.description = descriptionValue;
-          this.selectedtimesOff.fromDate = fromDateValue;
-          this.selectedtimesOff.toDate = toDateValue;
-    
-          console.log('Updated timeoff after modification:', this.selectedtimesOff);
-    
-          // Call service to update the timeoff
-          this.timeoffService.updateTiMEOff(this.selectedtimesOff).subscribe(
-            response => {
-              console.log('success, updateUser', response);
-              this.loadUsers();
-              this.timeoffForm.reset();
-              this.selectedtimesOff = null;
-            },
-            error => console.error('error, updateUser', error)
-          );
+    retrieveAllTimeOffTrackers(): void {
+      this.timeoffService.findAllTimesOff().subscribe(
+        (data:any): void => {
+          this.timeOffTrackers = data;
+        },
+        ( error: any) => {
+          console.log(error);
         }
-      }
+      );
     }
-    
-    
     
     
     
@@ -164,24 +139,31 @@ export class TimeofftrackerComponent {
     });
   }
 
-popUpModal(timeoff: any) {
-  // Set the form values with the properties of the timeoff object
-  this.selectedtimesOff = timeoff; // Store the selected timeoff entry
-    // Set the form values with the properties of the timeoff object
-    this.timeoffForm.patchValue({
-      type: timeoff.type,
-      description: timeoff.description,
-      fromDate: new Date(timeoff.fromDate),
-      toDate: new Date(timeoff.toDate)
-    });
 
-    const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
-    if (modalElement) {
-      modalElement.classList.add('show');
-      modalElement.style.display = 'block';
-      document.body.classList.add('modal-open');
+  
+  edittimeoff(timeoff: TimeOffTracker): void {
+ 
+
+    this.selectedtimesOff = timeoff;
+    this.timeoffForm.patchValue({
+  
+      type :timeoff.type,
+      description :timeoff.description,
+      fromDate :  timeoff.fromDate,
+      toDate : timeoff.toDate
+     
+    });
+   }
+ 
+
+ 
+  
+   toggleChat(): void {
+    const chatContainer = document.getElementById('chat-container');
+    if (chatContainer) {
+      chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
     }
-}
+  }
   
   closeModal() {
     const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
@@ -191,6 +173,7 @@ popUpModal(timeoff: any) {
       document.body.classList.remove('modal-open');
     }
   }
+  
   
   
  
@@ -365,12 +348,13 @@ Preview(id: number) {
       }
     }
   );
-
+  
 }
 
 
-
-
+editTimeOffTracker(id: number): void {
+  this.router.navigate(['/Employee/TimeOffTracker/update', id]);
+}
 
 
 

@@ -1,103 +1,103 @@
- <div class="separator"></div>
+<div class="separator"></div>
 
-    <!-- ======= time off history Section ======= -->
-    <section id="services" class="services" >
-      <div class="container" data-aos="fade-up">
-        <link rel="stylesheet" href="/assets/BackOffice/css/styles.min.css" />
-        <div class="section-title">
-          <h2>your leave History</h2>
-        
+<!-- ======= time off history Section ======= -->
+<section id="services" class="services" >
+  <div class="container" data-aos="fade-up">
+    <link rel="stylesheet" href="/assets/BackOffice/css/styles.min.css" />
+    <div class="section-title">
+      <h2>your leave History</h2>
+    
 
-        </div>
-       
+    </div>
+   
 
-        <div class="row" >
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" *ngFor="let timeoff of timesOff | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
-            <div class="icon-box" [ngStyle]="{'max-width': '500px', 'padding': '60px', 'margin-bottom': '20px', 'box-shadow': '0px 0px 10px 0px rgba(0, 0, 0, 0.1)'}" >
-              <h4 [ngStyle]="{'color': getStatusColor(timeoff.status)}">
-                <img [src]="getStatusIcon(timeoff.status)" alt="{{timeoff.status}} icon" class="status-icon" />
-                {{timeoff.status}}
-              </h4>
-              <div class="container1">
-                <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" class="button-icon" (click)="Preview(timeoff.id)"/>
-                <p>Type Of Leave: {{timeoff.type}}</p>
-            </div>                    
-                <p>Description   :  {{timeoff.description}}</p>
-                <p>From :{{timeoff.fromDate | date}} </p>
-                <p>To  :{{timeoff.toDate| date}}</p>
-                <button *ngIf="timeoff.status === 'Pending'" type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="popUpModal(timeoff)">
-                  <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
-                  Edit
-                </button>
-                <button *ngIf="timeoff.status !== 'Pending'" type="button" class="btn btn-outline-success m-1"  (click)="showAlert()">
-                  <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
-                  Edit
-                </button>   
-                                        <span class="button-space1"></span> 
-                <button type="submit" class="btn btn-outline-danger m-1" (click)="deletetimeOff(timeoff.id)">
-                  <img src="/assets/FrontOffice/img/delete.png" alt="Edit Icon" class="button-icon" />
-                  Delete
-                </button>
-            </div>
-          </div>
+    <div class="row" >
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" *ngFor="let timeoff of timesOff | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <div class="icon-box" [ngStyle]="{'max-width': '500px', 'padding': '60px', 'margin-bottom': '20px', 'box-shadow': '0px 0px 10px 0px rgba(0, 0, 0, 0.1)'}" >
+          <h4 [ngStyle]="{'color': getStatusColor(timeoff.status)}">
+            <img [src]="getStatusIcon(timeoff.status)" alt="{{timeoff.status}} icon" class="status-icon" />
+            {{timeoff.status}}
+          </h4>
+          <div class="container1">
+            <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" class="button-icon" (click)="Preview(timeoff.id)"/>
+            <p>Type Of Leave: {{timeoff.type}}</p>
+        </div>                    
+            <p>Description   :  {{timeoff.description}}</p>
+            <p>From :{{timeoff.fromDate | date}} </p>
+            <p>To  :{{timeoff.toDate| date}}</p>
+              <button *ngIf="timeoff.status === 'Pending'" type="submit" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="editTimeOffTracker(timeoff.id)">
+              <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
+              Edit
+            </button>
+            <button *ngIf="timeoff.status !== 'Pending'" type="button" class="btn btn-outline-success m-1"  (click)="showAlert()">
+              <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
+              Edit
+            </button>   
+                                    <span class="button-space1"></span> 
+            <button type="submit" class="btn btn-outline-danger m-1" (click)="deletetimeOff(timeoff.id)">
+              <img src="/assets/FrontOffice/img/delete.png" alt="Edit Icon" class="button-icon" />
+              Delete
+            </button>
         </div>
       </div>
-    </section><!-- End time off history Section -->
-   
-   <div class="current" style="text-align: center;">
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
-   </div>
+    </div>
+  </div>
+</section><!-- End time off history Section -->
 
-    <style>
-      .separator {
-      height: 100px; }
-      .separator1 {
-      height: 10px; }
-      .button-space {
-      margin: 0 10px; } 
-      .button-space1 {
-      margin: 0 5px; 
-    }
-    .swal-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+<div class="current" style="text-align: center;">
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+
+<style>
+  .separator {
+  height: 100px; }
+  .separator1 {
+  height: 10px; }
+  .button-space {
+  margin: 0 10px; } 
+  .button-space1 {
+  margin: 0 5px; 
+}
+.swal-center {
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .status-icon {
-  width: 20px; /* Adjust the width to your desired size */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 5px; /* Optional: Add margin for spacing */
+width: 20px; /* Adjust the width to your desired size */
+height: auto; /* Maintain aspect ratio */
+margin-right: 5px; /* Optional: Add margin for spacing */
 }
 .ngx-pagination .current {
-    padding: 0.1875rem 0.625rem;
-    background: #edb95e;
-    color: #fefefe;
-    cursor: default;
+padding: 0.1875rem 0.625rem;
+background: #edb95e;
+color: #fefefe;
+cursor: default;
 }
 .button-icon {
-  width: 20px; /* Adjust the width to your desired size */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 5px; /* Optional: Add margin for spacing */
+width: 20px; /* Adjust the width to your desired size */
+height: auto; /* Maintain aspect ratio */
+margin-right: 5px; /* Optional: Add margin for spacing */
 }
 .container1 {
-    display: flex; /* Use flexbox layout */
-    align-items: center; /* Align items vertically */
+display: flex; /* Use flexbox layout */
+align-items: center; /* Align items vertically */
 }
 
 .button-icon {
-    margin-right: 10px; /* Adjust margin as needed */
+margin-right: 10px; /* Adjust margin as needed */
 }
 
 
-    
-    </style>
+
+</style>
 
 <script>
 
 </script>
 
-    <div class="separator"></div>
+<div class="separator"></div>
 
 
 
@@ -107,95 +107,92 @@
 
 <!-- Your existing HTML code -->
 
-<!-- Large modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header"></div>
-      <div class="modal-body">
-        <form [formGroup]="timeoffForm">
-          <div class="mb-3">
-            <div class="form-group">
-              <label for="type" class="form-label">Leave Type</label>
-              <select id="type" class="form-select" formControlName="type">
-                <option value="Casual">Casual</option>
-                <option value="Compassionate">Compassionate</option>
-                <option value="Medical">Medical</option>
-                <option value="Maternity">Maternity</option>
-                <option value="Unpaid">Unpaid</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div class="alert alert-danger" *ngIf="timeoffForm.get('type')?.invalid && timeoffForm.get('type')?.touched">
-              <div *ngIf="timeoffForm.get('type')?.hasError('required')">Type is required !</div>
-            </div>
-          </div>
 
-          <div class="form-group">
-            <label class="form-label" for="description">Description:</label>
-            <input type="text" formControlName="description" class="form-control" id="description">
-          </div>
-          <div *ngIf="timeoffForm.get('description')?.invalid && timeoffForm.get('description')?.touched">
-            <div class="alert alert-danger" *ngIf="timeoffForm.get('description')?.hasError('required')">Description is required !</div>
-            <div class="alert alert-warning" *ngIf="timeoffForm.get('description')?.hasError('minlength')">Length must be more than 5 letters!</div>
-            <div class="alert alert-primary" *ngIf="timeoffForm.get('description')?.hasError('maxlength')">Length must be less than 20 letters!</div>
-          </div>
 
-          <div class="form-group">
-            <label class="form-label" for="fromDate">From Date:</label>
-            <input type="date" formControlName="fromDate" class="form-control" id="fromDate">
-          </div>
+<!-- Your existing HTML code -->
 
-          <div class="form-group">
-            <label class="form-label" for="toDate">To Date:</label>
-            <input type="date" formControlName="toDate" class="form-control" id="toDate">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary m-1" (click)="updateTimeOff()">
-          <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" /> 
-          Edit 
-        </button>
-        <button type="button" class="btn btn-outline-secondary m-1" (click)="cancel()">
-          <img src="/assets/FrontOffice/img/clear.png" alt="Edit Icon" class="button-icon" />
-          Clear
-        </button>
-        <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">
-          <img src="/assets/FrontOffice/img/rejected.png" alt="Edit Icon" class="button-icon" />
-          Close
-        </button>
-      </div>
+    <!-- Chat bubble icon -->
+    <div id="chat-bubble" (click)="toggleChat()">
+      <i class="fas fa-comment-dots"></i>
     </div>
+    
+
+  <!-- Hidden chat widget iframe -->
+  <div id="chat-container" style="display: none;">
+    <iframe 
+    width="700" 
+    height="500"
+     allow="microphone;" 
+     src="https://console.dialogflow.com/api-client/demo/embedded/6fbe751f-6609-4263-9292-9e5c49c44a99"></iframe>
   </div>
-</div>
 
-<!-- Your existing HTML code -->
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
+  <style>
+    .separator {
+    height: 100px; }
+    .separator1 {
+    height: 10px; }
+    .button-space {
+    margin: 0 10px; } 
+    .button-space1 {
+    margin: 0 5px; 
+  }
+  .swal-center {
+display: flex;
+align-items: center;
+justify-content: center;
+}
 
+.status-icon {
+width: 20px; /* Adjust the width to your desired size */
+height: auto; /* Maintain aspect ratio */
+margin-right: 5px; /* Optional: Add margin for spacing */
+}
 
+.button-icon {
+  width: 20px; /* Adjust the width to your desired size */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 5px; /* Optional: Add margin for spacing */
+}
+#chat-bubble {
+    position: fixed;
+    bottom: 566px;
+    right: 66px;
+    background-color: #007bff;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+    font-size: 24px;
+    z-index: 1000; /* Ensure it's above other items */
+}
 
-
-
-
-
-
-
-
-
-
+#chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+    border: 1px solid #ccc;
+    z-index: 999; /* Ensure it's just below the bubble */
+}
+  </style>
 
 <ng-template #content let-c="close" let-d="dismiss">
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">the attached pdf file: <b></b></h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-		<ngx-extended-pdf-viewer [src]="pdfurl"></ngx-extended-pdf-viewer>
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
-	</div>
+<div class="modal-header">
+<h4 class="modal-title" id="modal-basic-title">the attached pdf file: <b></b></h4>
+<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+</div>
+<div class="modal-body">
+<ngx-extended-pdf-viewer [src]="pdfurl"></ngx-extended-pdf-viewer>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
+</div>
 </ng-template>

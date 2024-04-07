@@ -63,6 +63,7 @@
               "src/assets/FrontOffice/vendor/php-email-form/validate.js",
                "src/assets/FrontOffice/js/main.js"
 
+
             ]
           },
           "configurations": {

@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
 import { User } from '../models/User';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-takeofftraitment',
@@ -16,16 +17,19 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class TakeofftraitmentComponent {
   timesOff:TimeOffTracker[]=[];
   timeoffForm !:FormGroup;
-  constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService, private modalservice: NgbModal) { }
+  constructor(private timeoffService :TimeofftrackerService,private route :ActivatedRoute , private formbilder: FormBuilder, private userService: UserService, private modalservice: NgbModal) { }
   @ViewChild('content') popupview !: ElementRef;
   users: User[] = [];
   pdfurl='';
+  form!:FormGroup 
+  timeoff!: any;
 
+  id = this.route.snapshot.params['id'];
+  timeOffTracker!: TimeOffTracker;
   ngOnInit() :void {
     this.LoadListOfTimesOf();
     this.loadUsers();
-
-
+    
   
   }
 
@@ -34,6 +38,7 @@ export class TakeofftraitmentComponent {
 
     this.timeoffService.findAllTimesOff().subscribe( (timesOff:TimeOffTracker[] )=> {
       this.timesOff=  timesOff;
+      console.log("list of timesoff",this.timeoff)
     } );
  }
   

@@ -5,11 +5,13 @@
       <div class="card-body p-4">
         <div class="mb-4">
        
-        </div>
+        </div >
         <h3 class="card-header" style="text-align: center;">leave Request List</h3>
-        
+        <div class="d-flex justify-content-end statistics-button">
+          <button class="btn btn-outline-primary m-1" routerLink="/admin/sata">Statistics</button>
+
+      </div>
         <div class="separator"></div>
- 
         <div class="table-responsive text-nowrap">
           <table class="table">
             <thead>
@@ -38,7 +40,7 @@
 
                 </td>
                 <td>
-                  <button type="submit" class="btn btn-outline-primary m-1" (click)="popUpModal()">
+                  <button type="submit" class="btn btn-outline-primary m-1" [routerLink]="['/admin/TimeOffTracker/traitment',timeoff.id]">
                     <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
                     Traitment
                   </button>
@@ -81,45 +83,6 @@ justify-content: center;
 
 </style>
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-       
-      
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="timeoffForm" >
-          <div class="mb-3">
-            <div class="form-group">
-  
-            <label for="status" class="form-label">status</label>
-             <select id="status" class="form-select" formControlName="status">
-              <option value="Accepted">Accepted</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-            </div>
-          </div>        
-          <div class="form-group">
-            <label class="form-label"for="description">comment:</label>
-            <input type="text" formControlName="description" class="form-control" id="description">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-primary m-1" >
-          <img src="/assets/FrontOffice/img/save.png" alt="Edit Icon" class="button-icon" />
-          Save
-        </button>
-     
-        <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">
-          <img src="/assets/FrontOffice/img/rejected.png" alt="Edit Icon" class="button-icon" />
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <ng-template #content let-c="close" let-d="dismiss">

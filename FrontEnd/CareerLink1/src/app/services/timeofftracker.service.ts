@@ -28,11 +28,23 @@ export class TimeofftrackerService {
   deleteTiMEOff(id: number): Observable<void> {
         return this.http.delete<void> (this.baseUrl + 'delete/' + id);
     }
-  updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
-      return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff);
+    updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
+      return this.http.put<TimeOffTracker>(this.baseUrl+'update/'+ id , timeoff);
     }
+    
     getPdf(id: number) {
       return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' });
     }
+    findoneTimesOff(id: number): Observable<TimeOffTracker> {
+      return this.http.get<TimeOffTracker>(this.baseUrl + 'getOne/' + id);
+    }
+
+    updateStatus(id: number, newStatus: string): Observable<any> {
+      const url = `${this.baseUrl}status/${id}/${newStatus}`; // Constructing the URL properly
+      return this.http.put<any>(url, {});
+  }
   
+  getLeaveStatistics(year: number): Observable<Map<string, number>> {
+    return this.http.get<Map<string, number>>(`${this.baseUrl}leave/statistics?year=${year}`);
+  }
 }
