@@ -31,9 +31,9 @@
     "ng2-pdf-viewer": "^10.0.0",
     "ngx-extended-pdf-viewer": "^18.0.2",
     "ngx-pagination": "^6.0.3",
-    "ngx-toastr": "^18.0.0",
+    "ngx-toastr": "^15.0.0",
     "rxjs": "~7.8.0",
-    "sweetalert2": "^11.10.5",
+    "sweetalert2": "^11.6.13",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
   },

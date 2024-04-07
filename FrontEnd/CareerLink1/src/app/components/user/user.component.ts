@@ -3,6 +3,7 @@ import { User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, ReactiveFormsModule, FormGroup , Validators, FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -10,37 +11,52 @@ import Swal from 'sweetalert2';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  constructor(private userService: UserService , private fb: FormBuilder) { }
+  constructor(private userService: UserService , private fb: FormBuilder, private router:Router) { 
+    }
 
   users: User[] = [];
   userForm!: FormGroup;
   selectedUser: User | null = null;
- 
+  pagedUsers: User[] = []; 
+  currentPage: number = 1; 
+  pageSize: number = 3;
+  totalUsers: number = 0;
+
  
   ngOnInit(): void {
-    this.loadUsers();
-    this.createForm();
-    console.log(this.userForm)
-  }
-  
-
-    loadUsers(): void{
     this.userService.findAllUsers()
     .subscribe(
-      users => this.users = users,
-      error => console.error('error, getall', error)
+      users => {
+        this.totalUsers = users.length;
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = Math.min(startIndex + this.pageSize, this.totalUsers);
+        this.pagedUsers = users.slice(startIndex, endIndex);
+      },
+      error => console.error('Error while fetching users', error)
     );
+
+    this.createForm();
+    this.selectedUser=null;
+    console.log(this.userForm)
   }
+ 
+
+    loadUsers(): void {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+  const endIndex = Math.min(startIndex + this.pageSize, this.totalUsers);
+  this.userService.findAllUsers().subscribe(
+    users => {
+      this.pagedUsers = users.slice(startIndex, endIndex);
+    },
+    error => console.error('Error while fetching users', error)
+  );
+}
+
 
      createForm(): void {
       this.userForm = this.fb.group({
         firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
         lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
-        cin: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
-        phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
-        address: ['', Validators.required],
-        birthday: ['', Validators.required],
-        recdate: ['', Validators.required],
         role: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
       });
@@ -48,14 +64,14 @@ export class UserComponent implements OnInit {
   
     addUser(): void {
       const user = this.userForm.value;
-      this.userService.addUser(user)
+    this.userService.addUser(user)
       .subscribe(
         response => {
-          console.log('success, addUser', response);
+          console.log('Success, user added', response);
           this.loadUsers();
           this.userForm.reset();
         },
-        error => console.error('error, addUser', error)
+        error => console.error('Error, failed to add user', error)
       );
     }
      
@@ -65,11 +81,6 @@ export class UserComponent implements OnInit {
       this.userForm.patchValue({
         firstName: user.firstName,
         lastName: user.lastName,
-        cin:user.cin,
-        phoneNumber: user.phoneNumber,
-        address:user.address,
-        birthday: new Date(user.birthday),
-        recdate: new Date(user.recdate),
         role: user.role,
         email: user.email,
         
@@ -84,9 +95,8 @@ export class UserComponent implements OnInit {
             console.log('success, updateUser', response);
             this.loadUsers();
             this.userForm.reset();
-            this.selectedUser=null;
-            
-           },
+            this.selectedUser = null;
+          },
           error => console.error('error, updateUser', error)
         );
       }
@@ -130,5 +140,28 @@ export class UserComponent implements OnInit {
         }
       });
     }
+
+
+    goToPreviousPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.loadUsers();
+  }
+}
+    
+    goToNextPage(): void {
+      var totalPages = Math.ceil(this.totalUsers / this.pageSize);
+      if (this.currentPage < totalPages) {
+        this.currentPage++;
+        this.loadUsers();
+      }
+    }
+    
+    pageChanged(page: number): void {
+      this.currentPage = page;
+      this.loadUsers();
+    }
+
+    
   
 }

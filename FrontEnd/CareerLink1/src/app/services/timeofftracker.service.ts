@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
@@ -14,26 +14,44 @@ export class TimeofftrackerService {
  
   
 
-  constructor(private http :HttpClient) { }
+  constructor(private http :HttpClient, private userService:UserService) { }
 
   findAllTimesOff():Observable<TimeOffTracker[]> {
-
-    return this.http.get<TimeOffTracker[]>(this.baseUrl +'getAll')
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<TimeOffTracker[]>(this.baseUrl +'getAll',{headers})
   }
 
+ /*  TakeTiMEOff( timeoff :TimeOffTracker) :Observable<TimeOffTracker> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.post<TimeOffTracker>(this.baseUrl +'add',timeoff,{headers});
+  } */
+
   TakeTiMEOff(formData: FormData): Observable<any> {
-    return this.http.post<any>(this.baseUrl + 'add', formData);
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.post<any>(this.baseUrl + 'add', formData,{headers});
   }
   
   deleteTiMEOff(id: number): Observable<void> {
-        return this.http.delete<void> (this.baseUrl + 'delete/' + id);
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+        return this.http.delete<void> (this.baseUrl + 'delete/' + id, {headers});
     }
+<<<<<<< HEAD
     updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
       return this.http.put<TimeOffTracker>(this.baseUrl+'update/'+ id , timeoff);
     }
     
+=======
+    
+  updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+      return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff, {headers});
+    }
+
+>>>>>>> 35536b9ad41396233de781ecfab0340132126b63
     getPdf(id: number) {
-      return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' });
+      const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+      return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' ,headers});
     }
     findoneTimesOff(id: number): Observable<TimeOffTracker> {
       return this.http.get<TimeOffTracker>(this.baseUrl + 'getOne/' + id);

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { AppComponent } from './app.component';
@@ -21,7 +21,13 @@ import { DepenseComponent } from './components/depense/depense.component';
 import { TeamComponent } from './components/team/team.component';
 import { TaketimeoffComponent } from './components/taketimeoff/taketimeoff.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { AuthGuard } from './models/AuthGuard';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
+import { ErrorInterceptor } from './services/error.interceptor';
+import { ProfileComponent } from './components/profile/profile.component';
 import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalpopComponent } from './modalpop/modalpop.component';
@@ -47,7 +53,10 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
     TeamComponent,
     TaketimeoffComponent,
     HomeComponent,
+    LoginComponent,
+    RegisterComponent,
     TakeofftraitmentComponent,
+    ProfileComponent,
     ModalpopComponent,
     RejectComponent,
     LeaveStatisticsComponent,
@@ -56,7 +65,7 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule, //access to functionalities for sending and handling HTTP requests
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
@@ -65,7 +74,12 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
     MatDialogModule,
     
   ],
-  providers: [],
+  providers: [ 
+   
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
