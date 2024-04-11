@@ -1,47 +1,21 @@
-<style>
-  /* Ajouter une classe CSS pour encadrer le tableau */
-  .custom-table {
-    border: 1px solid #000000; /* Ajouter une bordure */
-    border-radius: 5px; /* Ajouter un arrondi aux coins */
-    overflow: hidden; /* Masquer tout contenu dépassant de la bordure */
-  }
-
-  /* Ajouter une bordure droite à la colonne d'action */
-  .action-column {
-    border-right: 1px solid #000000;
-    padding-right: 20px;
-  }
-
-  /* Déplacer le tableau vers le bas */
-  .table-container {
-    margin-top: 50px; /* Ajuster cette valeur selon vos besoins */
-  }
-</style>
-
-<div class="card mt-4 mb-4">
-  <div class="mx-auto table-container">
-    <h6 class="card-header bg-dark text-white">Reponse List</h6>
-    <div class="table-responsive custom-table">
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th>DATERECLAMATION</th>
-            <th>DESCRIPTION</th>
-            <th class="action-column">TYPE</th>
-            <th>REPONSE</th>
-            <th>DATE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let reponse of reponses">
-            <td>{{ reponse.reclamation.datereclamation | date }}</td>
-            <td>{{ reponse.reclamation.description }}</td>
-            <td class="action-column">{{ reponse.reclamation.typeReclamation }}</td>
-            <td>{{ reponse.reponsecontent }}</td>
-            <td>{{ reponse.datereponse | date }}</td>
-          </tr>
-        </tbody>
-      </table>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <!-- Texte au-dessus du QR Code -->
+        <div class="card-header bg-dark text-white text-center">
+          Thank You for Scanning the QR Code to Verify Your Response
+        </div>
+        <div class="card-body text-center">
+          <!-- Espace pour le QR Code -->
+          <div class="mb-3">
+            <!-- Affichage du QR Code -->
+            <div *ngIf="qrCodeImageUrl" class="qr-code-container">
+              <img [src]="qrCodeImageUrl" alt="QR Code" class="img-fluid qr-code-img">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

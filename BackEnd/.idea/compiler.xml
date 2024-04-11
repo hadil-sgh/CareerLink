@@ -10,16 +10,10 @@
         <module name="CareerLink" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="carrerlink" target="17" />
-      <module name="coco" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CareerLink" options="-parameters" />
-      <module name="carrerlink" options="-parameters" />
-      <module name="coco" options="-parameters" />
     </option>
   </component>
 </project>

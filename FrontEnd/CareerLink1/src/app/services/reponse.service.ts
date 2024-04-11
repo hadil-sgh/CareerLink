@@ -16,7 +16,9 @@ export class ReponseService {
     return this.http.get<Reponse[]> ( this.baseUrl + 'getAll' )
   }
   
-  
+  getReponseById(reponseId: number): Observable<Reponse> {
+    return this.http.get<Reponse>(`${this.baseUrl}get/${reponseId}`);
+  }
 
   updateReponse(reponse:Reponse) : Observable<Reponse> {
     return this.http.put<Reponse> ( this.baseUrl + 'update',reponse);

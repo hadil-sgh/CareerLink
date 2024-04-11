@@ -26,8 +26,10 @@ const routes: Routes = [
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"taketimeoff",component:TaketimeoffComponent},
     { path:"expense",component:DepenseComponent},
-    { path:"checkreponse",component:CheckreponseComponent},
+    { path:"checkreponse/:id",component:CheckreponseComponent},
     { path: "reclamation/:id", component: ReclamationComponent }, 
+   
+
 
     { path:"reclamation",component:ReclamationComponent}
 

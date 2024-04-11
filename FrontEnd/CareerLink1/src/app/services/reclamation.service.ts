@@ -16,6 +16,10 @@ export class ReclamationService {
   findAllReclamation(): Observable<Reclamation[]>{
     return this.http.get<Reclamation[]> ( this.baseUrl + 'getAll' )
   }
+  
+  getReclamationById(reclamationId: number): Observable<Reclamation> {
+    return this.http.get<Reclamation>(`${this.baseUrl}get/${reclamationId}`);
+  }
   addReclamationAndAffect(idexpense: number, reclamation: Reclamation): Observable<any> {
     return this.http.post<Reclamation>(`${this.baseUrl}${idexpense}/addAndAffect`, reclamation);
   }

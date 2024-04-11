@@ -101,7 +101,14 @@
                   <td>
                     <button type="submit" class="btn btn-outline-success m-1" (click)="editExpense(expense)">Edit</button>
                     <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteExpense(expense.idexpense)">Delete</button>
-                  </td>
+                    <button
+                    *ngIf="expense.statusPayment === 'NONPAYE' && expense.methodPayment === 'CASH'"
+                    type="button"
+                    class="btn btn-outline-primary m-1"
+                    (click)="payExpense(expense)"
+                  >
+                    Pay
+                  </button>                  </td>
                 </ng-container>
               </tr>
             </tbody>
@@ -113,8 +120,14 @@
             
             <div class="form-group">
               <label for="dateexpense">Date:</label>
-              <input type="date" formControlName="dateexpense" class="form-control" id="dateexpense">
+              <input type="date" formControlName="dateexpense" class="form-control" readonly>
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['dateexpense'].invalid && expenseForm.controls['dateexpense'].touched">
+                <div *ngIf="expenseForm.controls['dateexpense'].hasError('required')"> Date Expense is required !</div>
+              </div>
             </div>
+
+           
+              
             <div class="form-group">
               <label for="unitPrice">Unit Price:</label>
               <input type="number" formControlName="unitPrice" class="form-control" id="unitPrice">
@@ -136,6 +149,9 @@
             <div class="form-group">
               <label for="category">Category:</label>
               <input type="text" formControlName="category" class="form-control" id="category">
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['category'].invalid && expenseForm.controls['category'].touched">
+                <div *ngIf="expenseForm.controls['category'].hasError('required')"> Category is required !</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="methodPayment">Method of Payment:</label>
@@ -143,12 +159,18 @@
                 <option value="CARD">Card</option>
                 <option value="CASH">Cash</option>
               </select>
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['methodPayment'].invalid && expenseForm.controls['methodPayment'].touched">
+                <div *ngIf="expenseForm.controls['methodPayment'].hasError('required')"> MethodPayment is required !</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="projectId">Project Name:</label>
               <select formControlName="projectId" class="form-control" id="projectId">
                 <option *ngFor="let project of projects" [value]="project.idProject">{{ project.name }}</option>
               </select>
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['projectId'].invalid && expenseForm.controls['projectId'].touched">
+                <div *ngIf="expenseForm.controls['projectId'].hasError('required')"> ProjectName is required !</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="statusPayment">Statu Payment:</label>
@@ -156,6 +178,9 @@
                 
                 <option value="NONPAYE">Non Payé</option>
               </select>
+              <div class="alert alert-danger" *ngIf="expenseForm.controls['statusPayment'].invalid && expenseForm.controls['statusPayment'].touched">
+                <div *ngIf="expenseForm.controls['statusPayment'].hasError('required')"> StatusPayment is required !</div>
+              </div>
             </div>
             
             <div class="separator1"></div>

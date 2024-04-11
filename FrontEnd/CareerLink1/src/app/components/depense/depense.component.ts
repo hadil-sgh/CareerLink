@@ -108,7 +108,7 @@ export class DepenseComponent implements OnInit {
 generateQrCode(expense: Expense): void {
   if (expense.statusPayment === 'PAYE') {
     // Générer le contenu du QR code avec les informations de la dépense
-    const qrCodeContent = `Amount: ${expense.amount}, Date: ${expense.dateexpense}, Project: ${expense.project ? expense.project.name : 'N/A'}, Category: ${expense.category}, Method: ${expense.methodPayment}`;
+    const qrCodeContent = ` Project: ${expense.project ? expense.project.name : 'N/A'},Amount: ${expense.amount}DT, Method: ${expense.methodPayment}`;
 
     this.qrservice.generateQrCode(qrCodeContent).subscribe(
       (qrCodeBlob: Blob) => {

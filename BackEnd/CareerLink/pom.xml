@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>tn.esprit</groupId>
-    <artifactId>coco</artifactId>
+    <artifactId>CareerLink</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>CareerLink</name>
     <description>CareerLink</description>

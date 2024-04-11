@@ -25,6 +25,8 @@ import { AdmrecComponent } from './components/admrec/admrec.component';
 import { ReponseComponent } from './components/reponse/reponse.component';
 import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
 import { StripeComponent } from './components/stripe/stripe.component';
+import { DatePipe } from '@angular/common';
+
 
 
 
@@ -63,7 +65,9 @@ import { StripeComponent } from './components/stripe/stripe.component';
     ReactiveFormsModule,
     NgxPaginationModule,
   ],
-  providers: [],
+  providers: [
+    DatePipe // Assurez-vous d'ajouter DatePipe aux fournisseurs ici
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

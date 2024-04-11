@@ -4,4 +4,5 @@ export class Reponse{
     datereponse!: Date;
     reponsecontent!: string;  
     reclamation: Reclamation = new Reclamation(); 
+   
 }

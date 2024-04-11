@@ -1,6 +1,5 @@
 package tn.esprit.careerlink.services;
 
-import tn.esprit.careerlink.entities.Expense;
 import tn.esprit.careerlink.entities.Reponse;
 
 import java.util.List;
@@ -12,4 +11,5 @@ public interface IReponseService {
     List<Reponse> getAllReponse();
     Reponse getReponse (Integer idreponse);
     Reponse addReponseAndAffect(Integer idreclamartion, Reponse reponse);
+
 }

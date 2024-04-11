@@ -40,16 +40,20 @@
         <table class="table">
           <thead class="thead-dark">
             <tr>
-              <th>DATE</th>
-              <th>REPONSE</th>
-              <th class="action-column">ACTION</th> <!-- Ajouter la classe action-column à cette colonne -->
-              <th>DATERECLAMATION</th>
+                <th>DATERECLAMATION</th>
               <th>DESCRIPTION</th>
               <th class="action-column">TYPE</th>
+              <th>DATEREPONSE</th>
+              <th>REPONSE</th>
+              <th class="action-column">ACTION</th> <!-- Ajouter la classe action-column à cette colonne -->
+              
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let reponse of reponses">
+                <td>{{ reponse.reclamation.datereclamation | date }}</td>
+              <td>{{ reponse.reclamation.description}}</td>
+              <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
               <td>{{ reponse.datereponse | date }}</td>
               <td>{{ reponse.reponsecontent }}</td>
               <td class="action-cell">
@@ -57,9 +61,7 @@
                 <span class="button-space"></span>
                 <button type="submit" class="btn btn-danger m-1" (click)="deleteReponse(reponse.idrponse)">Delete</button>
               </td>
-              <td>{{ reponse.reclamation.datereclamation | date }}</td>
-              <td>{{ reponse.reclamation.description}}</td>
-              <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
+              
             </tr>
           </tbody>
         </table>
@@ -80,7 +82,7 @@
 
           <div class="form-group">
             <label for="datereponse">Date:</label>
-            <input type="date" formControlName="datereponse" class="form-control" id="datereponse">
+            <input type="date" formControlName="datereponse" class="form-control" readonly>
             <div class="alert alert-danger" *ngIf="reponseForm.controls['datereponse'].invalid && reponseForm.controls['datereponse'].touched">
               <div *ngIf="reponseForm.controls['datereponse'].hasError('required')"> Date is required !</div>
             </div>

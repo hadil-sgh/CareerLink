@@ -8,6 +8,7 @@ import {  StatusPayment } from 'src/app/models/statuspayment';
 import { TypeReclamation } from 'src/app/models/typeReclamation';
 import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reponse',
@@ -24,6 +25,7 @@ export class ReponseComponent implements OnInit {
   
 
   constructor(
+    private datePipe: DatePipe ,
     private reponseService: ReponseService,
     private reclamationservice: ReclamationService,
     private fb: FormBuilder,
@@ -48,13 +50,16 @@ export class ReponseComponent implements OnInit {
 }
 
 
-  loadReponses(): void {
-    this.reponseService.findAllReponse()
-      .subscribe(
-        reponses => this.reponses = reponses,
-        error => console.error('error, getallRep', error)
-      );
-  }
+loadReponses(): void {
+  this.reponseService.findAllReponse()
+    .subscribe(
+      reponses => {
+        // Filtrer les réponses par ID de réclamation sélectionné
+        this.reponses = reponses.filter(reponse => reponse.reclamation.idreclamation === this.reclamationId);
+      },
+      error => console.error('Erreur lors du chargement des réponses :', error)
+    );
+}
 
   loadReclamations(): void {
     this.reclamationservice.findAllReclamation()
@@ -65,8 +70,10 @@ export class ReponseComponent implements OnInit {
   }
 
   createForm(): void {
+    const currentDate = new Date();
+    const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
     this.reponseForm = this.fb.group({
-      datereponse: ['', [Validators.required]],
+      datereponse: [formattedDate, [Validators.required]],
       reponsecontent: ['', [Validators.required]],
       reclamationId: ['', [Validators.required]]
     });
@@ -76,9 +83,15 @@ export class ReponseComponent implements OnInit {
     this.reponseService.deleteReponse(idreponse).subscribe(
       response => {
         console.log('success, deleteReponse', response);
+        alert('Response deleted successfully.');
+
         this.loadReponses();
       },
-      error => console.error('error, deleteReponse', error)
+      error => {
+        console.error('error, deleteExpense', error);
+        // Afficher une alerte en cas d'échec
+        alert('Failed to delete Response. you cant removed ');
+      }
     );
   }
 
@@ -121,9 +134,10 @@ export class ReponseComponent implements OnInit {
 
   editReponse(reponse: Reponse): void {
     this.selectedReponse = reponse;
+    const currentDate = new Date();
     this.reponseForm.patchValue({
       reponsecontent: reponse.reponsecontent,
-      datereponse: new Date(reponse.datereponse).toISOString().split('T')[0],
+      datereponse: currentDate.toISOString().split('T')[0],
     });
     if (this.selectedReponse) {
       this.reponseForm.get('reclamationId')!.disable(); // Désactiver le champ reclamationId
