@@ -11,23 +11,28 @@ import tn.esprit.careerlink.services.IUserService;
 
 import java.security.Principal;
 import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements IUserService {
     final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    final EmailService emailService;
 
 
     @Override
     public User addUser(User user) {
-//        String generatedPassword = generateRandomPassword();
-//        user.setPwd(passwordEncoder.encode(generatedPassword));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Generate a new activation code for the user
+        String activationCode = UUID.randomUUID().toString();
+       // savedUser.addToken(activationCode);
+
+        // Send the registration email with the activation code
+        emailService.regsend(savedUser.getEmail(), "Welcome to our app!", savedUser, "Registration email", activationCode);
+
+        return savedUser;
     }
 
     public String generateRandomPassword() {

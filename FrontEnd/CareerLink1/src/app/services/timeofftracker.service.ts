@@ -36,12 +36,12 @@ export class TimeofftrackerService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
         return this.http.delete<void> (this.baseUrl + 'delete/' + id, {headers});
     }
-    updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
+    
+    
+  updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       return this.http.put<TimeOffTracker>(this.baseUrl+'update/'+ id , timeoff, {headers});
     }
-    
-
     
   updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
@@ -63,7 +63,7 @@ export class TimeofftrackerService {
       return this.http.put<any>(url, {},{headers});
   }
   
-  getLeaveStatistics(year: number): Observable<Map<string, number>> {
+    getLeaveStatistics(year: number): Observable<Map<string, number>> {
     return this.http.get<Map<string, number>>(`${this.baseUrl}leave/statistics?year=${year}`);
   }
 }
