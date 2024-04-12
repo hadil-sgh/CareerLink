@@ -34,6 +34,7 @@ import { ModalpopComponent } from './modalpop/modalpop.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
+import { JwtModule } from "@auth0/angular-jwt";
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +65,15 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
   ],
   imports: [
     BrowserModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem("token");
+        },
+        allowedDomains: ["localhost:8086"], 
+        disallowedRoutes: [],
+      },
+    }),   
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -72,7 +82,7 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
     NgxExtendedPdfViewerModule,
     NgbModule,
     MatDialogModule,
-    
+   
   ],
   providers: [ 
    
@@ -83,3 +93,7 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+export function tokenGetter() {
+  return localStorage.getItem("access_token");
+}
+

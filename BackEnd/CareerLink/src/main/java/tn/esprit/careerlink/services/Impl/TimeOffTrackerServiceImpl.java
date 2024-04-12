@@ -3,10 +3,7 @@ package tn.esprit.careerlink.services.Impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import tn.esprit.careerlink.entities.LeaveStatus;
@@ -14,6 +11,7 @@ import tn.esprit.careerlink.entities.LeaveType;
 import tn.esprit.careerlink.entities.TimeOffTracker;
 import tn.esprit.careerlink.entities.User;
 import tn.esprit.careerlink.repositories.TimeOffTrackerRepository;
+import tn.esprit.careerlink.repositories.UserRepository;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
 
 import java.util.*;
@@ -25,6 +23,7 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TimeOffTrackerServiceImpl implements ITimeOffTrackerService {
     TimeOffTrackerRepository leaveRepository;
+    UserRepository userRepository;
 
 
     @Override
@@ -60,6 +59,18 @@ public class TimeOffTrackerServiceImpl implements ITimeOffTrackerService {
     public List<TimeOffTracker> getAllLeaves() {
         return leaveRepository.findAll();
     }
+    @Override
+    public List<TimeOffTracker> getAllbyuser(String email) {
+        List<TimeOffTracker> leave= leaveRepository.findAll();
+        List<TimeOffTracker> timeOffTrackerspersession= new ArrayList<>();
+     for ( TimeOffTracker l :leave){
+        if (l.getUser().getEmail().matches(email)){
+          timeOffTrackerspersession.add(l);
+        }
+     }
+    return timeOffTrackerspersession;
+    }
+
 
     @Override
     public void deleteLeave(Integer idLeave) {

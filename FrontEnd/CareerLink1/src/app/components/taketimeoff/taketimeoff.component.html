@@ -40,19 +40,7 @@
               </div>
               
             
-              <div class="form-group">
-                <label class="form-label" for="Employee">Employee:</label>
-                <select formControlName="user" class="form-control">
-                  <ng-container *ngFor="let user of users">
-                    <option [ngValue]="user">
-                      {{ user.firstName }} {{ user.lastName }}
-                    </option>
-                  </ng-container>
-                </select>
-              </div>
-              <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['user'].invalid && this.timeoffForm.controls['user'].touched">
-                <div *ngIf="this.timeoffForm.controls['user'].hasError('required')"> Employee is required !</div>
-              </div>
+           
       
               <div class="form-group">
                 <label class="form-label" for="fromDate">From Date:</label>

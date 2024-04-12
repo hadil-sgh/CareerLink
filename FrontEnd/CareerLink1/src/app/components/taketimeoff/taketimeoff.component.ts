@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup ,Validators} from '@angular/forms';
+import { error } from 'jquery';
 import { LeaveStatus } from 'src/app/models/LeaveStatus';
 import { TimeOffTracker } from 'src/app/models/TimeOffTracker';
 import { User } from 'src/app/models/User';
@@ -82,7 +83,7 @@ export class TaketimeoffComponent {
         description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
         fromDate: ['', [Validators.required, this.dateGreaterThanTodayValidator]],
         toDate: ['', [Validators.required/* , this.toDateValidator */]],
-        user: ['', Validators.required],
+       
       });
     }
   
@@ -125,7 +126,7 @@ export class TaketimeoffComponent {
       formData.append('description', newtimeoff.description);
       formData.append('fromDate', newtimeoff.fromDate);
       formData.append('toDate', newtimeoff.toDate);
-      formData.append('user', newtimeoff.user.id);
+     
   
       // Append the file to the FormData object
       if (this.fileInput.nativeElement.files.length > 0) {
@@ -150,6 +151,9 @@ export class TaketimeoffComponent {
           },
           error => console.error('error, add', error)
         );
+        ( error: any) => {
+          console.log(error);
+        }
     }
   
   

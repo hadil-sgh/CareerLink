@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.careerlink.entities.*;
 import tn.esprit.careerlink.repositories.TimeOffTrackerRepository;
+import tn.esprit.careerlink.repositories.UserRepository;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
 import tn.esprit.careerlink.services.IUserService;
 import tn.esprit.careerlink.services.Impl.EmailService;
@@ -39,12 +40,13 @@ public class TimeOffTrackerController {
      TimeOffTrackerRepository leaveRepository;
      IUserService userService;
     EmailService emailService;
+    UserRepository userRepository;
     @PostMapping("/add")
     public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
                                    @RequestParam("fromDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
                                    @RequestParam("toDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date to,
-                                   @RequestParam("user") User user,
+                                   @RequestParam("email") String email,
                                    @RequestParam("pdf") MultipartFile file) {
         try {
             TimeOffTracker newtimeoff =new TimeOffTracker();
@@ -53,7 +55,7 @@ public class TimeOffTrackerController {
             newtimeoff.setDescription(description);
             newtimeoff.setFromDate(from);
             newtimeoff.setToDate(to);
-            newtimeoff.setUser(user);
+            newtimeoff.setUser(userRepository.findUserByEmail(email));
             if (file != null && !file.isEmpty()) {
                 String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()),file);
                 newtimeoff.setPdfData(original);
@@ -130,6 +132,10 @@ public class TimeOffTrackerController {
     @GetMapping("/getAll")
     public List<tn.esprit.careerlink.entities.TimeOffTracker> getAllleave(){
         return timeOffTrackerService.getAllLeaves();
+    }
+    @GetMapping("/getbyuser")
+    public List<tn.esprit.careerlink.entities.TimeOffTracker> getbyuser(String email){
+        return timeOffTrackerService.getAllbyuser(email);
     }
 
     @DeleteMapping("/delete/{id}")

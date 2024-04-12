@@ -19,5 +19,7 @@ public interface ITimeOffTrackerService {
     List <TimeOffTracker> filterTimeOffByUser ( User user);
     List <TimeOffTracker> filterTimeOffByDatefromAndUser (Date fromDate, User user);
     List <TimeOffTracker> filterTimeOffByDatetoAndUser (Date toDate, User user);
+    List<TimeOffTracker> getAllbyuser(String email) ;
 
-}
+
+    }

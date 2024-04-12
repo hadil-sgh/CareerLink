@@ -59,9 +59,10 @@ export class TimeofftrackerComponent {
      
     
     retrieveAllTimeOffTrackers(): void {
-      this.timeoffService.findAllTimesOff().subscribe(
+      this.timeoffService.findtimesoffbysession().subscribe(
         (data:any): void => {
           this.timeOffTrackers = data;
+          console.log('Time Offs:', this.timeOffTrackers);
         },
         ( error: any) => {
           console.log(error);
@@ -123,12 +124,17 @@ export class TimeofftrackerComponent {
   
   
 
-   LoadListOfTimesOf() : void{ 
-
-      this.timeoffService.findAllTimesOff().subscribe( (timesOff:TimeOffTracker[] )=> {
-        this.timesOff=  timesOff;
-      } );
-   }
+  LoadListOfTimesOf(): void {
+    this.timeoffService.findtimesoffbysession().subscribe(
+      (timesOff: TimeOffTracker[]) => {
+        this.timesOff = timesOff;
+        console.log('Time Offs:', this.timesOff);
+      },
+      (error: any) => {
+        console.error('Error loading time offs:', error);
+      }
+    );
+  }
    createForm(): void {
     this.timeoffForm = this.formbilder.group({
       type: ['', Validators.required],
