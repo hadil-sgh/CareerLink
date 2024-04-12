@@ -8,7 +8,7 @@
             <th>DATE</th>
             <th>DESCRIPTION</th>
             <th>TYPE</th>
-            <th class="text-center align-middle">ACTION</th> <!-- Ajuster la colonne Action -->
+            <th class="text-center align-middle">ACTION</th>
           </tr>
         </thead>
         <tbody>
@@ -17,11 +17,14 @@
             <td>{{ reclamation.description }}</td>
             <td>{{ reclamation.typeReclamation }}</td>
             <td class="text-center align-middle">
-              <button type="button" class="btn btn-lg btn-info" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
+              <!-- Vérifier si la réclamation a une réponse associée -->
+              <ng-container *ngIf="!hasResponse(reclamation)">
+                <button type="button" class="btn btn-lg btn-info" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
+              </ng-container>
             </td>
           </tr>
           <!-- Ajouter une condition si la liste de réclamations est vide -->
-          <tr *ngIf="reclamations.length === 0">
+          <tr *ngIf="Reponses.length === 0">
             <td colspan="4" class="text-center">No reclamations found.</td>
           </tr>
         </tbody>

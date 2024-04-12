@@ -25,7 +25,6 @@ export class CheckreponseComponent implements OnInit {
   Reclamation: Reclamation[] = [];
   reclamationId: number | undefined;
   qrCodeImageUrl: string | undefined;
-  reclamationExists: boolean = true; // Variable pour vérifier si la réclamation existe
 
   ngOnInit(): void {
     this.loadReponses();
@@ -34,16 +33,11 @@ export class CheckreponseComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id !== null) {
-        this.reclamationId = parseInt(id, 10); // Assurez-vous que l'ID est bien récupéré sous forme de nombre
+          this.reclamationId = parseInt(id, 10); // Assurez-vous que l'ID est bien récupéré sous forme de nombre
         
-        // Vérifier si la réclamation existe
-        this.reclamationExists = this.Reclamation.some(reclamation => reclamation.idreclamation === this.reclamationId);
-
-        if (this.reclamationExists) {
-          this.loadReponses(); // Recharger les réponses si la réclamation existe
-        }
+          // Gérer le cas où l'ID n'est pas trouvé dans les paramètres de l'URL
       }
-    });
+  });
   }
 
   loadReponses(): void {
@@ -62,44 +56,30 @@ export class CheckreponseComponent implements OnInit {
       );
   }
   
-  loadReclamations(): void {
-    this.reclamationService.findAllReclamation()
-      .subscribe(
-         Reclamation => this.Reclamation = Reclamation,
-        error => console.error('error, getAllReclamations', error)
-      );
-  }
+    loadReclamations(): void {
+      this.reclamationService.findAllReclamation()
+        .subscribe(
+           Reclamation => this. Reclamation =  Reclamation,
+          error => console.error('error, getAllReclamations', error)
+        );
+    }
 
-  generateQrCode(reponse: Reponse): void {
-    // Récupérer les informations nécessaires de la réclamation et de la réponse
-    const description = reponse.reclamation.description;
-    const typeReclamation = reponse.reclamation.typeReclamation;
-    const dateReclamation = reponse.reclamation.datereclamation;
-    const dateReponse = reponse.datereponse;
-    const reponseContent = reponse.reponsecontent;
+    generateQrCode(reponse: Reponse): void {
+      // Construire le contenu du QR code à partir des informations de la réclamation et de la réponse
+      const qrCodeContent = `Réclamation: ${reponse.reclamation.description}, Réponse: ${reponse.reponsecontent},${reponse.datereponse}`;
   
-    // Construire le contenu du QR code avec toutes les informations requises
-    const qrCodeContent = `
-      Type de Réclamation: ${typeReclamation},
-      Date de Réclamation: ${dateReclamation},
-      Description de Réclamation: ${description},
-      Date de Réponse: ${dateReponse},
-      Contenu de la Réponse: ${reponseContent}
-    `;
-  
-    // Appeler le service pour générer le QR code avec le contenu construit
-    this.qrservice.generateQrCode(qrCodeContent).subscribe(
-      (qrCodeBlob: Blob) => {
-        const reader = new FileReader();
-        reader.onload = (event: any) => {
-          this.qrCodeImageUrl = event.target.result; // Stocker l'URL de l'image du QR code
-        };
-        reader.readAsDataURL(qrCodeBlob);
-      },
-      (error) => {
-        console.error('Erreur lors de la génération du QR code :', error);
-        alert('Erreur lors de la génération du QR code : ' + error);
-      }
-    );
-  }
+      this.qrservice.generateQrCode(qrCodeContent).subscribe(
+        (qrCodeBlob: Blob) => {
+          const reader = new FileReader();
+          reader.onload = (event: any) => {
+            this.qrCodeImageUrl = event.target.result; // Stocker l'URL de l'image du QR code
+          };
+          reader.readAsDataURL(qrCodeBlob);
+        },
+        (error) => {
+          console.error('Erreur lors de la génération du QR code :', error);
+          alert('Erreur lors de la génération du QR code : ' + error);
+        }
+      );
+    }
 }

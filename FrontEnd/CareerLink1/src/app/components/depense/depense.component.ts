@@ -9,6 +9,8 @@ import { Project } from 'src/app/models/Project';
 import { QrcodeService } from 'src/app/services/qrcode.service';
 import { Subscription } from 'rxjs';
 import { StatusPayment } from 'src/app/models/statuspayment';
+import { ReclamationService } from 'src/app/services/reclamation.service';
+import { Reclamation } from 'src/app/models/Reclamation';
 
 @Component({
   selector: 'app-depense',
@@ -24,6 +26,7 @@ export class DepenseComponent implements OnInit {
   selectedExpense: Expense | null = null;
   stripeComponent: StripeComponent; // Déclarez une variable pour contenir l'instance du composant StripeComponent
   projects: Project[] = [];
+  reclamations: Reclamation[] = [];
 
   constructor(
     private qrservice: QrcodeService,
@@ -31,6 +34,7 @@ export class DepenseComponent implements OnInit {
     private fb: FormBuilder,
     private ac: ActivatedRoute,
     private router: Router,
+    private reclamationService: ReclamationService,
     private http: HttpClient // Injectez HttpClient
     
   ) {
@@ -40,6 +44,18 @@ export class DepenseComponent implements OnInit {
   ngOnInit(): void {
     this.loadExpenses();
     this.loadProjects();
+    this.loadReclamations();
+  }
+  loadReclamations(): void {
+    this.reclamationService.findAllReclamation()
+      .subscribe(
+        reclamations => this.reclamations = reclamations,
+        error => console.error('Error loading reclamations:', error)
+      );
+  }
+
+  hasReclamation(expense: Expense): boolean {
+    return this.reclamations.some(reclamation => reclamation.expense.idexpense === expense.idexpense);
   }
 
   loadExpenses(): void {

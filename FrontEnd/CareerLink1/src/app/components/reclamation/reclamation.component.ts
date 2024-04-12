@@ -12,6 +12,7 @@ import { ReclamationService } from 'src/app/services/reclamation.service';
 import { DatePipe } from '@angular/common';
 
 import { Router } from '@angular/router';
+import { ReponseService } from 'src/app/services/reponse.service';
 
 
 
@@ -23,20 +24,22 @@ import { Router } from '@angular/router';
   styleUrls: ['./reclamation.component.css']
 })
 export class ReclamationComponent {
-  constructor(private reclamationService: ReclamationService,private expenseService:ExpenseService,  private datePipe: DatePipe // Injectez DatePipe ici
+  constructor(private reclamationService: ReclamationService,private expenseService:ExpenseService ,private reponseservice:ReponseService,  private datePipe: DatePipe // Injectez DatePipe ici
   , private route: ActivatedRoute, private fb: FormBuilder,private router: Router) { }
   reclamations: Reclamation[] = [];
  reclamationForm!: FormGroup;
-  selectedReclamation: Reclamation | null = null;
-  Reponses: Reponse[] = [];
+ selectedReclamation: Reclamation | null = null;
+ Reponses: Reponse[] = [];
   expenses:Expense[] = [];
-  selectedExpense: Expense | null = null; 
+  selectedExpense: Expense | null = null;
+
   idexpense: number | undefined;
   forbiddenWords=['mot1','fuck','null'];
   ngOnInit(): void {
     this.loadReclamations();
     this.createForm();
     this.loadExpenses();
+    this.loadReponses();
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id !== null) {
@@ -46,6 +49,19 @@ export class ReclamationComponent {
           // Gérer le cas où l'ID n'est pas trouvé dans les paramètres de l'URL
       }
   });
+  }
+  hasResponse(reclamation: Reclamation): boolean {
+    return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
+  }
+  loadReponses(): void {
+    this.reponseservice.findAllReponse()
+    .subscribe(
+      reponses => {
+        this.Reponses = reponses;
+        console.log('Réponses chargées :', this.Reponses);
+      },
+      error => console.error('Erreur lors du chargement des réponses :', error)
+    );
   }
 
   loadReclamations(): void{

@@ -13,16 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/stripe")
 
 public class StripeController {
-    @PostMapping ("/stripe/{amount}")
-    public void payer(@PathVariable("amount") Long amount ) throws StripeException{
-        Stripe.apiKey = "sk_test_51OyMyNGNLXT5inUdu51OPfvjqWJ9ueb62CKPp2GnmFQRwZPWUs5bjyzKOknZWxy1ko7oJCYmdXKHeyC1SGIv4Bwk00uMDYSrY2";
+    @PostMapping("/stripe/{amount}")
+    public void payer(@PathVariable("amount") Long amount) throws StripeException {
+        // Multipliez le montant par 100
+        Long amountInCents = amount * 100L;
 
-        ChargeCreateParams params =
-                ChargeCreateParams.builder()
-                        .setAmount(amount)
-                        .setCurrency("usd")
-                        .setSource("tok_visa")
-                        .build();
+        Stripe.apiKey = "sk_test_51OtNbnH3RXz0S9dA8ANKd7dTlSdVXqsA20UsM57YU8joxiw7JH8wZBXeQ2W9X2yAhuPLDnKCbo2WsvzO9cE74r6l004bg2wKmN";
+
+        ChargeCreateParams params = ChargeCreateParams.builder()
+                .setAmount(amountInCents) // Utilisez le montant en cents
+                .setCurrency("usd")
+                .setSource("tok_visa")
+                .build();
 
         Charge charge = Charge.create(params);
     }
