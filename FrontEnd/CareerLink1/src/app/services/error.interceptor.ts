@@ -20,10 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               popup: 'small-alert'
             }
           });
-          // Retourne un Observable vide pour interrompre la chaîne des intercepteurs
           return of();
         }
-        // Renvoie l'erreur pour que le reste de l'application puisse la traiter
         return throwError(error);
       })
     );

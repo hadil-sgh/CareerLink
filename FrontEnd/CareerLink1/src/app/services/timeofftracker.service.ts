@@ -60,16 +60,27 @@ export class TimeofftrackerService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
         return this.http.delete<void> (this.baseUrl + 'delete/' + id, {headers});
     }
-    updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
+    
+    
+  updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       const url = `${this.baseUrl}update/${id}/${timeoff}`;
       return this.http.put<any>(url,{}, {headers});
     }
+<<<<<<< HEAD
     updateStatus(id: number, newStatus: string): Observable<any> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       const url = `${this.baseUrl}status/${id}/${newStatus}`; // Constructing the URL properly
       return this.http.put<any>(url, {},{headers});
   }
+=======
+    
+  updateTiMEOff(timeoff :TimeOffTracker) : Observable<TimeOffTracker> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+      return this.http.put<TimeOffTracker> ( this.baseUrl + 'update', timeoff, {headers});
+    }
+
+>>>>>>> 13cf2565f13903a68e407ea82e6423d7a0139725
 
     getPdf(id: number) {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
@@ -81,7 +92,7 @@ export class TimeofftrackerService {
 
  
   
-  getLeaveStatistics(year: number): Observable<Map<string, number>> {
+    getLeaveStatistics(year: number): Observable<Map<string, number>> {
     return this.http.get<Map<string, number>>(`${this.baseUrl}leave/statistics?year=${year}`);
   }
 }
