@@ -61,8 +61,8 @@ public class SecurityConfiguration {
                                 .requestMatchers("/Performance/**").hasAnyAuthority("Admin", "HR_manager","Consultant")
                                 .requestMatchers("/Team/**").hasAnyAuthority("Admin", "HR_manager")
                                 .requestMatchers("/Recruitment/**").hasAnyAuthority("Admin", "HR_manager")
-                                .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
-                                .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee","Admin")
+                               // .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
+                               // .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee","Admin")
 
                                 .anyRequest()
                                 .authenticated()

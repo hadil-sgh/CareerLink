@@ -7,6 +7,8 @@ import { User } from 'src/app/models/User';
 import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
+import { JwtHelperService } from "@auth0/angular-jwt";
+
 @Component({
   selector: 'app-taketimeoff',
   templateUrl: './taketimeoff.component.html',
@@ -30,7 +32,7 @@ export class TaketimeoffComponent {
        this.loadUsers();
      
      }
-     constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService) { }
+     constructor(private timeoffService :TimeofftrackerService , private formbilder: FormBuilder, private userService: UserService, private jwtHelper: JwtHelperService) { }
     
    
     getStatusIcon(status: LeaveStatus): string {
@@ -115,7 +117,14 @@ export class TaketimeoffComponent {
     onFileSelected (event: any){
     this.selectedFile=event.target.files [0];
 }
-
+getUserIdFromToken(): string {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decodedToken: any = this.jwtHelper.decodeToken(token);
+    return decodedToken.sub; 
+  }
+  return '';
+}
  
     addTimeOff(): void {
       const newtimeoff = this.timeoffForm.value;
@@ -126,6 +135,7 @@ export class TaketimeoffComponent {
       formData.append('description', newtimeoff.description);
       formData.append('fromDate', newtimeoff.fromDate);
       formData.append('toDate', newtimeoff.toDate);
+      formData.append('email', this.getUserIdFromToken());
      
   
       // Append the file to the FormData object
