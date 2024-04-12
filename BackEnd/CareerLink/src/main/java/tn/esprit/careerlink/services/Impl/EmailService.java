@@ -56,7 +56,7 @@ public class EmailService implements EmailSender {
     public void regsend(String to, String subject, User user, String email, String activationCode) {
         try {
             // Generate the registration URL with the activation code
-            String registrationUrl = "http://localhost:4200/register" + "?token=" + activationCode;
+            String registrationUrl = "http://localhost:4200/register" + "?" + activationCode;
 
             // Read the email template HTML file
             ClassPathResource emailTemplate = new ClassPathResource("emailtemplate.html");
