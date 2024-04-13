@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 
 import { Router } from '@angular/router';
 import { ReponseService } from 'src/app/services/reponse.service';
+import { Role } from 'src/app/models/Role';
 
 
 
@@ -120,8 +121,20 @@ export class ReclamationComponent {
       description: description,
       typeReclamation: typeReclamation,
       reponse: [],
-      expense: { idexpense: idexpense, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD, qrCodeData:'',
-      qrCodeImageUrl:'',  statusPayment:StatusPayment.NONPAYE ,project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,}
+      expense: { idexpense: idexpense, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD, 
+        statusPayment:StatusPayment.NONPAYE ,project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,user: {
+        id: 1,
+        firstName: 'John',
+        lastName: 'Doe',
+        cin: 1234567890,
+        phoneNumber: 123456789,
+        address: '123 Main St',
+        birthday: new Date('1990-01-01'),
+        recdate: new Date(),
+        role: Role.Consultant, // Par exemple, définissez le rôle de l'utilisateur
+        email: 'john.doe@example.com',
+        expense: [] // Laissez vide ou mettez à jour avec les dépenses de l'utilisateur si nécessaire
+      }}
     };
 
     const CommentaireData: Reclamation = this.reclamationForm.value;

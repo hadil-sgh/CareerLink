@@ -25,8 +25,7 @@ public class Expense implements Serializable {
     private Date dateexpense;
     String category;
 
-    private String qrCodeData;
-    private String qrCodeImageUrl;
+
 
     @Enumerated(EnumType.STRING)
     private MethodPayment methodPayment;
@@ -40,7 +39,8 @@ public class Expense implements Serializable {
     @JsonIgnore
     @OneToOne
     Reclamation reclamation;
-
+    @ManyToOne
+    User user;
 
 
 }

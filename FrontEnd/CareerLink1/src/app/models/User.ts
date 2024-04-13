@@ -1,4 +1,5 @@
 import { Role } from "./Role";
+import { Expense } from "./Expense";
 
 export class User{
     id!:number;
@@ -10,6 +11,7 @@ export class User{
     birthday!:Date;
     recdate!:Date;
     role!:Role;
-    email!:String;
+    email!:string;
+    expense!: Expense[];
    
 }

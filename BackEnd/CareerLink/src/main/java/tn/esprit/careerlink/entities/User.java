@@ -55,5 +55,7 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany
     Set<Message> messages;
-
+    @JsonIgnore
+    @OneToMany( mappedBy="user")
+    Set<Expense> expense;
 }

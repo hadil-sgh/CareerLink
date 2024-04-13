@@ -1,6 +1,7 @@
 
 import {Project } from "./Project";
 import { Reclamation } from "./Reclamation";
+import { User } from "./User";
 
 import { MethodPayment } from "./methodPayment";
 import { StatusPayment } from "./statuspayment";
@@ -13,10 +14,10 @@ export class Expense {
     dateexpense!: Date;
     category!: string;
     methodPayment!:MethodPayment;
-    qrCodeData!:string;
-     qrCodeImageUrl!:string;
+    
     statusPayment!:StatusPayment;
-   
+
+   user: User = new User();
     project: Project = new Project(); 
     reclamation!:Reclamation[];
     

@@ -39,10 +39,14 @@ public class ExpenseController {
     public Expense getExpense(@PathVariable ("id") Integer idexpense) {
         return expenseService.getExpense(idexpense);
     }
-    @PostMapping("/{idProject}/addAndAffect")
-    public ResponseEntity<Expense> addExpenseAndAffect(@PathVariable Integer idProject,  @RequestBody Expense expense) {
-        Expense addExpenseAndAffect =expenseService.addExpenseAndAffect(idProject,expense);
-        return ResponseEntity.ok(addExpenseAndAffect);
+    @PostMapping("/{idProject}/addAndAffect/{userId}")
+    public ResponseEntity<Expense> addExpenseAndAffect(
+            @PathVariable Integer idProject,
+            @PathVariable Integer userId,
+            @RequestBody Expense expense) {
+
+        Expense addedExpense = expenseService.addExpenseAndAffect(idProject, userId, expense);
+        return ResponseEntity.ok(addedExpense);
     }
 
 

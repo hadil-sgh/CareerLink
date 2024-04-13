@@ -6,6 +6,9 @@ import { ExpenseService } from 'src/app/services/expense.service';
 import { combineLatest } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { StatusPayment } from 'src/app/models/statuspayment';
+import { Role } from 'src/app/models/Role';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/User';
 
 
 
@@ -19,21 +22,33 @@ export class ExpenseComponent {
   search: string = '';
   filteredExpenses: Expense[] = [];
 
-  constructor(private expenseService: ExpenseService, private datePipe: DatePipe, private fb: FormBuilder) { }
+  constructor(private expenseService: ExpenseService, private datePipe: DatePipe,private userservice: UserService, private fb: FormBuilder) { }
   expenses: Expense[] = [];
   expenseForm!: FormGroup;
   selectedExpense: Expense | null = null;
   projects: Project[] = [];
-  email= 'aziz.abidi@esprit.tn'; 
-  subject= 'Confirmation de votre payement'; 
-  corp= 'Cher Utilisateur,votre payement a ete effectue avec succes '; 
+  filteredProjects: Project[] = [];
+  users: User[] = [];
+  email = '';
+  subject = "Confirmation de paiement réussi";
+corp = "Cher Utilisateur,\n\nNous sommes ravis de vous informer que votre paiement a été effectué avec succès. Nous vous remercions pour votre transaction.\n\nCordialement,\nL'équipe de CareerLink";
 
   ngOnInit(): void {
     this.loadExpenses();
     this.loadProjects(); // Chargez les projets au démarrage du composant
     this.createForm();
+    this.loadUsers();
   }
-  
+  loadUsers(): void {
+    this.userservice.findAllUsers()
+      .subscribe(
+        users => {
+          this.users = users;
+          console.log('Utilisateurs chargés avec succès :', users);
+        },
+        error => console.error('Erreur lors du chargement des utilisateurs :', error)
+      );
+  }
   loadProjects(): void {
     this.expenseService.getAllProjects()
       .subscribe(
@@ -68,36 +83,38 @@ export class ExpenseComponent {
 }
 
 
-  createForm(): void {
-    const currentDate = new Date();
-    const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
-    this.expenseForm = this.fb.group({
-      category: ['', [Validators.required]],
-      dateexpense: [formattedDate, [Validators.required]],
-      methodPayment: ['', [Validators.required]],
-      unitPrice: ['', [Validators.required]],
-      quantity: ['', [Validators.required]],
-      amount: ['', [Validators.required]],
-      projectId: ['', [Validators.required]],
-      statusPayment: ['NONPAYE', [Validators.required]]   // Modifier le type de projectId en string
-     
-    });
+createForm(): void {
+  this.expenseForm = this.fb.group({
+    userId: ['', [Validators.required]],
+    dateexpense: [new Date().toISOString().split('T')[0], [Validators.required]],
+   
+    amount: ['', [Validators.required]],
+    category: ['', [Validators.required]],
+    methodPayment: ['CASH', [Validators.required]],
+    projectId: ['', [Validators.required]],
+    statusPayment: ['NONPAYE', [Validators.required]]
+  });
+
+  this.expenseForm.get('userId')!.valueChanges.subscribe(userId => {
+    if (userId) {
+      const user = this.users.find(u => u.id === userId);
+      if (user) {
+        this.filteredProjects = this.expenses.filter(expense => expense.user?.id === userId).map(expense => expense.project);
+      } else {
+        this.filteredProjects = [];
+      }
+    } else {
+      this.filteredProjects = [];
+    }
+  });
 
 
     // Observer les changements dans les champs quantity et unitPrice
-    combineLatest([
-      this.expenseForm.get('quantity')!.valueChanges,
-      this.expenseForm.get('unitPrice')!.valueChanges
-    ]).subscribe(([quantity, unitPrice]) => {
-      // Calculer le montant (amount) en multipliant la quantité par le prix unitaire
-      const amount = (quantity && unitPrice) ? (quantity * unitPrice) : null;
-      // Mettre à jour la valeur du champ amount dans le formulaire
-      this.expenseForm.get('amount')!.patchValue(amount, { emitEvent: false });
-    });
+   
   }
 
   addExpenseAndAffect(): void {
-    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,qrCodeData,qrCodeImageUrl,statusPayment } = this.expenseForm.value;
+    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,userId,qrCodeData,qrCodeImageUrl,statusPayment } = this.expenseForm.value;
   
     const expense: Expense = {
       idexpense: 0, // Définir l'idexpense, ou la valeur appropriée si elle est générée automatiquement
@@ -107,15 +124,27 @@ export class ExpenseComponent {
       unitPrice: unitPrice,
       quantity: quantity,
       amount: amount,
-      qrCodeData:  qrCodeData,
-        qrCodeImageUrl: qrCodeImageUrl,
+      
         statusPayment:statusPayment ,
+        user: {
+          id: userId,
+          firstName: 'John',
+          lastName: 'Doe',
+          cin: 1234567890,
+          phoneNumber: 123456789,
+          address: '123 Main St',
+          birthday: new Date('1990-01-01'),
+          recdate: new Date(),
+          role: Role.Consultant, // Par exemple, définissez le rôle de l'utilisateur
+          email: 'john.doe@example.com',
+          expense: [] // Laissez vide ou mettez à jour avec les dépenses de l'utilisateur si nécessaire
+        },
       // Définir la réclamation si nécessaire, sinon null
       project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},
       reclamation:[]
     };
   
-    this.expenseService.addExpenseAndAffect(projectId, expense) // Utilisez la fonction addExpenseAndAffect() du service
+    this.expenseService.addExpenseAndAffect(projectId, userId,expense) // Utilisez la fonction addExpenseAndAffect() du service
       .subscribe(
         () => {
           console.log('success, addExpenseAndAffect');
@@ -140,8 +169,7 @@ export class ExpenseComponent {
     const currentDate = new Date(); // Obtenir la date actuelle
     this.expenseForm.patchValue({
       category: expense.category,
-      unitPrice: expense.unitPrice,
-      quantity: expense.quantity,
+      
       methodPayment: expense.methodPayment,
       dateexpense:currentDate.toISOString().split('T')[0], 
       statusPayment:expense.statusPayment,
@@ -152,6 +180,7 @@ export class ExpenseComponent {
     } else {
       this.expenseForm.get('projectId')!.enable(); // Activer le champ projectId
     }
+    this.expenseForm.get('userId')!.disable();
     this.expenseForm.get('statusPayment')!.disable();
   }
   
@@ -194,13 +223,26 @@ export class ExpenseComponent {
     } else {
       // Mettre à jour le statut de paiement en "PAYE"
       expense.statusPayment = StatusPayment.PAYE;
-
+  
       // Appeler le service pour mettre à jour l'expense dans la base de données
       this.expenseService.updateExpense(expense).subscribe(
         updatedExpense => {
-          console.log('Statut de paiement mis à jour avec succès :', updatedExpense);
-          alert("Statut de paiement mis à jour avec succès.");
-          this.sendEmail();
+          const associatedUser = this.users.find(user => user.id === expense.user.id);
+          if (associatedUser) {
+            const userName = associatedUser.firstName;
+  
+            // Récupérer le montant payé
+            const amountPaid = expense.amount;
+
+            // Modifier le corps de l'e-mail pour inclure le nom de l'utilisateur et le montant payé
+            const emailBody = `Cher ${userName},\n\nNous sommes ravis de vous informer que votre paiement de ${amountPaid}DT a été effectué avec succès. Nous vous remercions.\n\nCordialement,\nL'équipe de CareerLink`;
+
+            // Envoyer l'e-mail avec le nouveau corps
+            this.sendEmail(associatedUser.email, this.subject, emailBody);
+            alert("paiment reussit et un email sera envoyer au utlisateur  .");
+          } else {
+            console.error('Utilisateur associé non trouvé pour l\'expense :', expense);
+          }
         },
         error => {
           console.error('Erreur lors de la mise à jour du statut de paiement :', error);
@@ -209,19 +251,14 @@ export class ExpenseComponent {
       );
     }
   }
-  sendEmail() {
-    
   
-     
-      
-    this.expenseService.sendEmail(this.email, this.subject, this.corp).subscribe(
+  sendEmail(userEmail: string, subject: string, body: string): void {
+    this.expenseService.sendEmail(userEmail, subject, body).subscribe(
       response => {
         console.log('Email envoyé avec succès :', response);
-        // Traitez la réponse de l'API
       },
       error => {
         console.error('Erreur lors de l\'envoi de l\'email :', error);
-        // Gérez l'erreur
       }
     );
   }

@@ -48,8 +48,8 @@ export class ExpenseService {
   deleteExpense(id: number) : Observable<void> {
     return this.http.delete <void> ( this.baseUrl + 'delete/' + id )
   }
-  addExpenseAndAffect(idProject: number, expense: Expense): Observable<any> {
-    return this.http.post<Expense>(`${this.baseUrl}${idProject}/addAndAffect`, expense);
+  addExpenseAndAffect(idProject: number, userId: number, expense: Expense): Observable<any> {
+    return this.http.post<Expense>(`${this.baseUrl}${idProject}/addAndAffect/${userId}`, expense);
   }
   tri(){
     return this.http.get<Expense[]>( this.baseUrl + 'tri');

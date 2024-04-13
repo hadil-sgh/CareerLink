@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.careerlink.entities.Expense;
 import tn.esprit.careerlink.entities.Project;
+import tn.esprit.careerlink.entities.User;
 import tn.esprit.careerlink.repositories.ExpenseRepository;
 import tn.esprit.careerlink.repositories.ProjectRepository;
+import tn.esprit.careerlink.repositories.UserRepository;
 import tn.esprit.careerlink.services.IExpenseService;
 
 import java.util.List;
@@ -24,7 +26,8 @@ public class ExpenseServiceImpl implements IExpenseService {
     ExpenseRepository expenseRepository;
     @Autowired
     ProjectRepository projectRepository;
-
+    @Autowired
+    UserRepository userRepository;
 
 
 
@@ -77,23 +80,30 @@ public class ExpenseServiceImpl implements IExpenseService {
 
         return expense;
     }
-    @Override
-    public Expense addExpenseAndAffect(Integer idProject, Expense expense) {
-        expense =calculateExpenseAmount(expense);
+    public Expense addExpenseAndAffect(Integer idProject, Integer userId, Expense expense) {
+        
         Optional<Project> projectOptional = projectRepository.findById(idProject);
 
-        if (projectOptional.isPresent() ) {
+        if (projectOptional.isPresent()) {
             Project project = projectOptional.get();
 
+            // Récupérer l'utilisateur à partir de son identifiant
+            Optional<User> userOptional = userRepository.findById(userId);
 
-            expense.setProject(project);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                expense.setUser(user); // Affecter l'utilisateur à l'expense
 
-            return  expenseRepository.save(expense);
-        }else {
-            throw new EntityNotFoundException("project not found");
+                expense.setProject(project);
+                return expenseRepository.save(expense);
+            } else {
+                throw new EntityNotFoundException("User not found with id: " + userId);
+            }
+        } else {
+            throw new EntityNotFoundException("Project not found with id: " + idProject);
         }
-
     }
+
 
     @Override
     public List<Expense> tri() {

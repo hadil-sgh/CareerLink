@@ -13,7 +13,7 @@ public interface IExpenseService {
     List<Expense> getAllExpense();
     Expense getExpense (Integer idexpense);
     Expense calculateExpenseAmount(Expense expense);
-    Expense addExpenseAndAffect(Integer idProject, Expense expense);
+    Expense addExpenseAndAffect(Integer idProject, Integer userId,Expense expense);
 
     public List<Expense> tri() ;
 
