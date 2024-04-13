@@ -147,20 +147,7 @@ export class TimeofftrackerComponent {
 
 
   
-  edittimeoff(timeoff: TimeOffTracker): void {
- 
 
-    this.selectedtimesOff = timeoff;
-    this.timeoffForm.patchValue({
-  
-      type :timeoff.type,
-      description :timeoff.description,
-      fromDate :  timeoff.fromDate,
-      toDate : timeoff.toDate
-     
-    });
-   }
- 
 
  
   

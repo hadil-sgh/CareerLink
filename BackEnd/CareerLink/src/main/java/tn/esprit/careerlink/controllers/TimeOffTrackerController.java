@@ -74,6 +74,7 @@ public class TimeOffTrackerController {
         return offTrackerService.calculateLeaveStatistics(year);
     }
     @PutMapping("/update/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
     public TimeOffTracker updateleave(@RequestBody TimeOffTracker lea, @PathVariable int id) {
         TimeOffTracker leave = timeOffTrackerService.getOneLeave(id);
         leave.setType(lea.getType());

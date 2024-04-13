@@ -58,9 +58,10 @@ export class TimeofftrackerService {
     }
     updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
-      const url = `${this.baseUrl}update/${id}/${timeoff}`;
-      return this.http.put<any>(url,{}, {headers});
+      const url = `${this.baseUrl}update/${id}`;
+      return this.http.put<any>(url,timeoff, {headers});
     }
+    
     updateStatus(id: number, newStatus: string): Observable<any> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       const url = `${this.baseUrl}status/${id}/${newStatus}`; // Constructing the URL properly
