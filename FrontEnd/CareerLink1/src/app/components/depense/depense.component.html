@@ -9,6 +9,7 @@
                     <div class="col mb-4">
                         <div class="card shadow-sm expense-card">
                             <div class="card-body">
+                                <p class="card-text"><strong>User:</strong> {{expense.user ? expense.user.firstName : 'N/A'}}</p>
                                 <p class="card-text"><strong>Project:</strong> {{ expense.project ? expense.project.name : 'N/A' }}</p>
                                 <p class="card-text"><strong>Amount:</strong> {{ expense.amount }}</p>
                                 <p class="card-text"><strong>Date:</strong> {{ expense.dateexpense | date }}</p>
@@ -16,14 +17,20 @@
                                 <p class="card-text"><strong>Method Payment:</strong> {{ expense.methodPayment }}</p>
                                 <p class="card-text"><strong>Status :</strong> {{ expense.statusPayment ? expense.statusPayment : 'N/A' }}</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <!-- Bouton "Pay" avec style amélioré -->
-                                    <button class="btn btn-success" (click)="payExpense(expense)" [disabled]="expense.statusPayment === 'PAYE'">
-                                        <i class="fas fa-money-bill-alt mr-2"></i> Pay
+                                    <!-- Bouton "Pay" avec style personnalisé -->
+                                    <button type="button" class="btn" [ngClass]="{'btn-success': expense.statusPayment !== 'PAYE', 'btn-dark': expense.statusPayment === 'PAYE'}" (click)="payExpense(expense)" [disabled]="expense.statusPayment === 'PAYE'">
+                                        <i class="fas fa-money-bill-alt mr-2"></i> {{ expense.statusPayment === 'PAYE' ? 'Paid✔️' : 'Pay💲' }}
+                                        <ng-container *ngIf="expense.statusPayment === 'PAYE'">
+                                            <i class="fas fa-check-circle text-success ml-1"></i>
+                                        </ng-container>
                                     </button>
-                                    <!-- Bouton "Claim" avec style amélioré -->
-                                    <button type="button" class="btn btn-warning" [disabled]="hasReclamation(expense)" [routerLink]="['/Employee/reclamation', expense.idexpense]">
-                                        <i class="fas fa-bullhorn mr-2"></i> Claim
-                                    </button>
+                                    
+                                    <!-- Affiche le bouton "Claim" seulement si le paiement n'est pas effectué -->
+                                    <ng-container *ngIf="expense.statusPayment !== 'PAYE'">
+                                        <button type="button" class="btn btn-warning" [disabled]="hasReclamation(expense)" [routerLink]="['/Employee/reclamation', expense.idexpense]">
+                                            <i class="fas fa-bullhorn mr-2"></i> {{ hasReclamation(expense) ? 'Claimed' : 'Claim📣' }}
+                                        </button>
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>

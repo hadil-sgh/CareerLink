@@ -49,13 +49,18 @@ corp = "Cher Utilisateur,\n\nNous sommes ravis de vous informer que votre paieme
         error => console.error('Erreur lors du chargement des utilisateurs :', error)
       );
   }
+  
   loadProjects(): void {
     this.expenseService.getAllProjects()
       .subscribe(
-        projects => this.projects = projects,
+        projects => {
+          this.projects = projects;
+          this.filteredProjects = projects; // Copiez tous les projets dans filteredProjects
+        },
         error => console.error('error, getAllProjects', error)
       );
   }
+  
   
   loadExpenses(): void {
     this.filteredExpenses = this.expenses;
@@ -95,26 +100,14 @@ createForm(): void {
     statusPayment: ['NONPAYE', [Validators.required]]
   });
 
-  this.expenseForm.get('userId')!.valueChanges.subscribe(userId => {
-    if (userId) {
-      const user = this.users.find(u => u.id === userId);
-      if (user) {
-        this.filteredProjects = this.expenses.filter(expense => expense.user?.id === userId).map(expense => expense.project);
-      } else {
-        this.filteredProjects = [];
-      }
-    } else {
-      this.filteredProjects = [];
-    }
-  });
-
-
+  
+  
     // Observer les changements dans les champs quantity et unitPrice
    
   }
 
   addExpenseAndAffect(): void {
-    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,userId,qrCodeData,qrCodeImageUrl,statusPayment } = this.expenseForm.value;
+    const { category, dateexpense, methodPayment, unitPrice, quantity, amount, projectId,userId,statusPayment } = this.expenseForm.value;
   
     const expense: Expense = {
       idexpense: 0, // Définir l'idexpense, ou la valeur appropriée si elle est générée automatiquement
@@ -140,7 +133,7 @@ createForm(): void {
           expense: [] // Laissez vide ou mettez à jour avec les dépenses de l'utilisateur si nécessaire
         },
       // Définir la réclamation si nécessaire, sinon null
-      project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},
+      project: { idProject: projectId, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [],},
       reclamation:[]
     };
   

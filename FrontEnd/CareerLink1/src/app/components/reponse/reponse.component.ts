@@ -110,7 +110,7 @@ loadReponses(): void {
         typeReclamation: TypeReclamation.EXCESSIVE_EXPENSES, 
         reponse: [],
         expense: { idexpense: 0, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD,  
-        statusPayment:StatusPayment.NONPAYE , project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,user: {
+        statusPayment:StatusPayment.NONPAYE , project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [],user: {
           id: 1,
           firstName: 'John',
           lastName: 'Doe',

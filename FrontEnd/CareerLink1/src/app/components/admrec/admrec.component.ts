@@ -52,8 +52,11 @@ export class AdmrecComponent {
   }
   
   hasResponse(reclamation: Reclamation): boolean {
-    return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
+    const hasResponse = this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
+    console.log('Réclamation', reclamation.idreclamation, 'a une réponse ?', hasResponse);
+    return hasResponse;
   }
+  
   
 
 }

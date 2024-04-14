@@ -18,6 +18,7 @@ public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Integer idProject;
     String name;
     String description;
@@ -32,5 +33,7 @@ public class Project implements Serializable {
     Set<Expense> expense;
     @OneToMany (mappedBy = "project")
     Set<Payment> payments;
+
+
 
 }

@@ -1,6 +1,7 @@
 import { Role } from "./Role";
 import { Expense } from "./Expense";
 
+
 export class User{
     id!:number;
     firstName!:String;

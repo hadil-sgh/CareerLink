@@ -17,17 +17,17 @@
             <td>{{ reclamation.description }}</td>
             <td>{{ reclamation.typeReclamation }}</td>
             <td class="text-center align-middle">
-              <!-- Utilisez [disabled] pour désactiver le bouton "Answer" si une réponse existe -->
+              <!-- Utilisez *ngIf pour afficher le bon bouton en fonction de hasResponse(reclamation) -->
               <ng-container *ngIf="!hasResponse(reclamation)">
                 <button type="button" class="btn btn-lg btn-info" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
               </ng-container>
               <ng-container *ngIf="hasResponse(reclamation)">
-                <button type="button" class="btn btn-lg btn-info" [routerLink]="['/admin/reponse', reclamation.idreclamation]" [disabled]="true">Answer</button>
+                <button type="button" class="btn btn-lg btn-info" [disabled]="true">Already Answered</button>
               </ng-container>
             </td>
           </tr>
           <!-- Ajouter une condition si la liste de réclamations est vide -->
-          <tr *ngIf="Reponses.length === 0">
+          <tr *ngIf="reclamations.length === 0">
             <td colspan="4" class="text-center">No reclamations found.</td>
           </tr>
         </tbody>

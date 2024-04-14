@@ -58,4 +58,6 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany( mappedBy="user")
     Set<Expense> expense;
+    
+
 }

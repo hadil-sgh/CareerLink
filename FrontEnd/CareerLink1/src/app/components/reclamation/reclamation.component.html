@@ -27,9 +27,9 @@
               <thead class="thead-dark">
                 <tr>
                   <th style="width: 25%;">DATE</th>
-                  <th style="width: 50%;">DESCRIPTION</th>
+                  <th style="width: 40%;">DESCRIPTION</th>
                   <th style="width: 25%;">TYPE</th>
-                  <th style="width: 0;">ACTION</th> <!-- Cellule vide pour aligner avec les boutons du formulaire -->
+                  <th style="width: 10%;">ACTION</th> <!-- Cellule vide pour aligner avec les boutons du formulaire -->
                 </tr>
               </thead>
               <tbody>
@@ -38,12 +38,13 @@
                   <td>{{ reclamation.description }}</td>
                   <td>{{ reclamation.typeReclamation }}</td>
                   <td class="button-cell">
-                    <button type="button" class="btn btn-success btn-sm" (click)="editReclamation(reclamation)" [disabled]="hasResponse(reclamation)">
-                      Edit
-                    </button>
-                    <button type="button" class="btn btn-dark btn-sm" (click)="deleteReclamation(reclamation.idreclamation)" [disabled]="hasResponse(reclamation)">
-                      Delete
-                    </button>
+                    <button type="button" class="btn btn-success btn-sm" (click)="editReclamation(reclamation)" *ngIf="!hasResponse(reclamation)">
+                        Edit
+                      </button>
+                      <!-- Afficher le bouton "Delete" uniquement si l'utilisateur peut supprimer -->
+                      <button type="button" class="btn btn-dark btn-sm" (click)="deleteReclamation(reclamation.idreclamation)" *ngIf="!hasResponse(reclamation)">
+                        Delete
+                      </button>
                     <button type="button" class="btn btn-warning btn-sm" *ngIf="hasResponse(reclamation)" [routerLink]="['/Employee/checkreponse', reclamation.idreclamation]">
                       Check Answer
                     </button>

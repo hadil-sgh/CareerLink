@@ -2,6 +2,7 @@
 import { Team } from "./Team";
 import { Task } from "./Task";
 import { Expense } from "./Expense";
+import { User } from "./User";
 
 export class Project {
     idProject!: number;
@@ -12,5 +13,5 @@ export class Project {
     teams!: Team[];
     tasks!: Task[];
     expense!: Expense[];
- 
+  
   }   

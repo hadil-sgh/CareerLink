@@ -81,7 +81,7 @@ public class ExpenseServiceImpl implements IExpenseService {
         return expense;
     }
     public Expense addExpenseAndAffect(Integer idProject, Integer userId, Expense expense) {
-        
+
         Optional<Project> projectOptional = projectRepository.findById(idProject);
 
         if (projectOptional.isPresent()) {
