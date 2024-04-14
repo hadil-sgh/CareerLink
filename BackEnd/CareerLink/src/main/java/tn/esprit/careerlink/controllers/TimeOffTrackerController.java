@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.careerlink.services.Impl.TimeOffTrackerServiceImpl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,21 +91,28 @@ public class TimeOffTrackerController {
     public ResponseEntity<?> updateStatus(@PathVariable Integer id, @PathVariable LeaveStatus newStatus) {
         try {
             timeOffTrackerService.updateStatus(id, newStatus);
-            String recipientEmail = timeOffTrackerService.getOneLeave(id).getUser().getEmail();
-            String name = timeOffTrackerService.getOneLeave(id).getUser().getFirstName();
-            String lastName = timeOffTrackerService.getOneLeave(id).getUser().getLastName();
+            TimeOffTracker leave = timeOffTrackerService.getOneLeave(id);
+            String recipientEmail = leave.getUser().getEmail();
+            String firstName = leave.getUser().getFirstName();
+            String lastName = leave.getUser().getLastName();
 
             String subject = "Your time off request status has been updated";
-            String body = "Dear "+lastName+" "+name+", Your time off request status has been updated to: " + newStatus;
+
+            // Construct map of placeholders and values
+            Map<String, String> placeholders = new HashMap<>();
+            placeholders.put("USER_FIRST_NAME", firstName + " " + lastName);
+            placeholders.put("TIMEOFF_STATUS", newStatus.toString());
+            placeholders.put("TIMEOFF_STATUS_CLASS", newStatus == LeaveStatus.Accepted ? "accepted" : "rejected");
 
             // Send email
-            emailService.send(recipientEmail, subject, body);
+            emailService.send(recipientEmail, subject, placeholders);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
     @PostMapping("/send-email")
@@ -115,7 +123,7 @@ public class TimeOffTrackerController {
             // Extract email details from the request
 
             // Call the email sending service
-            emailService.send(recipientEmail, sub,emailContent);
+          //  emailService.send(recipientEmail, sub,emailContent);
 
             return ResponseEntity.ok("Test email sent successfully!");
         } catch (Exception e) {
