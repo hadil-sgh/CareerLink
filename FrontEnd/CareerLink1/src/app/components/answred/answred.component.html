@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reponse Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Style pour les alertes */
+    .alert {
+      margin-top: 5px;
+    }
+
+    /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
+    .action-column, .action-cell {
+        border-right: 2px solid #c5bebe; /* Ajouter une bordure droite */
+    }
+  
+    /* Espace entre les boutons */
+    .button-space {
+        margin-right: 10px;
+    }
+
+    /* Espace entre les boutons de la première ligne */
+    .button-space1 {
+        margin-right: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="card-body">
+      <div>
+        <h5 class="card-header">Reponse List</h5>
+
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+                <th>DATERECLAMATION</th>
+              <th>DESCRIPTION</th>
+              <th class="action-column">TYPE</th>
+              <th>DATEREPONSE</th>
+              <th>REPONSE</th>
+             
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reponse of reponses">
+                <td>{{ reponse.reclamation.datereclamation | date }}</td>
+              <td>{{ reponse.reclamation.description}}</td>
+              <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
+              <td>{{ reponse.datereponse | date }}</td>
+              <td>{{ reponse.reponsecontent }}</td>
+              
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Scripts -->
+  <!-- Angular Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+

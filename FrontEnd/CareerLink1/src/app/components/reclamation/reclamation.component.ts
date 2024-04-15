@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ReponseService } from 'src/app/services/reponse.service';
 import { Role } from 'src/app/models/Role';
+import { SharedService } from 'src/app/shared.service';
 
 
 
@@ -25,7 +26,7 @@ import { Role } from 'src/app/models/Role';
   styleUrls: ['./reclamation.component.css']
 })
 export class ReclamationComponent {
-  constructor(private reclamationService: ReclamationService,private expenseService:ExpenseService ,private reponseservice:ReponseService,  private datePipe: DatePipe // Injectez DatePipe ici
+  constructor(private reclamationService: ReclamationService,private sharedService: SharedService,private expenseService:ExpenseService ,private reponseservice:ReponseService,  private datePipe: DatePipe // Injectez DatePipe ici
   , private route: ActivatedRoute, private fb: FormBuilder,private router: Router) { }
   reclamations: Reclamation[] = [];
  reclamationForm!: FormGroup;
@@ -33,9 +34,11 @@ export class ReclamationComponent {
  Reponses: Reponse[] = [];
   expenses:Expense[] = [];
   selectedExpense: Expense | null = null;
-
+  showAddReclamationForm = true; // Variable pour contrôler l'affichage du formulaire d'ajout
+  showAddButton: boolean = true;
   idexpense: number | undefined;
   forbiddenWords=['mot1','fuck','null'];
+  
   ngOnInit(): void {
     this.loadReclamations();
     this.createForm();
@@ -50,6 +53,9 @@ export class ReclamationComponent {
           // Gérer le cas où l'ID n'est pas trouvé dans les paramètres de l'URL
       }
   });
+  }
+  toggleAddReclamationForm(): void {
+    this.sharedService.toggleAddReclamationForm();
   }
   hasResponse(reclamation: Reclamation): boolean {
     return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);

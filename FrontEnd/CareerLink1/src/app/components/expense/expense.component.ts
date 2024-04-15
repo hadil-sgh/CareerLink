@@ -9,6 +9,9 @@ import { StatusPayment } from 'src/app/models/statuspayment';
 import { Role } from 'src/app/models/Role';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/User';
+import { Reclamation } from 'src/app/models/Reclamation';
+import { ReclamationService } from 'src/app/services/reclamation.service';
+import { SharedService } from 'src/app/shared.service';
 
 
 
@@ -22,11 +25,12 @@ export class ExpenseComponent {
   search: string = '';
   filteredExpenses: Expense[] = [];
 
-  constructor(private expenseService: ExpenseService, private datePipe: DatePipe,private userservice: UserService, private fb: FormBuilder) { }
+  constructor(private expenseService: ExpenseService,private sharedService: SharedService ,private datePipe: DatePipe,private userservice: UserService,private reclamationService: ReclamationService, private fb: FormBuilder) { }
   expenses: Expense[] = [];
   expenseForm!: FormGroup;
   selectedExpense: Expense | null = null;
   projects: Project[] = [];
+  reclamations: Reclamation[] = [];
   filteredProjects: Project[] = [];
   users: User[] = [];
   email = '';
@@ -38,6 +42,14 @@ corp = "Cher Utilisateur,\n\nNous sommes ravis de vous informer que votre paieme
     this.loadProjects(); // Chargez les projets au démarrage du composant
     this.createForm();
     this.loadUsers();
+    this.loadReclamations();
+  }
+  loadReclamations(): void {
+    this.reclamationService.findAllReclamation()
+      .subscribe(
+        reclamations => this.reclamations = reclamations,
+        error => console.error('Erreur lors du chargement des réclamations :', error)
+      );
   }
   loadUsers(): void {
     this.userservice.findAllUsers()
@@ -86,6 +98,11 @@ corp = "Cher Utilisateur,\n\nNous sommes ravis de vous informer que votre paieme
       }
     )
 }
+hasReclamation(expense: Expense): boolean {
+  return this.reclamations.some(reclamation => reclamation.expense.idexpense === expense.idexpense);
+}
+
+
 
 
 createForm(): void {

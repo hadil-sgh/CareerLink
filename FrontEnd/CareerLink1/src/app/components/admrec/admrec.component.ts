@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Expense } from 'src/app/models/Expense';
-
+import { Router } from '@angular/router';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
 import { ReclamationService } from 'src/app/services/reclamation.service';
@@ -12,51 +11,51 @@ import { ReponseService } from 'src/app/services/reponse.service';
   templateUrl: './admrec.component.html',
   styleUrls: ['./admrec.component.css']
 })
-export class AdmrecComponent {
-  constructor(private reclamationService: ReclamationService,private reponseservice:ReponseService, private fb: FormBuilder) { }
+export class AdmrecComponent implements OnInit {
   reclamations: Reclamation[] = [];
- reclamationForm!: FormGroup;
-  selectedReclamation: Reclamation | null = null;
+  reclamationForm!: FormGroup;
   Reponses: Reponse[] = [];
-  Expenses: Expense[] = [];
-  
+
+  constructor(
+    private reclamationService: ReclamationService,
+    private reponseservice: ReponseService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadReclamations();
-    this.loadExpenses();
     this.loadReponses();
   }
-  loadReclamations(): void{
+
+  loadReclamations(): void {
     this.reclamationService.findAllReclamation()
-    .subscribe(
-      reclamations => this.reclamations =reclamations,
-      error => console.error('error, getallRec', error)
-    );
+      .subscribe(
+        reclamations => this.reclamations = reclamations,
+        error => console.error('Error loading reclamations:', error)
+      );
   }
-  loadExpenses(): void{
-    this.reclamationService.findAllExpense()
-    .subscribe(
-      Expenses => this. Expenses=  Expenses,
-      error => console.error('error, getallExp', error)
-    );
-  }
+
   loadReponses(): void {
     this.reponseservice.findAllReponse()
-    .subscribe(
-      reponses => {
-        this.Reponses = reponses;
-        console.log('Réponses chargées :', this.Reponses);
-      },
-      error => console.error('Erreur lors du chargement des réponses :', error)
-    );
+      .subscribe(
+        reponses => this.Reponses = reponses,
+        error => console.error('Error loading responses:', error)
+      );
   }
-  
-  hasResponse(reclamation: Reclamation): boolean {
-    const hasResponse = this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
-    console.log('Réclamation', reclamation.idreclamation, 'a une réponse ?', hasResponse);
-    return hasResponse;
-  }
-  
-  
 
+  hasResponse(reclamation: Reclamation): boolean {
+    return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
+  }
+
+  checkAnswer(reclamation: Reclamation): void {
+    if (reclamation.reponse.length === 0) {
+      // Aucune réponse associée à cette réclamation
+      alert('Votre réclamation est en cours de traitement. Merci de vérifier à nouveau plus tard.');
+    } else {
+      // Il y a une réponse associée à cette réclamation
+      // Naviguer vers le chemin approprié pour vérifier la réponse
+      this.router.navigate(['/admin/answred', reclamation.idreclamation]);
+    }
+  }
 }

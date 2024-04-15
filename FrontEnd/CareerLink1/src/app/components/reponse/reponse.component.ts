@@ -17,12 +17,14 @@ import { Role } from 'src/app/models/Role';
   styleUrls: ['./reponse.component.css']
 })
 export class ReponseComponent implements OnInit {
+  
   reponses: Reponse[] = [];
   reponseForm!: FormGroup;
   selectedReponse: Reponse | null = null;
   reclamations: Reclamation[] = [];
   selectedReclamation: Reclamation | null = null; 
   reclamationId: number | undefined;
+
   
 
   constructor(

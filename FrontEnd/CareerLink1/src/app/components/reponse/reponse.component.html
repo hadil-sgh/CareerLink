@@ -82,7 +82,7 @@
 
           <div class="form-group">
             <label for="datereponse">Date:</label>
-            <input type="date" formControlName="datereponse" class="form-control" readonly>
+            <input type="date" formControlName="datereponse" class="form-control" id="datereponse">
             <div class="alert alert-danger" *ngIf="reponseForm.controls['datereponse'].invalid && reponseForm.controls['datereponse'].touched">
               <div *ngIf="reponseForm.controls['datereponse'].hasError('required')"> Date is required !</div>
             </div>

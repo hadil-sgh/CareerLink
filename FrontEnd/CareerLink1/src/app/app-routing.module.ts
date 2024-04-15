@@ -15,6 +15,7 @@ import { ReclamationComponent } from './components/reclamation/reclamation.compo
 import { AdmrecComponent } from './components/admrec/admrec.component';
 import { ReponseComponent } from './components/reponse/reponse.component';
 import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
+import { AnswredComponent } from './components/answred/answred.component';
 
 const routes: Routes = [
   {
@@ -27,11 +28,12 @@ const routes: Routes = [
     { path:"taketimeoff",component:TaketimeoffComponent},
     { path:"expense",component:DepenseComponent},
     { path:"checkreponse/:id",component:CheckreponseComponent},
+    { path:"reclamation",component:ReclamationComponent},
     { path: "reclamation/:id", component: ReclamationComponent }, 
    
 
 
-    { path:"reclamation",component:ReclamationComponent}
+    
 
    
     
@@ -50,9 +52,9 @@ const routes: Routes = [
 
     { path:"TimeOffTracker",component:TimeofftrackerComponent},
     { path:"reclamation",component:AdmrecComponent},
-    { path:"reponse",component:ReponseComponent},
+   
     { path: "reponse/:id", component: ReponseComponent }, 
-    
+    { path: "answred/:id", component: AnswredComponent }, 
     { path:"teams",component:TeamComponent}
     ]
   }

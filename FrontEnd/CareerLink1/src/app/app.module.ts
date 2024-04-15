@@ -26,6 +26,7 @@ import { ReponseComponent } from './components/reponse/reponse.component';
 import { CheckreponseComponent } from './components/checkreponse/checkreponse.component';
 import { StripeComponent } from './components/stripe/stripe.component';
 import { DatePipe } from '@angular/common';
+import { AnswredComponent } from './components/answred/answred.component';
 
 
 
@@ -53,6 +54,7 @@ import { DatePipe } from '@angular/common';
     ReponseComponent,
     CheckreponseComponent,
     StripeComponent,
+    AnswredComponent,
     
    
 

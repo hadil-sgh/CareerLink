@@ -13,6 +13,10 @@
     .button-cell {
       white-space: nowrap; /* Empêcher le contenu de se retourner à la ligne */
     }
+     /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
+     .action-column, .action-cell {
+        border-right: 2px solid #000000; /* Ajouter une bordure droite */
+    }
   </style>
   
   <div class="container mt-5">
@@ -26,6 +30,7 @@
             <table class="table table-bordered table-striped text-center custom-table">
               <thead class="thead-dark">
                 <tr>
+                    <th style="width: 25%; " >PROJECT</th>
                   <th style="width: 25%;">DATE</th>
                   <th style="width: 40%;">DESCRIPTION</th>
                   <th style="width: 25%;">TYPE</th>
@@ -34,6 +39,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let reclamation of reclamations">
+                    <td >{{ reclamation.expense.project.name }}</td>
                   <td>{{ reclamation.datereclamation | date }}</td>
                   <td>{{ reclamation.description }}</td>
                   <td>{{ reclamation.typeReclamation }}</td>
@@ -58,6 +64,7 @@
           </div>
         </div>
       </div>
+      
       <div class="col-md-5">
         <div class="card">
           <div class="card-header bg-dark text-white">

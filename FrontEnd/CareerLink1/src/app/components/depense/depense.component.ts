@@ -12,6 +12,7 @@ import { ReclamationService } from 'src/app/services/reclamation.service';
 import { User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { Reclamation } from 'src/app/models/Reclamation';
+import { SharedService } from 'src/app/shared.service';
 
 @Component({
   selector: 'app-depense',
@@ -38,6 +39,7 @@ export class DepenseComponent implements OnInit {
     private fb: FormBuilder,
     private ac: ActivatedRoute,
     private router: Router,
+    private sharedService: SharedService,
     private reclamationService: ReclamationService,
     private http: HttpClient
   ) {
@@ -49,6 +51,9 @@ export class DepenseComponent implements OnInit {
     this.loadProjects();
     this.loadUsers(); // Charger les utilisateurs au chargement du composant
     this.loadReclamations();
+  }
+  toggleAddReclamationForm(): void {
+    this.sharedService.toggleAddReclamationForm();
   }
 
   loadReclamations(): void {
