@@ -10,4 +10,5 @@ public interface IPerformanceService {
     Performance getOnePerformence(Integer idPerformence);
     List<Performance> getAllPerformences();
     void deletePerformence(Integer idPerformence);
+    Integer getCurrentWeekGradeForUser(Integer userId);
 }

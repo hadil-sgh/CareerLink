@@ -11,8 +11,8 @@ import tn.esprit.careerlink.repositories.TimeOffTrackerRepository;
 import tn.esprit.careerlink.repositories.UserRepository;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
 import tn.esprit.careerlink.services.IUserService;
-import tn.esprit.careerlink.services.Impl.EmailService;
-import tn.esprit.careerlink.services.Impl.FileStorage;
+import tn.esprit.careerlink.services.Impl.*;
+
 import java.io.IOException;
 
 import org.springframework.core.io.Resource;
@@ -22,8 +22,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import tn.esprit.careerlink.services.Impl.TimeOffTrackerServiceImpl;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +45,8 @@ public class TimeOffTrackerController {
      IUserService userService;
     EmailService emailService;
     UserRepository userRepository;
+    PerformanceServiceImpl performanceService;
+     TaskService taskService;
     @PostMapping("/add")
     public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
@@ -131,7 +136,16 @@ public class TimeOffTrackerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send test email.");
         }
     }
-
+    @GetMapping("/currentWeek")
+    public ResponseEntity<Integer> getCurrentWeekGrade(@RequestParam int idle ) {
+        int id =  timeOffTrackerService.getOneLeave(idle).getUser().getId();
+        Integer grade = performanceService.getCurrentWeekGradeForUser(id);
+        if (grade != null) {
+            return new ResponseEntity<>(grade, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/getOne/{id}")
     public tn.esprit.careerlink.entities.TimeOffTracker getOneleave(@PathVariable ("id")Integer idLeave){
@@ -200,6 +214,25 @@ public class TimeOffTrackerController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
                 .body(resource);
+    }
+
+    @GetMapping("/tasks/{userId}")
+    public List<Task> getTasksForUserThisMonth(@PathVariable Long userId) {
+        // Calculate the start and end dates for this month
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = currentDate.withDayOfMonth(1);
+        LocalDate endDate = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
+
+        Date startSqlDate = convertToLocalDateViaSqlDate(startDate);
+        Date endSqlDate = convertToLocalDateViaSqlDate(endDate);
+
+        return taskService.getTasksForUserThisMonth(userId, startSqlDate, endSqlDate);
+    }
+
+
+
+    public static Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
+        return java.sql.Date.valueOf(dateToConvert);
     }
 }
 

@@ -8,8 +8,8 @@ import lombok.experimental.FieldDefaults;
 import java.io.Serializable;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults (level = AccessLevel.PRIVATE)
@@ -19,7 +19,8 @@ public class Performance implements Serializable {
     Integer id;
     Integer grade;
     String comment;
-    String week;
+    int week;
     @ManyToOne(fetch = FetchType.EAGER)
     User user;
+
 }

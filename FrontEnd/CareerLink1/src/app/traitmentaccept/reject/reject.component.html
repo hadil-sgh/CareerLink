@@ -9,6 +9,16 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="timeoffForm">
+
+            <div>
+              <label for="star-rating">Current Month Grade</label>
+              <div class="star-rating">
+                <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
+              </div>
+            </div>
+            
+            
+            
             <div class="mb-3">
               <div class="form-group">
                 <label for="status" class="form-label">Status</label>
@@ -58,5 +68,16 @@
     height: auto; 
     margin-right: 5px; 
   }
-  
+  .star-rating {
+  font-size: 24px;
+}
+
+.star {
+  color: gray;
+}
+
+.checked {
+  color: gold;
+}
+
   </style>
