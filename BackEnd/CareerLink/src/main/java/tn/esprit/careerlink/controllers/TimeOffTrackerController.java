@@ -47,6 +47,8 @@ public class TimeOffTrackerController {
     UserRepository userRepository;
     PerformanceServiceImpl performanceService;
      TaskService taskService;
+     BlackoutperiodsService blackoutperiodsService;
+     DaysoffbyroleService daysoffbyroleService;
     @PostMapping("/add")
     public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
@@ -229,7 +231,26 @@ public class TimeOffTrackerController {
         return taskService.getTasksForUserThisMonth(userId, startSqlDate, endSqlDate);
     }
 
-
+    @PostMapping("/adddaysoff")
+    public Daysoffbyrole addDaysoffbyrole(@RequestBody Daysoffbyrole daysoffbyrole){
+        return daysoffbyroleService.adddaysoffbyrole(daysoffbyrole);
+    }
+    @PutMapping("/updatedayoff")
+    public Daysoffbyrole updatedayoff(@RequestBody Daysoffbyrole expense){
+        return daysoffbyroleService.updatedaysoffbyrole(expense);
+    }
+    @DeleteMapping("/deletedayoff/{id}")
+    public void deletedayoff(@PathVariable ("id")Integer idexpense) {
+        daysoffbyroleService.deletedaysoffbyrole(idexpense);
+    }
+    @GetMapping("/getAlldayoff")
+    public List<Daysoffbyrole> getAlldayoff(){
+        return daysoffbyroleService.getAlldaysoffbyroles();
+    }
+    @PostMapping("/addblackout")
+    public Blackoutperiods addBlackoutperiods(@RequestBody Blackoutperiods blackoutperiods){
+        return blackoutperiodsService.addBlackoutperiods(blackoutperiods);
+    }
 
     public static Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);

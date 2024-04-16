@@ -1,0 +1,67 @@
+<div class="row mt-3">
+    <div class="col-md-12">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-header">Daysoff List</h5>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Role</th>
+                <th>Days Off</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let daysoff of daysoffList">
+                <td>{{ daysoff.role }}</td>
+                <td>{{ daysoff.daysoff }}</td>
+                <td>
+                  <button type="button" class="btn btn-outline-primary m-1" (click)="editDaysoff(daysoff)">Edit</button>
+                  <button type="button" class="btn btn-outline-danger m-1" (click)="deleteDaysoff(daysoff.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row mt-3">
+    <div class="col-md-7">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-header">{{ selectedDaysoff ? 'Edit Daysoff' : 'Add Daysoff' }}</h5>
+          <form [formGroup]="daysoffForm" (ngSubmit)="selectedDaysoff ? updateDaysoff() : addDaysoff()">
+            <div class="mb-3">
+              <label for="role" class="form-label">Role:</label>
+              <select id="role" class="form-control" formControlName="role">
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
+            </div>
+            <div class="alert alert-danger" *ngIf="daysoffForm.controls['role'].invalid && daysoffForm.controls['role'].touched">
+              <div *ngIf="daysoffForm.controls['role'].hasError('required')"> Role is required!</div>
+            </div>
+            <div class="mb-3">
+              <label for="daysoff" class="form-label">Days Off:</label>
+              <input type="number" id="daysoff" class="form-control" formControlName="daysoff">
+            </div>
+            <div class="alert alert-danger" *ngIf="daysoffForm.controls['daysoff'].invalid && daysoffForm.controls['daysoff'].touched">
+              <div *ngIf="daysoffForm.controls['daysoff'].hasError('required')"> Days Off is required!</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-primary" [disabled]="!selectedDaysoff && daysoffForm.invalid">
+                  {{ selectedDaysoff ? 'Update Daysoff' : 'Add Daysoff' }}
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

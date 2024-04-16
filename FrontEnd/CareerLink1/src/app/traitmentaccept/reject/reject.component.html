@@ -11,13 +11,27 @@
           <form [formGroup]="timeoffForm">
 
             <div>
-              <label for="star-rating">Current Month Grade</label>
+              <label class="form-label" for="star-rating">Current Month Grade</label>
               <div class="star-rating">
                 <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
               </div>
             </div>
             
+            <table class="table">
+              <label class="form-label">upcomming deadlines</label>
+              <tbody>
+                <tr *ngFor="let task of tasks">
+                  <td>{{ task.dueDate | date }}   </td>
+                  <td>  {{task.description}}  </td>
+               
+             
+                  
+               <td>                          
+              
+                </tr>
+              </tbody>
             
+            </table>
             
             <div class="mb-3">
               <div class="form-group">

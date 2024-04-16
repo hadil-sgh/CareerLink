@@ -66,6 +66,8 @@ public class SecurityConfiguration {
                                 .requestMatchers("/Recruitment/**").hasAnyAuthority("Admin", "HR_manager")
                                  .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
                                  .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee","Admin")
+                                 .requestMatchers("/TimeOffTracker/adddaysoff").hasAnyAuthority("Admin")
+                                 .requestMatchers("/TimeOffTracker/addblackout").hasAnyAuthority("Admin")
 
                                 .anyRequest()
                                 .authenticated()

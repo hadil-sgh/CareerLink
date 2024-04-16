@@ -18,6 +18,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ModalpopComponent } from './modalpop/modalpop.component';
 import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
+import { PoliciesComponent } from './policies/policies.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: "TimeOffTracker", component: TakeofftraitmentComponent },
       { path: "expense", component: ExpenseComponent },
       { path: "stock", component: StockComponent },
+      { path: "policies", component: PoliciesComponent },
       { path: "teams", component: TeamComponent },
       { path: "TimeOffTracker/traitment/:id", component: RejectComponent },
       { path: "sata", component: LeaveStatisticsComponent },

@@ -5,6 +5,8 @@ import { TimeOffTracker } from '../models/TimeOffTracker';
 import { UserService } from './user.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Task } from '../models/Task';
+import { Daysoffbyrole } from '../models/Daysoffbyrole';
+import { Blackoutperiods } from '../models/Blackoutperiods';
 
 
 @Injectable({
@@ -65,7 +67,7 @@ export class TimeofftrackerService {
     
     updateStatus(id: number, newStatus: string): Observable<any> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
-      const url = `${this.baseUrl}status/${id}/${newStatus}`; // Constructing the URL properly
+      const url = `${this.baseUrl}status/${id}/${newStatus}`; 
       return this.http.put<any>(url, {},{headers});
   }
 
@@ -87,7 +89,17 @@ export class TimeofftrackerService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
     return this.http.get<number>(`${this.baseUrl}currentWeek?idle=${idle}`, { headers });
   }
+  addDaysoff(daysoffbyrole: Daysoffbyrole): Observable<Daysoffbyrole> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
 
+    return this.http.post<Daysoffbyrole>(`${this.baseUrl}adddaysoff`, daysoffbyrole, { headers });
+  }
+
+  addBlackout(blackoutperiods: Blackoutperiods): Observable<Blackoutperiods> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.post<Blackoutperiods>(`${this.baseUrl}addblackout`, blackoutperiods, { headers });
+  }
   getTasksForUserThisMonth(userId: number): Observable<Task[]> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
     const url = `${this.baseUrl}tasks/${userId}`;
@@ -102,10 +114,28 @@ export class TimeofftrackerService {
       })
     );
   }
-  
+  updateDaysoff(daysoffbyrole: Daysoffbyrole): Observable<Daysoffbyrole> {
+        const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.put<Daysoffbyrole>(`${this.baseUrl}updatedayoff`, daysoffbyrole, { headers });
+  }
+
+  deleteDaysoff(id: number): Observable<void> {
+        const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.delete<void>(`${this.baseUrl}deletedayoff/${id}`, { headers });
+  }
+
+  getAllDaysoff(): Observable<Daysoffbyrole[]> {
+        const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.get<Daysoffbyrole[]>(`${this.baseUrl}getAlldayoff`, { headers });
+  }
 
 
 }
+
+
 function jwt_decode(token: string): any {
   throw new Error('Function not implemented.');
 }

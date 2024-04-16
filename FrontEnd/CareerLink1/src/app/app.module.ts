@@ -35,6 +35,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
 import { JwtModule } from "@auth0/angular-jwt";
+import { PoliciesComponent } from './policies/policies.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +62,7 @@ import { JwtModule } from "@auth0/angular-jwt";
     ModalpopComponent,
     RejectComponent,
     LeaveStatisticsComponent,
+    PoliciesComponent,
 
   ],
   imports: [
