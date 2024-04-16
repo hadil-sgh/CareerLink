@@ -15,6 +15,17 @@ public class BlackoutperiodsService implements IBlackoutperiodsService {
     @Override
     public List <Blackoutperiods> getAllBlackoutperiodss() {
         return BlackoutperiodsRepository.findAll()  ; }
+
+    @Override
+    public void deleteBlackoutperiods(Integer id) {
+        BlackoutperiodsRepository.deleteById(id);
+    }
+
+    @Override
+    public Blackoutperiods updatedaysoffbyrole(Blackoutperiods Blackoutperiods) {
+        return BlackoutperiodsRepository.save(Blackoutperiods);
+    }
+
     @Override
     public Blackoutperiods addBlackoutperiods(Blackoutperiods Blackoutperiods) {
         return BlackoutperiodsRepository.save(Blackoutperiods);

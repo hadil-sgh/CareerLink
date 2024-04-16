@@ -85,9 +85,9 @@ export class TimeofftrackerService {
     return this.http.get<Map<string, number>>(`${this.baseUrl}leave/statistics?year=${year}`);
   }
 
-  getCurrentWeekGrade(idle: number): Observable<number> {
+  getCurrentWeekGrade(id: number): Observable<number> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
-    return this.http.get<number>(`${this.baseUrl}currentWeek?idle=${idle}`, { headers });
+    return this.http.get<number>(`${this.baseUrl}currentWeek?idle=${id}`, { headers });
   }
   addDaysoff(daysoffbyrole: Daysoffbyrole): Observable<Daysoffbyrole> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
@@ -131,8 +131,42 @@ export class TimeofftrackerService {
 
     return this.http.get<Daysoffbyrole[]>(`${this.baseUrl}getAlldayoff`, { headers });
   }
+  updateBlackoutperiods(blackoutperiods: Blackoutperiods): Observable<Blackoutperiods> {
+            const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.put<Blackoutperiods>(`${this.baseUrl}updatBlackoutperiods/${blackoutperiods.id}`, blackoutperiods, { headers });
+  }
+
+  deleteBlackoutperiods(id: number): Observable<void> {
+            const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.delete<void>(`${this.baseUrl}deleteBlackoutperiods/${id}`, { headers });
+  }
+
+  getAllBlackoutperiods(): Observable<Blackoutperiods[]> {
+            const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+
+    return this.http.get<Blackoutperiods[]>(`${this.baseUrl}getAllBlackoutperiods`, { headers });
+  }
 
 
+  getDayOffByRole(id: number): Observable<number> {
+    console.log('hi:'); 
+
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    console.log('get days off for the role of this user:', id); 
+
+    return this.http.get<number>(`${this.baseUrl}getroledayoff/${id}`, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching day off:', error);
+          throw error;
+        })
+      );
+  }
+  getTotalTimeOff(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}total/${userId}`);
+  }
 }
 
 

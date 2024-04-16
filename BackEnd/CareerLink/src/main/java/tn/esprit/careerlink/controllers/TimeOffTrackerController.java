@@ -218,9 +218,10 @@ public class TimeOffTrackerController {
                 .body(resource);
     }
 
-    @GetMapping("/tasks/{userId}")
-    public List<Task> getTasksForUserThisMonth(@PathVariable Long userId) {
-        // Calculate the start and end dates for this month
+    @GetMapping("/tasks/{id}")
+    public List<Task> getTasksForUserThisMonth(@PathVariable Integer id) {
+        Integer userid =  timeOffTrackerService.getOneLeave(id).getUser().getId();
+
         LocalDate currentDate = LocalDate.now();
         LocalDate startDate = currentDate.withDayOfMonth(1);
         LocalDate endDate = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
@@ -228,7 +229,7 @@ public class TimeOffTrackerController {
         Date startSqlDate = convertToLocalDateViaSqlDate(startDate);
         Date endSqlDate = convertToLocalDateViaSqlDate(endDate);
 
-        return taskService.getTasksForUserThisMonth(userId, startSqlDate, endSqlDate);
+        return taskService.getTasksForUserThisMonth(userid, startSqlDate, endSqlDate);
     }
 
     @PostMapping("/adddaysoff")
@@ -240,18 +241,57 @@ public class TimeOffTrackerController {
         return daysoffbyroleService.updatedaysoffbyrole(expense);
     }
     @DeleteMapping("/deletedayoff/{id}")
-    public void deletedayoff(@PathVariable ("id")Integer idexpense) {
-        daysoffbyroleService.deletedaysoffbyrole(idexpense);
+    public void deletedayoff(@PathVariable ("id")Integer id) {
+        daysoffbyroleService.deletedaysoffbyrole(id);
     }
     @GetMapping("/getAlldayoff")
     public List<Daysoffbyrole> getAlldayoff(){
         return daysoffbyroleService.getAlldaysoffbyroles();
     }
+    @GetMapping("/getroledayoff/{id}")
+    public int getroledayoff(@PathVariable ("id")Integer id){
+        Role role =  timeOffTrackerService.getOneLeave(id).getUser().getRole();
+       List<Daysoffbyrole> list= daysoffbyroleService.getAlldaysoffbyroles();
+       for (Daysoffbyrole r:list){
+              Role rolel=r.getRole();
+              if(role.equals(rolel)){
+                  return r.getDaysoff();
+              }
+       }
+
+        return 0;
+    }
     @PostMapping("/addblackout")
     public Blackoutperiods addBlackoutperiods(@RequestBody Blackoutperiods blackoutperiods){
         return blackoutperiodsService.addBlackoutperiods(blackoutperiods);
     }
+    @PutMapping("/updatBlackoutperiods")
+    public Blackoutperiods updateBlackoutperiods(@RequestBody Blackoutperiods blackoutperiods){
+      return blackoutperiodsService.updatedaysoffbyrole(blackoutperiods);
+    }
+    @DeleteMapping("/deleteBlackoutperiods/{id}")
+    public void deleteBlackoutperiods(@PathVariable ("id")Integer id){
+         blackoutperiodsService.deleteBlackoutperiods(id);
+    }
+    @GetMapping("/getAllBlackoutperiods")
+    public List<Blackoutperiods> getAllBlackoutperiods(){
+        return blackoutperiodsService.getAllBlackoutperiodss();
+    }
 
+    @GetMapping("/total/{id}")
+    public ResponseEntity<Long> getTotalTimeOff(@PathVariable Integer id) {
+
+        User user = timeOffTrackerService.getOneLeave(id).getUser();
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        long totalTimeOff = timeOffTrackerService.calculateTotalTimeOff(user);
+       long daysoffbyrole = getroledayoff(id);
+        long returnvalue =daysoffbyrole-totalTimeOff;
+        return new ResponseEntity<>(returnvalue, HttpStatus.OK);
+    }
     public static Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);
     }

@@ -13,6 +13,6 @@ public class TaskService implements ITaskService {
     @Autowired
     private TaskRepository taskRepository;
     @Override
-    public List<Task> getTasksForUserThisMonth(Long userId, Date startDate, Date endDate) {
-        return taskRepository.findByUserIdAndDueDateBetween(userId, startDate, endDate);
+    public List<Task> getTasksForUserThisMonth(Integer userId, Date startDate, Date endDate) {
+        return taskRepository.findByUserIdAndDueDateBetween(Long.valueOf(userId), startDate, endDate);
     }}
