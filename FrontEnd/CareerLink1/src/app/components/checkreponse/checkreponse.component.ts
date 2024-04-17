@@ -66,7 +66,11 @@ export class CheckreponseComponent implements OnInit {
 
     generateQrCode(reponse: Reponse): void {
       // Construire le contenu du QR code à partir des informations de la réclamation et de la réponse
-      const qrCodeContent = `Réclamation: ${reponse.reclamation.description}, Réponse: ${reponse.reponsecontent},${reponse.datereponse}`;
+      const qrCodeContent = `Dear User:${reponse.reclamation.expense.user.firstName}
+      Project:${reponse.reclamation.expense.project.name}
+      Réclamation: ${reponse.reclamation.description}
+      Réponse: ${reponse.reponsecontent}
+       DateRéponse:${reponse.datereponse}`;
   
       this.qrservice.generateQrCode(qrCodeContent).subscribe(
         (qrCodeBlob: Blob) => {

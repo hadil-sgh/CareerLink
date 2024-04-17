@@ -40,6 +40,8 @@
         <table class="table">
           <thead class="thead-dark">
             <tr>
+                <th>USER</th>
+              <th class="action-column">PROJECT</th>
                 <th>DATERECLAMATION</th>
               <th>DESCRIPTION</th>
               <th class="action-column">TYPE</th>
@@ -51,6 +53,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let reponse of reponses">
+                <td>{{ reponse.reclamation.expense.user.firstName}}</td>
+              <td class="action-cell">{{ reponse.reclamation.expense.project.name}}</td>
                 <td>{{ reponse.reclamation.datereclamation | date }}</td>
               <td>{{ reponse.reclamation.description}}</td>
               <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>

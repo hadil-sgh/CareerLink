@@ -1,54 +1,112 @@
 <div class="container mt-3">
-    <app-header-front></app-header-front>
-  
-    <div class="card mt-3">
-      <div class="card-body">
-        <h6 class="card-title mb-4">Expense List</h6>
-        <div class="row row-cols-1 row-cols-md-5">
-          <ng-container *ngFor="let expense of expenses">
-            <div class="col mb-4">
-              <div class="card shadow-sm expense-card">
-                <div class="card-body">
-                  <p class="card-text"><strong>User:</strong> {{expense.user ? expense.user.firstName : 'N/A'}}</p>
-                  <p class="card-text"><strong>Project:</strong> {{ expense.project ? expense.project.name : 'N/A' }}</p>
-                  <p class="card-text"><strong>Amount:</strong> {{ expense.amount }}</p>
-                  <p class="card-text"><strong>Date:</strong> {{ expense.dateexpense | date }}</p>
-                  <p class="card-text"><strong>Category:</strong> {{ expense.category }}</p>
-                  <p class="card-text"><strong>Method Payment:</strong> {{ expense.methodPayment }}</p>
-  
-                  <div class="d-flex justify-content-between align-items-center mt-3">
-                    <!-- Bouton "Pay" avec style personnalisé -->
-                    <button type="button" class="btn" [ngClass]="{'btn-success': expense.statusPayment !== 'PAYE', 'btn-dark': expense.statusPayment === 'PAYE'}" (click)="payExpense(expense)" [disabled]="expense.statusPayment === 'PAYE'">
-                      <i class="fas fa-money-bill-alt mr-2"></i> {{ expense.statusPayment === 'PAYE' ? 'Paid✔️' : 'Pay💲' }}
-                      <ng-container *ngIf="expense.statusPayment === 'PAYE'">
-                        <i class="fas fa-check-circle text-success ml-1"></i>
-                      </ng-container>
+  <app-header-front></app-header-front>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <h6 class="card-title mb-4">Expense List</h6>
+      
+      <div class="row justify-content-center align-items-center mb-3">
+        <div class="col-6 text-center">
+          <button class="btn btn-warning btn-block" style="margin-top: 20px;" (click)="tri()">Order My Projects by Date</button>
+        </div>
+        <div class="col-6 text-center">
+          <button type="button" class="btn btn-primary btn-block" style="margin-top: 20px;" [routerLink]="'/Employee/reclamation'">
+            <i class="fas fa-bullhorn mr-2"></i> Check My Claims
+          </button>
+        </div>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-5">
+        <ng-container *ngFor="let expense of expenses">
+          <div class="col mb-4">
+            <div class="card shadow-sm expense-card">
+              <div class="card-body">
+                <p class="card-text"><strong>Project:</strong> {{ expense.project ? expense.project.name : 'N/A' }}</p>
+                <p class="card-text"><strong>Amount:</strong> {{ expense.amount }}</p>
+                <p class="card-text"><strong>Date:</strong> {{ expense.dateexpense | date }}</p>
+                <p class="card-text"><strong>Category:</strong> {{ expense.category }}</p>
+                <p class="card-text"><strong>Method Payment:</strong> {{ expense.methodPayment }}</p>
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <button type="button" class="btn"
+        [ngClass]="{'btn-success': expense.statusPayment === 'PAYE', 'btn-dark': expense.statusPayment !== 'PAYE'}"
+        (click)="openPaymentModal(expense)" 
+        [disabled]="expense.statusPayment === 'PAYE' || expense.methodPayment === 'CASH'">
+  <i class="fas fa-money-bill-alt mr-2"></i>
+  {{ expense.statusPayment === 'PAYE' ? 'Paid✔️' : (expense.methodPayment === 'CASH' ? 'Pay Cash💲' : 'Pay💳') }}
+  <ng-container *ngIf="expense.statusPayment === 'PAYE'">
+    <i class="fas fa-check-circle text-success ml-1"></i>
+  </ng-container>
+</button>
+
+          
+
+                  <!-- Show "Claim" button only if payment is not made -->
+                  <ng-container *ngIf="expense.statusPayment !== 'PAYE'">
+                    <button type="button" class="btn btn-warning" [disabled]="hasReclamation(expense)" [routerLink]="['/Employee/reclamation', expense.idexpense]">
+                      <i class="fas fa-bullhorn mr-2"></i> {{ hasReclamation(expense) ? 'Claimed' : 'Claim📣' }}
                     </button>
-  
-                    <!-- Affiche le bouton "Claim" seulement si le paiement n'est pas effectué -->
-                    <ng-container *ngIf="expense.statusPayment !== 'PAYE'">
-                      <button type="button" class="btn btn-warning" [disabled]="hasReclamation(expense)" [routerLink]="['/Employee/reclamation', expense.idexpense]">
-                        <i class="fas fa-bullhorn mr-2"></i> {{ hasReclamation(expense) ? 'Claimed' : 'Claim📣' }}
-                      </button>
-                    </ng-container>
-                  </div>
+                  </ng-container>
                 </div>
               </div>
             </div>
-          </ng-container>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="expenses.length === 0" class="text-center mt-4">
+        <p>No expenses found.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de détails de paiement -->
+  <div id="paymentModal" class="modal" *ngIf="selectedExpense && selectedExpense.methodPayment !== 'CASH'">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Payment Details</h5>
+          <button type="button" class="close" (click)="closePaymentModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <!-- Affiche un message si la liste des dépenses est vide -->
-        <div *ngIf="expenses.length === 0" class="text-center mt-4">
-          <p>No expenses found.</p>
+        <div class="modal-body">
+          <form [formGroup]="expenseForm" (ngSubmit)="payExpense(selectedExpense)">
+            <div class="form-group">
+              <label for="cardNumber">Card Number:</label>
+              <input type="text" id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="16 digits" required>
+              <div *ngIf="isInvalidControl('cardNumber')" class="invalid-feedback">
+                Please provide a valid card number.
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="expirationDate">Expiration Date:</label>
+                <input type="text" id="expirationDate" class="form-control" formControlName="expirationDate" placeholder="MM/YYYY" required>
+                <div *ngIf="isInvalidControl('expirationDate')" class="invalid-feedback">
+                  Please provide a valid expiration date (MM/YYYY).
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="securityCode">Security Code:</label>
+                <input type="text" id="securityCode" class="form-control" formControlName="securityCode" maxlength="3" placeholder="3 digits" required>
+                <div *ngIf="isInvalidControl('securityCode')" class="invalid-feedback">
+                  Please provide a valid security code (3 digits).
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closePaymentModal()">Close</button>
+          <button type="button" class="btn btn-success" (click)="payExpense(selectedExpense)" [disabled]="expenseForm.invalid">Confirm Payment</button>
         </div>
       </div>
     </div>
-  
-    <!-- Ajout du bouton "Check Claims" en bas de la page -->
-    <div class="text-center mt-3">
-      <button type="button" class="btn btn-primary" [routerLink]="'/Employee/reclamation'">
-        <i class="fas fa-bullhorn mr-2"></i> Check Claims
-      </button>
-    </div>
   </div>
-  
+  <!-- Message pour le paiement en espèces -->
+  <div *ngIf="selectedExpense && selectedExpense.methodPayment === 'CASH'" class="text-center mt-3">
+    <p class="alert alert-warning" role="alert">Please visit us to pay in cash.</p>
+  </div>
+ 
+</div>

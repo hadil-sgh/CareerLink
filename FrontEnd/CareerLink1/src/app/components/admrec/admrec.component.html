@@ -5,6 +5,8 @@
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
+            <th>USER</th>
+            <th class="action-column">PROJECT</th>
             <th>DATE</th>
             <th>DESCRIPTION</th>
             <th>TYPE</th>
@@ -13,16 +15,23 @@
         </thead>
         <tbody>
           <tr *ngFor="let reclamation of reclamations">
+            <td>{{ reclamation.expense.user.firstName}}</td>
+              <td class="action-cell">{{ reclamation.expense.project.name}}</td>
             <td>{{ reclamation.datereclamation | date }}</td>
             <td>{{ reclamation.description }}</td>
             <td>{{ reclamation.typeReclamation }}</td>
             <td class="text-center align-middle">
               <ng-container *ngIf="!hasResponse(reclamation)">
-                <button type="button" class="btn btn-lg btn-info" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
+                <button type="button" class="btn btn-lg" style="background-color: #FFA500; color: #ffffff; border-color: #FFA500;" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
               </ng-container>
-              <button type="button" class="btn btn-success btn-lg" *ngIf="hasResponse(reclamation)" [routerLink]="['/admin/answred', reclamation.idreclamation]">
+              
+              
+              
+              <button type="button" class="btn btn-dark btn-lg" style="background-color: #4169E1; color: #ffffff; border-color: #4169E1;" *ngIf="hasResponse(reclamation)" [routerLink]="['/admin/answred', reclamation.idreclamation]">
                 Check Answer
               </button>
+              
+              
             </td>
           </tr>
           <tr *ngIf="reclamations.length === 0">
@@ -33,3 +42,11 @@
     </div>
   </div>
 </div>
+<style>
+.btn-orange {
+  background-color: #FFA500; /* Couleur orange */
+  color: #ffffff; /* Couleur du texte en blanc */
+  border-color: #FFA500; /* Couleur de la bordure orange */
+}
+
+</style>

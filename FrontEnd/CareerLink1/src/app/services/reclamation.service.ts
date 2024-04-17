@@ -41,4 +41,8 @@ export class ReclamationService {
   findAllExpense(): Observable<Expense[]>{
     return this.http.get<Expense[]> ('http://localhost:8086/spring2024/Expense/getAll' );
   }
+  tri(){
+    return this.http.get<Reclamation[]>( this.baseUrl + 'tri');
+
+  }
 }

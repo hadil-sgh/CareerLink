@@ -40,6 +40,7 @@
         <table class="table">
           <thead class="thead-dark">
             <tr>
+             
                 <th>DATERECLAMATION</th>
               <th>DESCRIPTION</th>
               <th class="action-column">TYPE</th>
@@ -51,6 +52,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let reponse of reponses">
+              
                 <td>{{ reponse.reclamation.datereclamation | date }}</td>
               <td>{{ reponse.reclamation.description}}</td>
               <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
@@ -82,7 +84,7 @@
 
           <div class="form-group">
             <label for="datereponse">Date:</label>
-            <input type="date" formControlName="datereponse" class="form-control" id="datereponse">
+            <input type="date" formControlName="datereponse" class="form-control" readonly>
             <div class="alert alert-danger" *ngIf="reponseForm.controls['datereponse'].invalid && reponseForm.controls['datereponse'].touched">
               <div *ngIf="reponseForm.controls['datereponse'].hasError('required')"> Date is required !</div>
             </div>

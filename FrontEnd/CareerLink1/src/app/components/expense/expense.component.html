@@ -80,12 +80,14 @@
           <table class="table">
             <thead class="thead-dark">
               <tr>
+                <th>USER</th>
+                <th>PROJECT</th>
                 <th>AMOUNT</th>
                 <th>DATE</th>
                 <th>CATEGORY</th>
                 <th>METHODPAYMENT</th>
-                <th>PROJECT</th>
-                <th>USER</th>
+                
+                
                 <th>STATUSPAYMENT</th>
                <th>Action</th>
               </tr>
@@ -93,12 +95,14 @@
             <tbody>
               <tr *ngFor="let expense of expenses">
                 <ng-container *ngIf="expense.project.name.includes(search) || search === ''">
+                  <td>{{expense.user ? expense.user.firstName: 'N/A'}}</td>
+                  <td>{{expense.project ? expense.project.name : 'N/A'}}</td>
                   <td>{{expense.amount}}</td>
                   <td>{{expense.dateexpense | date}}</td>
                   <td>{{expense.category}}</td>
                   <td>{{expense.methodPayment}}</td>
-                  <td>{{expense.project ? expense.project.name : 'N/A'}}</td>
-                  <td>{{expense.user ? expense.user.firstName: 'N/A'}}</td>
+                  
+                 
                   <td>{{expense? expense.statusPayment : 'N/A'}}</td>
                   <td>
                     <button type="submit" class="btn btn-outline-success m-1"

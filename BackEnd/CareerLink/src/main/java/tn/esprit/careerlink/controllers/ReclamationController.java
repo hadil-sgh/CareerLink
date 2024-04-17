@@ -45,4 +45,8 @@ public class ReclamationController {
     public Reclamation getReclamation(@PathVariable ("id") Integer idreclamation) {
         return iReclamationService.getReclamation(idreclamation);
     }
+    @GetMapping("/tri")
+    List<Reclamation> tri() {
+        return iReclamationService.tri();
+    }
 }

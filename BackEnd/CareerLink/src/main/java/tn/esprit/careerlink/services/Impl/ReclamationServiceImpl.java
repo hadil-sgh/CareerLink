@@ -80,4 +80,11 @@ public class ReclamationServiceImpl implements IReclamationService {
             throw new EntityNotFoundException("expense not found");
         }
 
-    }}
+    }
+
+    @Override
+    public List<Reclamation> tri() {
+        return reclamationRepository.findAllByOrderByDatereclamation();
+    }
+
+}

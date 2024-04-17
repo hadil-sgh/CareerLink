@@ -53,6 +53,18 @@ export class ReclamationComponent {
           // Gérer le cas où l'ID n'est pas trouvé dans les paramètres de l'URL
       }
   });
+  
+  }
+  tri(){
+    this.reclamationService.tri().subscribe(reclamations => {
+      this.reclamations = reclamations;
+      console.log('tri success');
+    },
+    (error) => {
+      // Gestion des erreurs : Affichez ou traitez les erreurs ici
+      console.error('Erreur lors de l\'enregistrement de la réponse : ', error);
+    }
+  );
   }
   toggleAddReclamationForm(): void {
     this.sharedService.toggleAddReclamationForm();

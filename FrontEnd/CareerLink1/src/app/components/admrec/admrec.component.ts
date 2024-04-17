@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Project } from 'src/app/models/Project';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
+import { User } from 'src/app/models/User';
+import { ExpenseService } from 'src/app/services/expense.service';
 import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-admrec',
@@ -15,11 +19,16 @@ export class AdmrecComponent implements OnInit {
   reclamations: Reclamation[] = [];
   reclamationForm!: FormGroup;
   Reponses: Reponse[] = [];
+  projects: Project[] = [];
+  filteredProjects: Project[] = [];
+  users: User[] = [];
 
   constructor(
     private reclamationService: ReclamationService,
     private reponseservice: ReponseService,
+    private expenseService:ExpenseService,
     private fb: FormBuilder,
+    private userservice:UserService,
     private router: Router
   ) {}
 
@@ -27,6 +36,28 @@ export class AdmrecComponent implements OnInit {
     this.loadReclamations();
     this.loadReponses();
   }
+  loadUsers(): void {
+    this.userservice.findAllUsers()
+      .subscribe(
+        users => {
+          this.users = users;
+          console.log('Utilisateurs chargés avec succès :', users);
+        },
+        error => console.error('Erreur lors du chargement des utilisateurs :', error)
+      );
+  }
+  
+  loadProjects(): void {
+    this.expenseService.getAllProjects()
+      .subscribe(
+        projects => {
+          this.projects = projects;
+          this.filteredProjects = projects; // Copiez tous les projets dans filteredProjects
+        },
+        error => console.error('error, getAllProjects', error)
+      );
+  }
+  
 
   loadReclamations(): void {
     this.reclamationService.findAllReclamation()

@@ -12,4 +12,5 @@ public interface IReclamationService {
     List<Reclamation> getAllReclamation();
     Reclamation getReclamation (Integer idreclamation);
     Reclamation addReclamationAndAffect(Integer idexpense, Reclamation reclamation);
+    public List<Reclamation> tri() ;
 }
