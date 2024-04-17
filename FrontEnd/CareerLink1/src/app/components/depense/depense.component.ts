@@ -31,7 +31,7 @@ export class DepenseComponent implements OnInit {
   projects: Project[] = [];
   users: User[] = [];
   reclamations: Reclamation[] = [];
- 
+  securityCodeVisible = false;
   constructor(
     private qrservice: QrcodeService,
     private expenseService: ExpenseService, 
@@ -57,7 +57,9 @@ export class DepenseComponent implements OnInit {
   toggleAddReclamationForm(): void {
     this.sharedService.toggleAddReclamationForm();
   }
-
+  toggleSecurityVisibility(): void {
+    this.securityCodeVisible = !this.securityCodeVisible;
+  }
   loadReclamations(): void {
     this.reclamationService.findAllReclamation()
       .subscribe(
@@ -102,7 +104,7 @@ export class DepenseComponent implements OnInit {
     this.expenseForm = this.fb.group({
       cardNumber: ['', Validators.required],
       expirationDate: ['', [Validators.required, this.validateExpirationDate]],
-      securityCode: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(3), Validators.pattern('^[0-9]{3}$')]]
+      securityCode: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^[0-9]{4}$')]]
     });
   }
 
@@ -210,4 +212,18 @@ export class DepenseComponent implements OnInit {
     const control = this.expenseForm.get(controlName);
     return control ? control.invalid && (control.dirty || control.touched) : false;
   }
+  formatCardNumber(event: any): void {
+    // Get the current value of the card number input
+    let cardNumber = event.target.value;
+
+    // Remove any non-digit characters from the input
+    cardNumber = cardNumber.replace(/\D/g, '');
+
+    // Add a space after every 4 digits using regex
+    cardNumber = cardNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+
+    // Update the form control with the formatted card number
+    this.expenseForm.patchValue({ cardNumber });
+  }
+
 }

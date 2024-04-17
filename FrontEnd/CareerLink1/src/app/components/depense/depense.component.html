@@ -29,17 +29,15 @@
 
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <button type="button" class="btn"
-        [ngClass]="{'btn-success': expense.statusPayment === 'PAYE', 'btn-dark': expense.statusPayment !== 'PAYE'}"
-        (click)="openPaymentModal(expense)" 
-        [disabled]="expense.statusPayment === 'PAYE' || expense.methodPayment === 'CASH'">
-  <i class="fas fa-money-bill-alt mr-2"></i>
-  {{ expense.statusPayment === 'PAYE' ? 'Paid✔️' : (expense.methodPayment === 'CASH' ? 'Pay Cash💲' : 'Pay💳') }}
-  <ng-container *ngIf="expense.statusPayment === 'PAYE'">
-    <i class="fas fa-check-circle text-success ml-1"></i>
-  </ng-container>
-</button>
-
-          
+                    [ngClass]="{'btn-success': expense.statusPayment === 'PAYE', 'btn-dark': expense.statusPayment !== 'PAYE'}"
+                    (click)="openPaymentModal(expense)" 
+                    [disabled]="expense.statusPayment === 'PAYE' || expense.methodPayment === 'CASH'">
+                    <i class="fas fa-money-bill-alt mr-2"></i>
+                    {{ expense.statusPayment === 'PAYE' ? 'Paid✔️' : (expense.methodPayment === 'CASH' ? 'Pay Cash💲' : 'Pay💳') }}
+                    <ng-container *ngIf="expense.statusPayment === 'PAYE'">
+                      <i class="fas fa-check-circle text-success ml-1"></i>
+                    </ng-container>
+                  </button>
 
                   <!-- Show "Claim" button only if payment is not made -->
                   <ng-container *ngIf="expense.statusPayment !== 'PAYE'">
@@ -72,41 +70,54 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="expenseForm" (ngSubmit)="payExpense(selectedExpense)">
-            <div class="form-group">
+            <div class="form-group ">
               <label for="cardNumber">Card Number:</label>
-              <input type="text" id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="16 digits" required>
+              <input type="text" id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="1234 1234 1234 1234 " (input)="formatCardNumber($event)">
               <div *ngIf="isInvalidControl('cardNumber')" class="invalid-feedback">
                 Please provide a valid card number.
               </div>
             </div>
+            
             <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-group ">
                 <label for="expirationDate">Expiration Date:</label>
                 <input type="text" id="expirationDate" class="form-control" formControlName="expirationDate" placeholder="MM/YYYY" required>
                 <div *ngIf="isInvalidControl('expirationDate')" class="invalid-feedback">
                   Please provide a valid expiration date (MM/YYYY).
                 </div>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group ">
                 <label for="securityCode">Security Code:</label>
-                <input type="text" id="securityCode" class="form-control" formControlName="securityCode" maxlength="3" placeholder="3 digits" required>
+                <div class="input-group">
+                  <input type="{{ securityCodeVisible ? 'text' : 'password' }}" id="securityCode" class="form-control" formControlName="securityCode" maxlength="4" placeholder="****" required>
+                  <div class="input-group-append">
+                    <label class="input-group-text" (click)="toggleSecurityVisibility()" style="cursor: pointer;">
+                      <span>👁️‍🗨️</span>
+                    </label>
+                  </div>
+                </div>
                 <div *ngIf="isInvalidControl('securityCode')" class="invalid-feedback">
                   Please provide a valid security code (3 digits).
                 </div>
               </div>
+              
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closePaymentModal()">Close</button>
-          <button type="button" class="btn btn-success" (click)="payExpense(selectedExpense)" [disabled]="expenseForm.invalid">Confirm Payment</button>
+          <button type="button" class="btn btn-success" 
+            (click)="payExpense(selectedExpense)" 
+            [disabled]="expenseForm.invalid">
+            Pay {{ selectedExpense.amount }} DT
+          </button>
         </div>
       </div>
     </div>
   </div>
+  
   <!-- Message pour le paiement en espèces -->
   <div *ngIf="selectedExpense && selectedExpense.methodPayment === 'CASH'" class="text-center mt-3">
     <p class="alert alert-warning" role="alert">Please visit us to pay in cash.</p>
   </div>
- 
 </div>

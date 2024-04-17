@@ -8,24 +8,24 @@
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* Style pour les alertes */
+    /* Styles pour les alertes */
     .alert {
       margin-top: 5px;
     }
 
-    /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
+    /* Bordure droite uniquement sur la colonne "ACTION" */
     .action-column, .action-cell {
-        border-right: 2px solid #c5bebe; /* Ajouter une bordure droite */
+      border-right: 2px solid #c5bebe;
     }
-  
+
     /* Espace entre les boutons */
     .button-space {
-        margin-right: 10px;
+      margin-right: 10px;
     }
 
     /* Espace entre les boutons de la première ligne */
     .button-space1 {
-        margin-right: 20px;
+      margin-right: 20px;
     }
   </style>
 </head>
@@ -40,30 +40,25 @@
         <table class="table">
           <thead class="thead-dark">
             <tr>
-             
-                <th>DATERECLAMATION</th>
+              <th>DATERECLAMATION</th>
               <th>DESCRIPTION</th>
               <th class="action-column">TYPE</th>
               <th>DATEREPONSE</th>
               <th>REPONSE</th>
-              <th class="action-column">ACTION</th> <!-- Ajouter la classe action-column à cette colonne -->
-              
+              <th class="action-column">ACTION</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let reponse of reponses">
-              
-                <td>{{ reponse.reclamation.datereclamation | date }}</td>
-              <td>{{ reponse.reclamation.description}}</td>
+              <td>{{ reponse.reclamation.datereclamation | date }}</td>
+              <td>{{ reponse.reclamation.description }}</td>
               <td class="action-cell">{{ reponse.reclamation.typeReclamation }}</td>
               <td>{{ reponse.datereponse | date }}</td>
               <td>{{ reponse.reponsecontent }}</td>
-              <td class="action-cell">
-                <button type="submit" class="btn btn-success m-1" (click)="editReponse(reponse)">Edit</button>
-                <span class="button-space"></span>
-                <button type="submit" class="btn btn-danger m-1" (click)="deleteReponse(reponse.idrponse)">Delete</button>
+              <td class="action-cell" *ngIf="showEditDeleteButtons">
+                <button type="button" class="btn btn-success m-1" (click)="editReponse(reponse)">Edit</button>
+                <button type="button" class="btn btn-danger m-1" (click)="deleteReponse(reponse.idrponse)">Delete</button>
               </td>
-              
             </tr>
           </tbody>
         </table>
@@ -75,7 +70,6 @@
         <h5 class="card-header">{{ selectedReponse ? 'Edit Reponse' : 'Add Reponse' }}</h5>
 
         <form [formGroup]="reponseForm" (ngSubmit)="selectedReponse ? updateReponse() : addReponseAndAffect()">
-          <!-- Afficher les détails de la réclamation sélectionnée -->
           <div *ngIf="selectedReclamation">
             <p>Date de Réclamation: {{ selectedReclamation.datereclamation }}</p>
             <p>Description de Réclamation: {{ selectedReclamation.description }}</p>
@@ -85,16 +79,16 @@
           <div class="form-group">
             <label for="datereponse">Date:</label>
             <input type="date" formControlName="datereponse" class="form-control" readonly>
-            <div class="alert alert-danger" *ngIf="reponseForm.controls['datereponse'].invalid && reponseForm.controls['datereponse'].touched">
-              <div *ngIf="reponseForm.controls['datereponse'].hasError('required')"> Date is required !</div>
+            <div class="alert alert-danger" *ngIf="reponseForm.get('datereponse')?.invalid && reponseForm.get('datereponse')?.touched">
+              <div *ngIf="reponseForm.get('datereponse')?.hasError('required')"> Date is required!</div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="reponsecontent">ReponseContent:</label>
             <textarea formControlName="reponsecontent" class="form-control" id="reponsecontent" rows="3"></textarea>
-            <div class="alert alert-danger" *ngIf="reponseForm.controls['reponsecontent'].invalid && reponseForm.controls['reponsecontent'].touched">
-              <div *ngIf="reponseForm.controls['reponsecontent'].hasError('required')">ReponseContent is required !</div>
+            <div class="alert alert-danger" *ngIf="reponseForm.get('reponsecontent')?.invalid && reponseForm.get('reponsecontent')?.touched">
+              <div *ngIf="reponseForm.get('reponsecontent')?.hasError('required')">ReponseContent is required!</div>
             </div>
           </div>
 
@@ -102,9 +96,13 @@
 
           <div class="text-center">
             <button type="submit" class="btn btn-primary" [disabled]="reponseForm.invalid">{{ selectedReponse ? 'Update Reponse' : 'Add Reponse' }}</button>
-            <span class="mx-2"></span>
             <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
           </div>
+
+          <button type="button" class="btn btn-success" (click)="confirmAdd()" *ngIf="showConfirmButton && !confirmButtonClicked">Confirm Answer</button>
+
+
+
         </form>
       </div>
     </div>
@@ -117,6 +115,10 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // Logique JavaScript supplémentaire peut être ajoutée ici si nécessaire
+  </script>
 </body>
 
 </html>

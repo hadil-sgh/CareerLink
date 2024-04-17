@@ -10,6 +10,7 @@ import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
 import { DatePipe } from '@angular/common';
 import { Role } from 'src/app/models/Role';
+import { TwilioService } from 'src/app/services/twilio.service';
 
 @Component({
   selector: 'app-reponse',
@@ -24,6 +25,11 @@ export class ReponseComponent implements OnInit {
   reclamations: Reclamation[] = [];
   selectedReclamation: Reclamation | null = null; 
   reclamationId: number | undefined;
+  showEditDeleteButtons = true; // Variable pour contrôler la visibilité des boutons Edit/Delete
+  confirmButtonClicked = false;
+
+  showConfirmButton = false;
+
 
   
 
@@ -32,6 +38,7 @@ export class ReponseComponent implements OnInit {
     private reponseService: ReponseService,
     private reclamationservice: ReclamationService,
     private fb: FormBuilder,
+    private twilioService:TwilioService,
     private route: ActivatedRoute
   ) { }
 
@@ -136,6 +143,8 @@ loadReponses(): void {
           alert('response added successfully');
           this.loadReponses();
           this.reponseForm.reset();
+          this.showConfirmButton = true;
+         // Masquer les boutons Edit/Delete après la mise à jour
         },
         error => console.error('error, addReponseAndAffect', error)
         
@@ -178,4 +187,37 @@ loadReponses(): void {
       );
     }
   }
+  confirmAdd(): void {
+    const userPhoneNumber = '+21627345496'; // Numéro de téléphone cible
+    
+    const message = 'Votre réclamation a été traitée et répondue. Merci de vérifier la réponse.';
+    
+    // Appeler le service Twilio pour envoyer un message au numéro de téléphone
+    this.twilioService.sendMessage(message, userPhoneNumber).subscribe(
+      () => {
+        console.log('Message sent successfully to', userPhoneNumber);
+        alert('un message sera envoyer au utlisateur ');
+
+        // Masquer les boutons Edit/Delete après l'envoi du message
+        this.showConfirmButton = false; // Masquer le bouton "Confirm Answer" après avoir été cliqué
+        this.confirmButtonClicked = true; // Définir confirmButtonClicked sur true
+        this.showEditDeleteButtons=false;
+      },
+      error => {
+        console.error('Error sending message to', userPhoneNumber, error);
+        // Afficher un message d'erreur (à personnaliser selon vos besoins)
+        alert('Une erreur s\'est produite lors de l\'envoi du message.');
+      }
+    );
+  }
+  
+  
+  
+  
+
+  // Restaure la visibilité des boutons Edit et Delete après une action
+  restoreEditDeleteButtons(): void {
+    this.showEditDeleteButtons = true;
+  }
+ 
 }
