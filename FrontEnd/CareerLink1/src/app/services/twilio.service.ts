@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class TwilioService {
 
-  private readonly accountSid: string = 'ACdd00e546dc17b5a83bd694bc1e98b320';
-  private readonly authToken: string = 'ef1966de3516463e875bbb894a193dfe';
+  private readonly accountSid: string = '';
+  private readonly authToken: string = '';
   private readonly fromNumber: string = '+12059316230';
 
   constructor(private http: HttpClient) { }

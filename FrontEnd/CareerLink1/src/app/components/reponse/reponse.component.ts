@@ -12,6 +12,7 @@ import { StatusPayment } from 'src/app/models/statuspayment';
 import { Role } from 'src/app/models/Role';
 import { MethodPayment } from 'src/app/models/methodPayment';
 import { ButtonVisibilityService } from 'src/app/services/button-visibility.service';
+import { ConfirmationServiceService } from 'src/app/services/confirmation-service.service';
 
 @Component({
   selector: 'app-reponse',
@@ -36,6 +37,7 @@ export class ReponseComponent implements OnInit {
     private buttonService: ButtonVisibilityService,
     private reclamationservice: ReclamationService,
     private fb: FormBuilder,
+    private confirmationService: ConfirmationServiceService,
     private twilioService: TwilioService,
     private route: ActivatedRoute
   ) { }
@@ -205,6 +207,7 @@ export class ReponseComponent implements OnInit {
         this.showEditDeleteButtons = false; // Masquer les boutons Edit/Delete après l'envoi du message
         this.confirmButtonClicked = true;
         this.buttonService.updateButtonVisibility(false);
+        this.confirmationService.setConfirmation(true);
       },
       error => {
         console.error('Error sending message to', userPhoneNumber, error);

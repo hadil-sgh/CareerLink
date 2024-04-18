@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { ReponseService } from 'src/app/services/reponse.service';
 import { Role } from 'src/app/models/Role';
 import { SharedService } from 'src/app/shared.service';
+import { ConfirmationServiceService } from 'src/app/services/confirmation-service.service';
 
 
 
@@ -26,7 +27,7 @@ import { SharedService } from 'src/app/shared.service';
   styleUrls: ['./reclamation.component.css']
 })
 export class ReclamationComponent {
-  constructor(private reclamationService: ReclamationService,private sharedService: SharedService,private expenseService:ExpenseService ,private reponseservice:ReponseService,  private datePipe: DatePipe // Injectez DatePipe ici
+  constructor(private reclamationService: ReclamationService,private confirmationService: ConfirmationServiceService,private sharedService: SharedService,private expenseService:ExpenseService ,private reponseservice:ReponseService,  private datePipe: DatePipe // Injectez DatePipe ici
   , private route: ActivatedRoute, private fb: FormBuilder,private router: Router) { }
   reclamations: Reclamation[] = [];
  reclamationForm!: FormGroup;
@@ -38,12 +39,16 @@ export class ReclamationComponent {
   showAddButton: boolean = true;
   idexpense: number | undefined;
   forbiddenWords=['mot1','fuck','null'];
+  showCheckAnswerButton = false;
   
   ngOnInit(): void {
     this.loadReclamations();
     this.createForm();
     this.loadExpenses();
     this.loadReponses();
+    this.confirmationService.getConfirmation().subscribe(isConfirmed => {
+      this.showCheckAnswerButton = isConfirmed;
+    });
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id !== null) {
