@@ -14,7 +14,8 @@
     }
 
     /* Bordure droite uniquement sur la colonne "ACTION" */
-    .action-column, .action-cell {
+    .action-column,
+    .action-cell {
       border-right: 2px solid #c5bebe;
     }
 
@@ -99,9 +100,10 @@
             <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
           </div>
 
-          <button type="button" class="btn btn-success" (click)="confirmAdd()" *ngIf="showConfirmButton && !confirmButtonClicked">Confirm Answer</button>
-
-
+          <!-- Affichage du bouton "Confirm Answer" seulement si showConfirmButton est vrai et confirmButtonClicked est faux -->
+          <button type="button" class="btn btn-success" (click)="confirmAdd()" *ngIf="showConfirmButton && !confirmButtonClicked">
+            Confirm Answer
+          </button>
 
         </form>
       </div>

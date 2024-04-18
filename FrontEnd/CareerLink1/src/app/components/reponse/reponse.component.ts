@@ -3,14 +3,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
-import { MethodPayment } from 'src/app/models/methodPayment';
-import {  StatusPayment } from 'src/app/models/statuspayment';
-import { TypeReclamation } from 'src/app/models/typeReclamation';
 import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
 import { DatePipe } from '@angular/common';
-import { Role } from 'src/app/models/Role';
 import { TwilioService } from 'src/app/services/twilio.service';
+import { TypeReclamation } from 'src/app/models/typeReclamation';
+import { StatusPayment } from 'src/app/models/statuspayment';
+import { Role } from 'src/app/models/Role';
+import { MethodPayment } from 'src/app/models/methodPayment';
+import { ButtonVisibilityService } from 'src/app/services/button-visibility.service';
 
 @Component({
   selector: 'app-reponse',
@@ -26,50 +27,50 @@ export class ReponseComponent implements OnInit {
   selectedReclamation: Reclamation | null = null; 
   reclamationId: number | undefined;
   showEditDeleteButtons = true; // Variable pour contrôler la visibilité des boutons Edit/Delete
+  showConfirmButton = false;
   confirmButtonClicked = false;
 
-  showConfirmButton = false;
-
-
-  
-
   constructor(
-    private datePipe: DatePipe ,
+    private datePipe: DatePipe,
     private reponseService: ReponseService,
+    private buttonService: ButtonVisibilityService,
     private reclamationservice: ReclamationService,
     private fb: FormBuilder,
-    private twilioService:TwilioService,
+    private twilioService: TwilioService,
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.loadReponses();
     this.createForm();
     this.loadReclamations();
+    
+    this.buttonService.showButtons$.subscribe(show => {
+      this.showEditDeleteButtons = show;
+    });
 
     // Récupération de l'ID de réclamation depuis l'URL
     this.route.paramMap.subscribe(params => {
-        const id = params.get('id');
-        if (id !== null) {
-            this.reclamationId = parseInt(id, 10); // Assurez-vous que l'ID est bien récupéré sous forme de nombre
-            this.reponseForm.patchValue({ reclamationId: this.reclamationId }); // Mettre à jour le champ du formulaire avec l'ID récupéré
-        } else {
-            // Gérer le cas où l'ID n'est pas trouvé dans les paramètres de l'URL
-        }
+      const id = params.get('id');
+      if (id !== null) {
+        this.reclamationId = parseInt(id, 10); // Assurez-vous que l'ID est bien récupéré sous forme de nombre
+        this.reponseForm.patchValue({ reclamationId: this.reclamationId }); // Mettre à jour le champ du formulaire avec l'ID récupéré
+      } else {
+        // Gérer le cas où l'ID n'est pas trouvé dans les paramètres de l'URL
+      }
     });
-}
+  }
 
-
-loadReponses(): void {
-  this.reponseService.findAllReponse()
-    .subscribe(
-      reponses => {
-        // Filtrer les réponses par ID de réclamation sélectionné
-        this.reponses = reponses.filter(reponse => reponse.reclamation.idreclamation === this.reclamationId);
-      },
-      error => console.error('Erreur lors du chargement des réponses :', error)
-    );
-}
+  loadReponses(): void {
+    this.reponseService.findAllReponse()
+      .subscribe(
+        reponses => {
+          // Filtrer les réponses par ID de réclamation sélectionné
+          this.reponses = reponses.filter(reponse => reponse.reclamation.idreclamation === this.reclamationId);
+        },
+        error => console.error('Erreur lors du chargement des réponses :', error)
+      );
+  }
 
   loadReclamations(): void {
     this.reclamationservice.findAllReclamation()
@@ -144,6 +145,8 @@ loadReponses(): void {
           this.loadReponses();
           this.reponseForm.reset();
           this.showConfirmButton = true;
+          this.buttonService.updateButtonVisibility(true);
+          
          // Masquer les boutons Edit/Delete après la mise à jour
         },
         error => console.error('error, addReponseAndAffect', error)
@@ -151,6 +154,7 @@ loadReponses(): void {
 
       );
   }
+
 
   cancel(): void {
     this.reponseForm.reset();
@@ -169,7 +173,6 @@ loadReponses(): void {
       this.reponseForm.get('reclamationId')!.enable(); // Activer le champ reclamationId
     }
   }
-  
 
   updateReponse(): void {
     if (this.selectedReponse && this.reponseForm.valid) {
@@ -183,13 +186,12 @@ loadReponses(): void {
           this.selectedReponse = null;
         },
         error => console.error('error, updateReponse', error)
-        
       );
     }
   }
+
   confirmAdd(): void {
     const userPhoneNumber = '+21627345496'; // Numéro de téléphone cible
-    
     const message = 'Votre réclamation a été traitée et répondue. Merci de vérifier la réponse.';
     
     // Appeler le service Twilio pour envoyer un message au numéro de téléphone
@@ -200,8 +202,9 @@ loadReponses(): void {
 
         // Masquer les boutons Edit/Delete après l'envoi du message
         this.showConfirmButton = false; // Masquer le bouton "Confirm Answer" après avoir été cliqué
-        this.confirmButtonClicked = true; // Définir confirmButtonClicked sur true
-        this.showEditDeleteButtons=false;
+        this.showEditDeleteButtons = false; // Masquer les boutons Edit/Delete après l'envoi du message
+        this.confirmButtonClicked = true;
+        this.buttonService.updateButtonVisibility(false);
       },
       error => {
         console.error('Error sending message to', userPhoneNumber, error);
@@ -210,14 +213,6 @@ loadReponses(): void {
       }
     );
   }
-  
-  
-  
-  
 
-  // Restaure la visibilité des boutons Edit et Delete après une action
-  restoreEditDeleteButtons(): void {
-    this.showEditDeleteButtons = true;
-  }
- 
+  
 }
