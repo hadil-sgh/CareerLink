@@ -25,11 +25,23 @@ export class TaketimeoffComponent {
     this.timeoffForm = this.formbuilder.group({
       type: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      fromDate: ['', [Validators.required]],
+      fromDate: ['', [Validators.required, this.dateGreaterThanToday]],
       toDate: ['', [Validators.required]]
     });
   }
-
+  dateGreaterThanToday(control: FormControl) {
+    const selectedDate = new Date(control.value);
+  
+    if (isNaN(selectedDate.getTime())) {
+      // Return null if the date is not a valid date
+      return null;
+    }
+  
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate date comparison
+  
+    return selectedDate >= today ? null : { dateGreaterThanToday: true };
+  }
   toggleForm(): void {
     this.showPdfForm = !this.showPdfForm;
     this.timeoffForm.reset();

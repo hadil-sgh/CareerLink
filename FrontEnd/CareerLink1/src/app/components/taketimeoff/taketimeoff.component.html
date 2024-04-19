@@ -106,7 +106,6 @@
               </div>
               <div  *ngIf="this.timeoffForm.controls['fromDate'].invalid && this.timeoffForm.controls['fromDate'].touched">
                 <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['fromDate'].hasError('required')"> Please specify the start of your leave!</div>
-                <div class="alert alert-warning" *ngIf="this.timeoffForm.controls['fromDate'].hasError('dateGreaterThanToday')"> Please select a valid start date for your leave!</div>
               </div>
               
             
@@ -116,7 +115,6 @@
               </div>
               <div  *ngIf="this.timeoffForm.controls['toDate'].invalid && this.timeoffForm.controls['toDate'].touched">
                 <div class="alert alert-danger" *ngIf="this.timeoffForm.controls['toDate'].hasError('required')">  Please specify when you will be back !</div>
-                <div class="alert alert-warning" *ngIf="this.timeoffForm.controls['toDate'].hasError('toDateValidator')"> Please select a valid return date !</div>
               </div>
 
               <div class="form-group">
@@ -149,9 +147,15 @@
         <button type="button" class="btn btn-outline-secondary m-1" (click)="toggleForm()">
           Switch to Form without PDF
         </button>
+
       </form>
     </div>
   </div>
+<br>
+<br>
+  <h5 style="color:grey; display: inline-block; margin-right: 5px;">Warning :  Please keep in mind that any request sunmitted can't be nither edited or deleted once treated </h5><i class="fas fa-exclamation-triangle" style="color: orange;"></i>
+  <div class="separator"></div>
+
 </div>
 
 <style>
