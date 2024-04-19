@@ -40,12 +40,12 @@ export class TimeofftrackerService {
     const url = `${this.baseUrl}getbyuser?email=${encodedEmail}`; 
     return this.http.get<TimeOffTracker[]>(url, { headers }); 
   }
-  
-  TakeTiMEOff(formData: FormData): Observable<any> {
+  TakeTiMEOff(formData: FormData, email: string): Observable<any> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
-    const url = `${this.baseUrl}add`;
-    return this.http.post<any>(url,formData,{headers});
+    const url = `${this.baseUrl}add?email=${email}`;
+    return this.http.post<any>(url, formData, { headers });
   }
+  
 
 
  /*  TakeTiMEOff( timeoff :TimeOffTracker) :Observable<TimeOffTracker> {

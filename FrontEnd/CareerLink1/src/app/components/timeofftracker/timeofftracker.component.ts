@@ -172,32 +172,7 @@ export class TimeofftrackerComponent {
   
  
 
-   addTimeOff(): void {
-    
-    const newtimeoff = this.timeoffForm.value;
-   
 
-    this.timeoffService.TakeTiMEOff(newtimeoff)
-    .subscribe(
-      response => {  
-        console.log('success, add', response);
-        this.LoadListOfTimesOf();
-      },
-      
-      error => console.error('error, add', error)
-    );
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Your work has been saved",
-      showConfirmButton: false,
-      timer: 1500,
-      customClass: {
-        popup: 'swal-center',
-      },
-    });
-    
-  } 
 
 
   deletetimeOff(id: number): void {
@@ -363,7 +338,7 @@ showEmptyBlobAlert(): void {
   Swal.fire({
     icon: 'error',
     title: 'Empty PDF',
-    text: 'There is no PDF attached to this  time off request.',
+    text: 'There is no PDF attached to thisThe PDF file is empty or not available for this time off request.',
     confirmButtonText: 'OK'
   });
 }
