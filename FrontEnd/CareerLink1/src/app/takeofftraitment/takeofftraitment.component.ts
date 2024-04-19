@@ -8,6 +8,7 @@ import { User } from '../models/User';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-takeofftraitment',
@@ -128,29 +129,35 @@ pdf(id: number): void {
 
 
 Preview(id: number) {
-  
   this.timeoffService.getPdf(id).subscribe(
-    (blob: Blob) => { // Change HttpResponse<Blob> to Blob
-      console.log('Response from server:', blob);
-      // Process the Blob data as needed
-      let url = window.URL.createObjectURL(blob);
-     this.modalservice.open(this.popupview, { size: 'lg' });
-      // Open the Blob URL in a new tab with the content type set to 'application/pdf'
-   
-      this.pdfurl = url;
+    (blob: Blob | null) => {
+      if (blob !== null && blob.size > 0) {
+        console.log('Response from server:', blob);
+        let url = window.URL.createObjectURL(blob);
+        this.modalservice.open(this.popupview, { size: 'lg' });
+        this.pdfurl = url;
+      } else {
+        // Display an alert when an empty Blob is returned
+        this.showEmptyBlobAlert();
+      }
     },
     (error: HttpErrorResponse) => {
       console.error('Error fetching PDF:', error);
-      // Handle error, show appropriate message to the user
       if (error.status === 404) {
         console.error('PDF not found.');
-        // Additional error handling logic for 404 error
       } else {
         console.error('An unexpected error occurred.');
-        // Additional error handling logic for other error codes
       }
     }
   );
+}
 
+showEmptyBlobAlert(): void {
+  Swal.fire({
+    icon: 'error',
+    title: 'Empty PDF',
+    text: 'There is no PDF attached to this  time off request.',
+    confirmButtonText: 'OK'
+  });
 }
 }

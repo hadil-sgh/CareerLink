@@ -1,6 +1,7 @@
 package tn.esprit.careerlink.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -55,27 +56,27 @@ public class TimeOffTrackerController {
                                    @RequestParam("fromDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
                                    @RequestParam("toDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date to,
                                    @RequestParam("email") String email,
-                                   @RequestParam("pdf") MultipartFile file) {
+                                   @RequestParam(value = "pdf", required = false) MultipartFile file) {
         try {
-            TimeOffTracker newtimeoff =new TimeOffTracker();
+            TimeOffTracker newtimeoff = new TimeOffTracker();
             newtimeoff.setType(leaveType);
-
             newtimeoff.setDescription(description);
             newtimeoff.setFromDate(from);
             newtimeoff.setToDate(to);
             newtimeoff.setUser(userRepository.findUserByEmail(email));
             if (file != null && !file.isEmpty()) {
-                String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()),file);
+                String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()), file);
                 newtimeoff.setPdfData(original);
             }
             newtimeoff.setStatus(LeaveStatus.Pending);
 
-            return leaveRepository.save(newtimeoff);        }
-        catch (IOException e) {
+            return leaveRepository.save(newtimeoff);
+        } catch (IOException e) {
             e.printStackTrace(); // Handle exception appropriately
             return null; // Or throw an exception
         }
     }
+
 
     @GetMapping("/leave/statistics")
     public Map<String, Double> getLeaveStatistics(@RequestParam("year") int year) {
@@ -192,7 +193,28 @@ public class TimeOffTrackerController {
     }
     @GetMapping("/downloadFile/{id}")
     public ResponseEntity<?> downloadFile(@PathVariable("id") Integer id) {
-        String fileCode = timeOffTrackerService.getOneLeave(id).getPdfData();
+        TimeOffTracker timeOffTracker = timeOffTrackerService.getOneLeave(id);
+
+        // Check if the PDF data is null
+        if (timeOffTracker.getPdfData() == null) {
+            // Create an empty byte array
+            byte[] emptyData = new byte[0];
+            // Create a ByteArrayResource from the empty byte array
+            ByteArrayResource resource = new ByteArrayResource(emptyData);
+
+            // Set the appropriate content type for PDF files
+            String contentType = "application/pdf";
+
+            // Instead of forcing download, set content disposition to inline
+            String headerValue = "inline; filename=\"empty.pdf\"";
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                    .body(resource);
+        }
+
+        String fileCode = timeOffTracker.getPdfData();
         FileDownloadUtil downloadUtil = new FileDownloadUtil();
 
         Resource resource = null;
@@ -217,6 +239,7 @@ public class TimeOffTrackerController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
                 .body(resource);
     }
+
 
     @GetMapping("/tasks/{id}")
     public List<Task> getTasksForUserThisMonth(@PathVariable Integer id) {

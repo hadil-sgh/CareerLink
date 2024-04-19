@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
 import { UserService } from './user.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
@@ -71,10 +71,19 @@ export class TimeofftrackerService {
       return this.http.put<any>(url, {},{headers});
   }
 
-    getPdf(id: number) {
-      const headers = this.userService.addTokenToHeaders(new HttpHeaders());
-      return this.http.get(this.baseUrl +'downloadFile/' + id, { responseType: 'blob' ,headers});
-    }
+  getPdf(id: number) {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get(this.baseUrl +'downloadFile/' + id, { headers, responseType: 'blob' })
+      .pipe(
+        catchError(error => {
+          if (error.error === 'alert') {
+            return throwError('alert');
+          }
+          return throwError(error);
+        })
+      );
+  }
+  
     findoneTimesOff(id: number): Observable<TimeOffTracker> {
       return this.http.get<TimeOffTracker>(this.baseUrl + 'getOne/' + id);
     }
