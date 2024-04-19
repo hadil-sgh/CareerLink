@@ -155,7 +155,7 @@ Preview(id: number) {
 showEmptyBlobAlert(): void {
   Swal.fire({
     icon: 'error',
-    title: 'Empty PDF',
+    title: 'No PDF',
     text: 'There is no PDF attached to this  time off request.',
     confirmButtonText: 'OK'
   });

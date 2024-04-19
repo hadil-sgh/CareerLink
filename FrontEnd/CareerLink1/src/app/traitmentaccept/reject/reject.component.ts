@@ -22,7 +22,7 @@ export class RejectComponent implements OnInit {
   countLeft: number = 0;
   intervalId: any;
   intervalIdLeft: any;
-
+  isThereABlackout!: boolean; 
   constructor(
     private timeoffservice: TimeofftrackerService,
     private formbuilder: FormBuilder,
@@ -36,6 +36,7 @@ export class RejectComponent implements OnInit {
     this.timeoffForm = this.formbuilder.group({
       status: ['', Validators.required]
     });
+    this.isThereABlackoutfun();
 
     this.getCurrentWeekGrade();
     this.getDayOffByRole();
@@ -43,7 +44,17 @@ export class RejectComponent implements OnInit {
     this.loadTasks();
     this.startCounting();
   }
-
+   isThereABlackoutfun() {
+    this.timeoffservice.isThereABlackout(this.id).subscribe(
+      (isThereABlackout: boolean) => {
+        this.isThereABlackout = isThereABlackout; 
+        console.log('blackouts', this.isThereABlackout);
+      },
+      (error: any) => {
+        console.error('Error fetching day offs:', error);
+      }
+    );
+  }
   getCurrentWeekGrade() {
     this.timeoffservice.getCurrentWeekGrade(this.id).subscribe(
       (grade: number) => {

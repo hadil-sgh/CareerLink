@@ -8,8 +8,17 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="timeoffForm">
+          <label class="labelnorm" for="star-rating">Current Month Grade</label>
+          <br>
+                    <!-- Add a loading indicator -->
+                 <div *ngIf="isThereABlackout === undefined">Loading...</div>
+                 <img *ngIf="isThereABlackout === true" src="/assets/FrontOffice/img/yes.png" class="button-icon1">
+                 <img *ngIf="isThereABlackout === false" src="/assets/FrontOffice/img/no.png" class="button-icon1">
+
           <div class="d-flex justify-content-between align-items-center">
             <div>
+             
+
                 <label class="labelnorm" for="star-rating">Current Month Grade</label>
                 <div class="star-rating">
                     <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>

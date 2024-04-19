@@ -1,6 +1,7 @@
 package tn.esprit.careerlink.controllers;
 
 import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +49,8 @@ public class TimeOffTrackerController {
     UserRepository userRepository;
     PerformanceServiceImpl performanceService;
      TaskService taskService;
-     BlackoutperiodsService blackoutperiodsService;
      DaysoffbyroleService daysoffbyroleService;
+     BlackoutperiodsService blackoutperiodsService;
     @PostMapping("/add")
     public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
@@ -317,6 +318,11 @@ public class TimeOffTrackerController {
     }
     public static Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);
+    }
+
+    @GetMapping("checkBlackoutPeriod/{id}")
+    public boolean checkBlackoutPeriod(@PathVariable ("id") Integer id) {
+        return blackoutperiodsService.isTimeOffDuringBlackoutPeriod(id);
     }
 }
 

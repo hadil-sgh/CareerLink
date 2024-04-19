@@ -123,6 +123,12 @@ export class TimeofftrackerService {
       })
     );
   }
+
+
+  isThereABlackout(id: number): Observable<boolean> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<boolean>(`${this.baseUrl}checkBlackoutPeriod/${id}`, { headers });
+  }
   updateDaysoff(daysoffbyrole: Daysoffbyrole): Observable<Daysoffbyrole> {
         const headers = this.userService.addTokenToHeaders(new HttpHeaders());
 
