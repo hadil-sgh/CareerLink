@@ -8,6 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface ITaskService  {
-    public List<Task> getTasksForUserThisMonth(Long userId, Date startDate, Date endDate) ;
+    public List<Task> getTasksForUserThisMonth(Integer userId, Date startDate, Date endDate) ;
 }
 

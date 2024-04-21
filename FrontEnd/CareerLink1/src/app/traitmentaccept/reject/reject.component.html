@@ -1,62 +1,94 @@
 <div class="separator"></div>
-<div class="separator"></div>
 
-<div  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- Modal header content -->
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="timeoffForm">
+<div tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- Modal header content -->
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="timeoffForm">
+          <label class="labelnorm" for="star-rating">Is there a Blackout ?</label>
+          <br>
+                    <!-- Add a loading indicator -->
+                 <div *ngIf="isThereABlackout === undefined">Loading...</div>
+                 <img *ngIf="isThereABlackout === true" src="/assets/FrontOffice/img/yes.png" class="button-icon1">
+                 <img *ngIf="isThereABlackout === false" src="/assets/FrontOffice/img/no.png" class="button-icon1">
 
+          <div class="d-flex justify-content-between align-items-center">
             <div>
-              <label class="form-label" for="star-rating">Current Month Grade</label>
-              <div class="star-rating">
-                <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
-              </div>
-            </div>
-            
-            <table class="table">
-              <label class="form-label">upcomming deadlines</label>
-              <tbody>
-                <tr *ngFor="let task of tasks">
-                  <td>{{ task.dueDate | date }}   </td>
-                  <td>  {{task.description}}  </td>
-               
              
-                  
-               <td>                          
-              
-                </tr>
-              </tbody>
-            
-            </table>
-            
-            <div class="mb-3">
-              <div class="form-group">
-                <label for="status" class="form-label">Status</label>
-                <select id="status" class="form-select" formControlName="status">
-                  <option value="Accepted">Accepted</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
-              </div>
+
+                <label class="labelnorm" for="star-rating">Current Month Grade</label>
+                <div class="star-rating">
+                    <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
+                </div>
             </div>
-          </form>
+            <div class="d-flex justify-content-end" style="margin-right: -5mm;">
+                <div class="card text-white bg-info mb-3" style="max-width: 14rem; max-height: 7rem; margin-right: 5mm;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="ml-auto">
+                            <!-- Placeholder for image -->
+                            <img src="assets\BackOffice\images\icons\left1.png" class="button-icon1">
+                        </div>
+                        <div>
+                            <label class="labelcard">Days left</label>
+                            <div id="countDisplayleft">{{ daysLeft }}</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="card text-white bg-info mb-3" style="max-width: 14rem; max-height: 7rem;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="ml-auto">
+                            <!-- Placeholder for image -->
+                            <img src="assets\BackOffice\images\icons\off.png" class="button-icon1">
+                        </div>
+                        <div>
+                            <label class="labelcard">Days off </label>
+                            <div id="countDisplay">{{ count }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-outline-primary m-1" (click)="updateStatus()">
-            <img src="/assets/FrontOffice/img/save.png" alt="Edit Icon" class="button-icon" />
-            Save
-          </button>
-          <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">
-            <img src="/assets/FrontOffice/img/rejected.png" alt="Edit Icon" class="button-icon" />
-            Close
-          </button>
-        </div>
+        
+        
+      
+          <table class="table">
+            <label class="labelnorm">upcoming deadlines</label>
+            <tbody>
+              <tr *ngFor="let task of tasks">
+                <td>{{ task.dueDate | date }}</td>
+                <td>{{ task.description }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mb-3">
+            <div class="form-group">
+              <label for="status" class="labelnorm">Status</label>
+              <select id="status" class="form-select" formControlName="status">
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-primary m-1" (click)="updateStatus()">
+          <img src="/assets/FrontOffice/img/save.png" alt="Edit Icon" class="button-icon" />
+          Save
+        </button>
+        <button type="button" class="btn btn-outline-danger m-1" data-dismiss="modal" (click)="closeModal()">
+          <img src="/assets/FrontOffice/img/rejected.png" alt="Edit Icon" class="button-icon" />
+          Close
+        </button>
       </div>
     </div>
   </div>
+</div>
   <style>
     .separator {
     height: 80px; }
@@ -93,5 +125,27 @@
 .checked {
   color: gold;
 }
-
+#countDisplay {
+    font-size: 20px;
+    
+  }
+  #countDisplayleft {
+    font-size: 20px;
+    
+  }
+  .button-icon1 {
+    width: 40px; 
+    height: auto; 
+    margin-right: 5px; 
+  }
+  .labelcard{
+    font-size: 15px;
+    color: aliceblue;
+  }
+  .labelnorm{
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+  }
   </style>
+ 

@@ -36,6 +36,7 @@ import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { PoliciesComponent } from './policies/policies.component';
+import { BlackoutComponent } from './blackout/blackout.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +64,7 @@ import { PoliciesComponent } from './policies/policies.component';
     RejectComponent,
     LeaveStatisticsComponent,
     PoliciesComponent,
+    BlackoutComponent,
 
   ],
   imports: [

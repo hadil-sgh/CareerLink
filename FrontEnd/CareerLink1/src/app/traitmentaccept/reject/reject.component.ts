@@ -12,10 +12,17 @@ import { Task } from 'src/app/models/Task';
 })
 export class RejectComponent implements OnInit {
   timeoffForm!: FormGroup;
-  id!: number ;
+  id!: number;
   currentWeekGrade: number | undefined;
   stars: string[] = [];
-  tasks:Task[]=[];
+  tasks: Task[] = [];
+  dayOffs: number = 0;
+  daysLeft: number = 0;
+  count: number = 0;
+  countLeft: number = 0;
+  intervalId: any;
+  intervalIdLeft: any;
+  isThereABlackout!: boolean; 
   constructor(
     private timeoffservice: TimeofftrackerService,
     private formbuilder: FormBuilder,
@@ -29,69 +36,125 @@ export class RejectComponent implements OnInit {
     this.timeoffForm = this.formbuilder.group({
       status: ['', Validators.required]
     });
+    this.isThereABlackoutfun();
+
     this.getCurrentWeekGrade();
+    this.getDayOffByRole();
+    this.getDaysLeft();
     this.loadTasks();
+    this.startCounting();
+  }
+   isThereABlackoutfun() {
+    this.timeoffservice.isThereABlackout(this.id).subscribe(
+      (isThereABlackout: boolean) => {
+        this.isThereABlackout = isThereABlackout; 
+        console.log('blackouts', this.isThereABlackout);
+      },
+      (error: any) => {
+        console.error('Error fetching day offs:', error);
+      }
+    );
   }
   getCurrentWeekGrade() {
     this.timeoffservice.getCurrentWeekGrade(this.id).subscribe(
       (grade: number) => {
-        console.log('the grade for this month', grade);
         this.currentWeekGrade = grade;
-        // Convert grade to stars
         this.stars = this.getStars(grade);
-        console.log('Stars:', this.stars); // Add this line for debugging
       },
       (error: any) => {
         console.error('Error fetching current week grade:', error);
       }
     );
   }
-  loadTasks(): void {
-    console.log('hi')
-    this.timeoffservice.getTasksForUserThisMonth(this.id)
-      .subscribe(
-        tasks1 => {
-          this.tasks = tasks1;
-          console.log('tasks', this.tasks);
-        },
-        error => console.error('error, getall', error)
-      );
+
+  getDayOffByRole() {
+    this.timeoffservice.getDayOffByRole(this.id).subscribe(
+      (dayOffs: number) => {
+        this.dayOffs = dayOffs;
+      },
+      (error: any) => {
+        console.error('Error fetching day offs:', error);
+      }
+    );
   }
-  
-  
+
+  getDaysLeft() {
+    this.timeoffservice.getTotalTimeOff(this.id).subscribe(
+      (daysLeft: number) => {
+        this.daysLeft = daysLeft;
+      },
+      (error: any) => {
+        console.error('Error fetching days left:', error);
+      }
+    );
+  }
+
+  loadTasks(): void {
+    this.timeoffservice.getTasksForUserThisMonth(this.id).subscribe(
+      tasks => {
+        this.tasks = tasks;
+      },
+      (error: any) => {
+        console.error('Error fetching tasks:', error);
+      }
+    );
+  }
+
   getStars(grade: number): string[] {
     const stars = [];
     for (let i = 0; i < 5; i++) {
-      if (i < grade) {
-        stars.push('checked');
-      } else {
-        stars.push('');
-      }
+      stars.push(i < grade ? 'checked' : '');
     }
     return stars;
   }
-  
-  closeModal() :void{
-      this.router.navigate(['/admin/TimeOffTracker']);
-    
+
+  closeModal(): void {
+    this.router.navigate(['/admin/TimeOffTracker']);
   }
 
   updateStatus() {
-    if (this.id && this.timeoffForm.valid) { // Check if ID is available and form is valid
+    if (this.id && this.timeoffForm.valid) {
       const status = this.timeoffForm.value.status;
       this.timeoffservice.updateStatus(this.id, status).subscribe(
         (res: any) => {
-          console.log('Status updated successfully:', res);
           Swal.fire('Status updated successfully!');
           this.closeModal();
         },
         (error: any) => {
           console.error('Error updating status:', error);
-          
         }
       );
     } else {
       console.error('ID is missing or form is invalid. ID:', this.id);
     }
-}
+  }
+
+  startCounting() {
+    this.intervalId = setInterval(() => {
+      this.incrementCount();
+    }, 50);
+  }
+
+ 
+
+  incrementCount() {
+    this.count++;
+    const countDisplay = document.getElementById('countDisplay');
+    if (countDisplay) {
+      countDisplay.textContent = this.count.toString();
+      if (this.count >= this.dayOffs) {
+        clearInterval(this.intervalId);
+      }
+    }
+  }
+
+
+
+
+
+
+  
+  
+  
+  
 }

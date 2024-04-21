@@ -1,0 +1,68 @@
+
+<button class="btn btn-outline-primary m-1"routerLink="/admin/blackout">Add Blackout period</button>  
+<button class="btn btn-outline-primary m-1" routerLink="/admin/policies">Days of depending on employee</button> 
+<div class="row mt-3">
+    <div class="col-md-12">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-header">Blackout Periods List</h5>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let blackoutperiod of blackoutperiodsList">
+                <td>{{ blackoutperiod.start | date }}</td>
+                <td>{{ blackoutperiod.end | date }}</td>
+                <td>
+                  <button type="button" class="btn btn-outline-primary m-1" (click)="editBlackoutperiod(blackoutperiod)">Edit</button>
+                  <button type="button" class="btn btn-outline-danger m-1" (click)="deleteBlackoutperiod(blackoutperiod.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row mt-3">
+    <div class="col-md-7">
+      <div class="card w-100">
+        <div class="card-body p-4">
+          <h5 class="card-header">{{ selectedBlackoutperiod ? 'Edit Blackout Period' : 'Add Blackout Period' }}</h5>
+          <form [formGroup]="blackoutperiodsForm" (ngSubmit)="selectedBlackoutperiod ? updateBlackoutperiod() : addBlackoutperiod()">
+            <div class="mb-3">
+              <label for="start" class="form-label">Start Date:</label>
+              <input type="date" id="start" class="form-control" formControlName="start">
+            </div>
+            <div class="alert alert-danger" *ngIf="blackoutperiodsForm.controls['start'].invalid && blackoutperiodsForm.controls['start'].touched">
+              <div *ngIf="blackoutperiodsForm.controls['start'].hasError('required')"> Start date is required!</div>
+            </div>
+            <div class="mb-3">
+              <label for="end" class="form-label">End Date:</label>
+              <input type="date" id="end" class="form-control" formControlName="end">
+            </div>
+            <div class="alert alert-danger" *ngIf="blackoutperiodsForm.controls['end'].invalid && blackoutperiodsForm.controls['end'].touched">
+              <div *ngIf="blackoutperiodsForm.controls['end'].hasError('required')"> End date is required!</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-primary" [disabled]="!selectedBlackoutperiod && blackoutperiodsForm.invalid">
+                  {{ selectedBlackoutperiod ? 'Update Blackout Period' : 'Add Blackout Period' }}
+                </button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Clear</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

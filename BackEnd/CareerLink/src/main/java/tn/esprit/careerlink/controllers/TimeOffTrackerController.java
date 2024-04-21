@@ -1,6 +1,8 @@
 package tn.esprit.careerlink.controllers;
 
 import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -47,35 +49,35 @@ public class TimeOffTrackerController {
     UserRepository userRepository;
     PerformanceServiceImpl performanceService;
      TaskService taskService;
-     BlackoutperiodsService blackoutperiodsService;
      DaysoffbyroleService daysoffbyroleService;
+     BlackoutperiodsService blackoutperiodsService;
     @PostMapping("/add")
     public TimeOffTracker addLeave(@RequestParam("type") LeaveType leaveType,
                                    @RequestParam("description") String description,
                                    @RequestParam("fromDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
                                    @RequestParam("toDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date to,
                                    @RequestParam("email") String email,
-                                   @RequestParam("pdf") MultipartFile file) {
+                                   @RequestParam(value = "pdf", required = false) MultipartFile file) {
         try {
-            TimeOffTracker newtimeoff =new TimeOffTracker();
+            TimeOffTracker newtimeoff = new TimeOffTracker();
             newtimeoff.setType(leaveType);
-
             newtimeoff.setDescription(description);
             newtimeoff.setFromDate(from);
             newtimeoff.setToDate(to);
             newtimeoff.setUser(userRepository.findUserByEmail(email));
             if (file != null && !file.isEmpty()) {
-                String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()),file);
+                String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()), file);
                 newtimeoff.setPdfData(original);
             }
             newtimeoff.setStatus(LeaveStatus.Pending);
 
-            return leaveRepository.save(newtimeoff);        }
-        catch (IOException e) {
+            return leaveRepository.save(newtimeoff);
+        } catch (IOException e) {
             e.printStackTrace(); // Handle exception appropriately
             return null; // Or throw an exception
         }
     }
+
 
     @GetMapping("/leave/statistics")
     public Map<String, Double> getLeaveStatistics(@RequestParam("year") int year) {
@@ -192,7 +194,28 @@ public class TimeOffTrackerController {
     }
     @GetMapping("/downloadFile/{id}")
     public ResponseEntity<?> downloadFile(@PathVariable("id") Integer id) {
-        String fileCode = timeOffTrackerService.getOneLeave(id).getPdfData();
+        TimeOffTracker timeOffTracker = timeOffTrackerService.getOneLeave(id);
+
+        // Check if the PDF data is null
+        if (timeOffTracker.getPdfData() == null) {
+            // Create an empty byte array
+            byte[] emptyData = new byte[0];
+            // Create a ByteArrayResource from the empty byte array
+            ByteArrayResource resource = new ByteArrayResource(emptyData);
+
+            // Set the appropriate content type for PDF files
+            String contentType = "application/pdf";
+
+            // Instead of forcing download, set content disposition to inline
+            String headerValue = "inline; filename=\"empty.pdf\"";
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                    .body(resource);
+        }
+
+        String fileCode = timeOffTracker.getPdfData();
         FileDownloadUtil downloadUtil = new FileDownloadUtil();
 
         Resource resource = null;
@@ -218,9 +241,11 @@ public class TimeOffTrackerController {
                 .body(resource);
     }
 
-    @GetMapping("/tasks/{userId}")
-    public List<Task> getTasksForUserThisMonth(@PathVariable Long userId) {
-        // Calculate the start and end dates for this month
+
+    @GetMapping("/tasks/{id}")
+    public List<Task> getTasksForUserThisMonth(@PathVariable Integer id) {
+        Integer userid =  timeOffTrackerService.getOneLeave(id).getUser().getId();
+
         LocalDate currentDate = LocalDate.now();
         LocalDate startDate = currentDate.withDayOfMonth(1);
         LocalDate endDate = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
@@ -228,7 +253,7 @@ public class TimeOffTrackerController {
         Date startSqlDate = convertToLocalDateViaSqlDate(startDate);
         Date endSqlDate = convertToLocalDateViaSqlDate(endDate);
 
-        return taskService.getTasksForUserThisMonth(userId, startSqlDate, endSqlDate);
+        return taskService.getTasksForUserThisMonth(userid, startSqlDate, endSqlDate);
     }
 
     @PostMapping("/adddaysoff")
@@ -240,20 +265,64 @@ public class TimeOffTrackerController {
         return daysoffbyroleService.updatedaysoffbyrole(expense);
     }
     @DeleteMapping("/deletedayoff/{id}")
-    public void deletedayoff(@PathVariable ("id")Integer idexpense) {
-        daysoffbyroleService.deletedaysoffbyrole(idexpense);
+    public void deletedayoff(@PathVariable ("id")Integer id) {
+        daysoffbyroleService.deletedaysoffbyrole(id);
     }
     @GetMapping("/getAlldayoff")
     public List<Daysoffbyrole> getAlldayoff(){
         return daysoffbyroleService.getAlldaysoffbyroles();
     }
+    @GetMapping("/getroledayoff/{id}")
+    public int getroledayoff(@PathVariable ("id")Integer id){
+        Role role =  timeOffTrackerService.getOneLeave(id).getUser().getRole();
+       List<Daysoffbyrole> list= daysoffbyroleService.getAlldaysoffbyroles();
+       for (Daysoffbyrole r:list){
+              Role rolel=r.getRole();
+              if(role.equals(rolel)){
+                  return r.getDaysoff();
+              }
+       }
+
+        return 0;
+    }
     @PostMapping("/addblackout")
     public Blackoutperiods addBlackoutperiods(@RequestBody Blackoutperiods blackoutperiods){
         return blackoutperiodsService.addBlackoutperiods(blackoutperiods);
     }
+    @PutMapping("/updatBlackoutperiods")
+    public Blackoutperiods updateBlackoutperiods(@RequestBody Blackoutperiods blackoutperiods){
+      return blackoutperiodsService.updatedaysoffbyrole(blackoutperiods);
+    }
+    @DeleteMapping("/deleteBlackoutperiods/{id}")
+    public void deleteBlackoutperiods(@PathVariable ("id")Integer id){
+         blackoutperiodsService.deleteBlackoutperiods(id);
+    }
+    @GetMapping("/getAllBlackoutperiods")
+    public List<Blackoutperiods> getAllBlackoutperiods(){
+        return blackoutperiodsService.getAllBlackoutperiodss();
+    }
 
+    @GetMapping("/total/{id}")
+    public ResponseEntity<Long> getTotalTimeOff(@PathVariable Integer id) {
+
+        User user = timeOffTrackerService.getOneLeave(id).getUser();
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        long totalTimeOff = timeOffTrackerService.calculateTotalTimeOff(user);
+       long daysoffbyrole = getroledayoff(id);
+        long returnvalue =daysoffbyrole-totalTimeOff;
+        return new ResponseEntity<>(returnvalue, HttpStatus.OK);
+    }
     public static Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);
+    }
+
+    @GetMapping("checkBlackoutPeriod/{id}")
+    public boolean checkBlackoutPeriod(@PathVariable ("id") Integer id) {
+        return blackoutperiodsService.isTimeOffDuringBlackoutPeriod(id);
     }
 }
 
