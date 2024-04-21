@@ -20,6 +20,7 @@ import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
 import { PoliciesComponent } from './policies/policies.component';
 import { BlackoutComponent } from './blackout/blackout.component';
+import { PerformenceComponent } from './components/performence/performence.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -50,7 +51,8 @@ const routes: Routes = [
       { path: "teams", component: TeamComponent },
       { path: "TimeOffTracker/traitment/:id", component: RejectComponent },
       { path: "sata", component: LeaveStatisticsComponent },
-      { path:"profile/:id",component:ProfileComponent}
+      { path:"profile/:id",component:ProfileComponent},
+      { path:"performence",component:PerformenceComponent}
 
 ]},
 ];

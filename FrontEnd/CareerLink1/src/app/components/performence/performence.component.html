@@ -1,0 +1,117 @@
+<div class="separator"></div>
+<div class="card">
+    <div class="card-body">
+        <form [formGroup]="performanceForm" (ngSubmit)="addPerformance()">
+            <h1 style="text-align: center;">performance</h1>
+                  
+            <div class="form-group">
+                <label class="form-label" for="user">Employee:</label>
+                <select formControlName="user" class="form-control" id="user">
+                    <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName }} {{ user.lastName }}</option>
+                </select>
+                
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="week">Month:</label>
+                <select formControlName="week" class="form-control" id="week">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+        
+            
+            <div class="form-group">
+                <label class="form-label" for="comment">Comment:</label>
+                <input type="text" formControlName="comment" class="form-control" id="comment">
+            </div>
+          
+            <div class="form-group">
+                <label class="form-label" for="grade">Grade:</label>
+                <div id="star-rating">
+                    <span class="star" (click)="selectStars(1)" [ngClass]="{'selected': selectedStars >= 1}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(2)" [ngClass]="{'selected': selectedStars >= 2}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(3)" [ngClass]="{'selected': selectedStars >= 3}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(4)" [ngClass]="{'selected': selectedStars >= 4}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(5)" [ngClass]="{'selected': selectedStars >= 5}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                </div>
+                <input type="hidden" formControlName="grade" id="grade">
+            </div>
+
+            <button type="submit" class="btn btn-outline-primary m-1">
+                <img src="/assets/FrontOffice/img/add.png" alt="Edit Icon" class="button-icon" />
+                Add
+            </button>
+            <button type="button" class="btn btn-outline-secondary m-1" (click)="resetForm()">
+                <img src="/assets/FrontOffice/img/clear.png" alt="Edit Icon" class="button-icon" />
+                Clear
+            </button>
+        </form>
+    </div>
+</div>
+<style>
+    .separator {
+    height: 100px; }
+    .separator1 {
+    height: 10px; }
+    .button-space {
+    margin: 0 10px; } 
+    .button-space1 {
+    margin: 0 5px; 
+  }
+  .swal-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+  .star {
+  cursor: pointer;
+}
+
+.star.selected,
+.star:hover {
+  color: gold; /* Change color to highlight selected stars */
+}
+
+  .status-icon {
+  width: 20px; /* Adjust the width to your desired size */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 5px; /* Optional: Add margin for spacing */
+  }
+  /* Add this CSS to your performence.component.css file */
+
+.star-rating {
+  font-size: 20px; /* Adjust the font size to make the stars bigger */
+}
+
+.star {
+  font-size: 20px; /* Adjust the font size to make the stars bigger */
+}
+
+  .button-icon {
+  width: 20px; /* Adjust the width to your desired size */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 5px; /* Optional: Add margin for spacing */
+  }
+  
+  </style>

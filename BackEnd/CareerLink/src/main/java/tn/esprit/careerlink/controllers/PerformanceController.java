@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.careerlink.entities.Performance;
 import tn.esprit.careerlink.services.Impl.PerformanceServiceImpl;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -15,10 +17,12 @@ public class PerformanceController {
     private  final PerformanceServiceImpl performenceService;
     @PostMapping("/add")
     public Performance addPerformance(@RequestBody Performance Performance){
+        Performance.setYear(Year.now().getValue());
         return performenceService.addPerformence(Performance);
     }
     @PutMapping("/update")
     public Performance updatePerformance(@RequestBody Performance Performance ){
+        Performance.setYear(Year.now().getValue());
         return performenceService.updatePerformence(Performance);
     }
 
