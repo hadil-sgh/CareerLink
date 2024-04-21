@@ -4,6 +4,10 @@ import { PerformanceService } from 'src/app/services/performence.service';
 import { Performance } from 'src/app/models/Performence';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/User';
+import {  Task } from 'src/app/models/Task';
+import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
+import { Status } from 'src/app/models/Status';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-performence',
@@ -15,6 +19,8 @@ export class PerformenceComponent implements OnInit {
   
   performanceList: Performance[] = [];
   users: User[] = [];
+  tasks: Task[] = [];
+  teamNames:any;
   performanceForm!: FormGroup;
   selectedPerformance: Performance | null = null;
   selectedStars: number = 0;
@@ -23,8 +29,82 @@ export class PerformenceComponent implements OnInit {
     this.loadPerformanceList();
     this.createForm();
     this.loadusers();
+    this.loadteamname();
+    this.loadTasks(); 
   }
+  
+  loadTasks(): void {
+  
+    this.performanceForm.get('user')?.valueChanges.subscribe((selectedUser: User) => {
+      if (selectedUser) { 
+        this.performanceService.getTasksForUserThisMonth(selectedUser.id).subscribe(
+          tasks => {
+            this.tasks = tasks;
+          },
+          (error: any) => {
+            console.error('Error fetching tasks:', error);
+          }
+        );
+      }
+    });
+  }
+  getImageSource(status: string): string {
+    let statusEnum: Status;
 
+    switch (status) {
+        case 'Doing':
+            statusEnum = Status.Doing;
+            break;
+        case 'Done':
+            statusEnum = Status.Done;
+            break;
+        case 'To_do':
+            statusEnum = Status.To_do;
+            break;
+        default:
+            return '';
+    }
+
+    let imagePath = '';
+
+    switch (statusEnum) {
+        case Status.Doing:
+            imagePath = 'assets/FrontOffice/img/progress.png';
+            break;
+        case Status.Done:
+            imagePath = 'assets/FrontOffice/img/done.png';
+            break;
+        case Status.To_do:
+            imagePath = 'assets/FrontOffice/img/no.png';
+            break;
+        default:
+            imagePath = '';
+            break;
+    }
+
+    console.log('Image path:', imagePath);
+    return imagePath;
+}
+
+
+
+
+  loadteamname(): void {
+    this.performanceForm.get('user')?.valueChanges.subscribe((selectedUser: User) => {
+      if (selectedUser) { 
+        this.performanceService.getTeamNamesByUser(selectedUser.id).subscribe(
+          teamNames => {
+            // Assuming this will set the team names to a property called teamNames in your component
+            this.teamNames = teamNames;
+          },
+          (error: any) => {
+            console.error('Error fetching team names:', error);
+          }
+        );
+      }
+    });
+  }
+  
 
   createForm(): void {
     this.performanceForm = this.fb.group({
@@ -46,6 +126,7 @@ export class PerformenceComponent implements OnInit {
             performanceList => {
                 this.performanceList = performanceList;
                 console.log('Fetched performance list:', performanceList);
+                
             },
             error => console.error('Error fetching performance list:', error)
         );
@@ -73,6 +154,16 @@ export class PerformenceComponent implements OnInit {
             (response: any) => {
                 console.log('Success adding performance:', response);
                 this.loadPerformanceList();
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "this performance has been submitted",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  customClass: {
+                    popup: 'swal-center'
+                  }
+                });
                 this.resetForm();
             },
             (error: any) => console.error('Error adding performance:', error)

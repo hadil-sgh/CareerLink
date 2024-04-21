@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, tap } from 'rxjs';
 import { UserService } from './user.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import{Performance} from 'src/app/models/Performence';
+import { Task } from '../models/Task';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class PerformanceService {
 
     return this.http.get<Performance[]>(`${this.baseUrl}/getAll`,{headers});
   }
+  getTeamNamesByUser(userId: number): Observable<string[]> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<string[]>(`${this.baseUrl}/team/${userId}`,{headers});
+  }
 
   deletePerformance(id: number): Observable<void> {
         const headers = this.userService.addTokenToHeaders(new HttpHeaders());
@@ -55,7 +60,20 @@ export class PerformanceService {
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`,{headers});
   }
 
-  
+  getTasksForUserThisMonth(userId: number): Observable<Task[]> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    const url = `${this.baseUrl}/tasks/${userId}`;
+    console.log('Requesting tasks for user with ID:', userId); // Log request initiation
+    return this.http.get<Task[]>(url, { headers }).pipe(
+      tap((tasks: Task[]) => {
+        console.log('Received tasks for user with ID:', userId, 'Tasks:', tasks); // Log successful response
+      }),
+      catchError((error) => {
+        console.error('Error fetching tasks for user with ID:', userId, 'Error:', error); // Log error response
+        throw error; // Rethrow the error to be handled by the caller
+      })
+    );
+  }
 }
 function jwt_decode(token: string): any {
   throw new Error('Function not implemented.');
