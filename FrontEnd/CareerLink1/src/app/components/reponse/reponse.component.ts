@@ -193,7 +193,28 @@ export class ReponseComponent implements OnInit {
   }
 
   confirmAdd(): void {
-   
+    const userPhoneNumber = '+21627345496'; // Numéro de téléphone cible
+    const message = 'Votre réclamation a été traitée et répondue. Merci de vérifier la réponse.';
+    
+    // Appeler le service Twilio pour envoyer un message au numéro de téléphone
+    this.twilioService.sendMessage(message, userPhoneNumber).subscribe(
+      () => {
+        console.log('Message sent successfully to', userPhoneNumber);
+        alert('un message sera envoyer au utlisateur ');
+
+        // Masquer les boutons Edit/Delete après l'envoi du message
+        this.showConfirmButton = false; // Masquer le bouton "Confirm Answer" après avoir été cliqué
+        this.showEditDeleteButtons = false; // Masquer les boutons Edit/Delete après l'envoi du message
+        this.confirmButtonClicked = true;
+        this.buttonService.updateButtonVisibility(false);
+        this.confirmationService.setConfirmation(true);
+      },
+      error => {
+        console.error('Error sending message to', userPhoneNumber, error);
+        // Afficher un message d'erreur (à personnaliser selon vos besoins)
+        alert('Une erreur s\'est produite lors de l\'envoi du message.');
+      }
+    );
   }
 
   
