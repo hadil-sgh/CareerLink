@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Expense } from 'src/app/models/Expense';
@@ -13,7 +13,8 @@ import { User } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { SharedService } from 'src/app/shared.service';
-
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-depense',
   templateUrl: './depense.component.html',
@@ -23,7 +24,8 @@ export class DepenseComponent implements OnInit {
   email = ''; 
   subject = 'Confirmation de paiement réussi';
   corp = `Cher Utilisateur,\n\nNous sommes ravis de vous informer que votre paiement a été effectué avec succès. Nous vous remercions pour votre transaction.\n\nCordialement,\nL'équipe de CareerLink`;
-  
+  @ViewChild('content') content!: ElementRef; // Référence à l'élément contenant le contenu à convertir en PDF
+
   expenses: Expense[] = [];
   expenseForm!: FormGroup;
   selectedExpense: Expense | null = null;
@@ -32,6 +34,12 @@ export class DepenseComponent implements OnInit {
   users: User[] = [];
   reclamations: Reclamation[] = [];
   securityCodeVisible = false;
+  selectedProjectName: string = '';
+  selectedProject: any = null;
+  selectedProjectTotalAmount: number = 0;
+ 
+
+
   constructor(
     private qrservice: QrcodeService,
     private expenseService: ExpenseService, 
@@ -53,6 +61,56 @@ export class DepenseComponent implements OnInit {
     this.loadReclamations();
     this.initializeForm(); // Initialisation du formulaire
   }
+  calculateTotalAmount(expenses: Expense[]): number {
+    let totalAmount = 0;
+  
+    // Sum up the amounts of all expenses associated with this project
+    expenses.forEach((expense: any) => {
+      totalAmount += expense.amount;
+    });
+  
+    return totalAmount;
+  }
+  calculateRemainingAmount(totalAmount: number): number {
+    // Calculez le montant restant à payer en soustrayant le montant déjà payé des dépenses associées
+    let totalPaidAmount = this.expenses
+      .filter(expense => expense.project?.name === this.selectedProjectName && expense.statusPayment === 'PAYE')
+      .reduce((acc, expense) => acc + expense.amount, 0);
+
+    return totalAmount - totalPaidAmount;
+  }
+  
+  
+  
+ // Ajoutez cette méthode à votre composant DepenseComponent
+showProjectDetails(project: any) {
+  this.selectedProject = project;
+
+  // Calculer le montant total du projet
+  let totalAmount = 0;
+
+  // Parcourir les dépenses associées à ce projet
+  this.filterExpensesByProject(project.name).forEach((expense: any) => {
+    totalAmount += expense.amount;
+  });
+
+  // Assigner le montant total au projet sélectionné
+  this.selectedProject.totalAmount = totalAmount;
+}
+
+
+  filterExpensesByProject(projectName: string): Expense[] {
+    if (!projectName) {
+      return this.expenses; // Si aucun nom de projet n'est spécifié, renvoyer toutes les dépenses
+    }
+    return this.expenses.filter(expense => expense.project?.name === projectName);
+  }
+
+  selectProject(projectName: string) {
+    this.selectedProjectName = projectName;
+    this.selectedProjectTotalAmount = this.calculateTotalAmount(this.filterExpensesByProject(projectName));
+  }
+  
 
   toggleAddReclamationForm(): void {
     this.sharedService.toggleAddReclamationForm();
@@ -224,6 +282,22 @@ export class DepenseComponent implements OnInit {
 
     // Update the form control with the formatted card number
     this.expenseForm.patchValue({ cardNumber });
+  }
+  generatePDF() {
+    const data = this.content.nativeElement;
+
+    html2canvas(data).then(canvas => {
+      // Récupérer la hauteur et la largeur du canvas
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4'); // Dimensions du PDF : portrait, millimètres, format A4
+      const position = 0;
+      const imgWidth = 208;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('expenses.pdf'); // Télécharger le PDF avec un nom spécifié
+      
+    });
   }
 
 }

@@ -1,23 +1,67 @@
-<div class="container mt-3">
-  <app-header-front></app-header-front>
 
+  <app-header-front></app-header-front>
+  
+  <!-- Bouton "Download PDF" aligné au centre -->
+  <div class="row justify-content-center mb-3">
+    <div class="col-6 text-center">
+      <button class="btn btn-success" (click)="generatePDF()">Download PDF</button>
+    </div>
+  </div>
+  <div class="row justify-content-between align-items-center mb-3">
+    <div class="col-6 text-center">
+      <button class="btn btn-warning btn-block" style="margin-top: 20px;" (click)="tri()">Order My Projects by Date</button>
+    </div>
+    
+    <div class="col-6 text-center">
+      <button type="button" class="btn btn-primary btn-block" style="margin-top: 20px;" [routerLink]="'/Employee/reclamation'">
+        <i class="fas fa-bullhorn mr-2"></i> Check My Claims
+      </button>
+    </div>
+  </div>
+  <div class="container mt-3"></div>
+  <div class="row justify-content-center mb-3" >
+    <div class="col-6 text-center">
+      <button class="btn btn-success" (click)="generatePDF()">Download PDF</button>
+    </div>
+  </div>
+  <div class="container mt-3"#content>
   <div class="card mt-3">
     <div class="card-body">
-      <h6 class="card-title mb-4">Expense List</h6>
-      
-      <div class="row justify-content-center align-items-center mb-3">
+      <div class="card mt-3">
+        <div class="card-body">
+         
+    
+         
+          
+
+      <!-- Affichage du montant total lorsque projet sélectionné -->
+      <div class="row justify-content-center mb-3" *ngIf="selectedProjectTotalAmount !== 0">
         <div class="col-6 text-center">
-          <button class="btn btn-warning btn-block" style="margin-top: 20px;" (click)="tri()">Order My Projects by Date</button>
+          <h6 style="font-weight: bold; color: black;">Total Amount for Project {{ selectedProjectName }}: {{ selectedProjectTotalAmount }} DT</h6>
+          <h6 style="font-weight: bold; color: black;">Amount Remaining to Pay: {{ calculateRemainingAmount(selectedProjectTotalAmount) }} DT</h6>
         </div>
+        </div>
+      </div>
+      <!-- Bouton pour générer le PDF -->
+    
+
+
+      <!-- Liste des projets avec montant total -->
+      <div class="row justify-content-center mb-3">
         <div class="col-6 text-center">
-          <button type="button" class="btn btn-primary btn-block" style="margin-top: 20px;" [routerLink]="'/Employee/reclamation'">
-            <i class="fas fa-bullhorn mr-2"></i> Check My Claims
-          </button>
+          <div class="d-flex flex-wrap justify-content-center">
+            <div *ngFor="let project of projects" class="mr-2 mb-2">
+              <button type="button" class="btn btn-primary btn-dark" (click)="selectProject(project.name)">
+                <i class="fas fa-project-diagram mr-2"></i> {{ project.name }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- Liste des dépenses filtrées par projet sélectionné -->
       <div class="row row-cols-1 row-cols-md-5">
-        <ng-container *ngFor="let expense of expenses">
+        <ng-container *ngFor="let expense of filterExpensesByProject(selectedProjectName)">
           <div class="col mb-4">
             <div class="card shadow-sm expense-card">
               <div class="card-body">
@@ -52,8 +96,9 @@
         </ng-container>
       </div>
 
-      <div *ngIf="expenses.length === 0" class="text-center mt-4">
-        <p>No expenses found.</p>
+      <!-- Message si aucune dépense n'est trouvée pour le projet sélectionné -->
+      <div *ngIf="filterExpensesByProject(selectedProjectName).length === 0" class="text-center mt-4">
+        <p>No expenses found for the selected project.</p>
       </div>
     </div>
   </div>
@@ -70,7 +115,7 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="expenseForm" (ngSubmit)="payExpense(selectedExpense)">
-            <div class="form-group ">
+            <div class="form-group">
               <label for="cardNumber">Card Number:</label>
               <input type="text" id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="1234 1234 1234 1234 " (input)="formatCardNumber($event)">
               <div *ngIf="isInvalidControl('cardNumber')" class="invalid-feedback">
@@ -79,14 +124,14 @@
             </div>
             
             <div class="form-row">
-              <div class="form-group ">
+              <div class="form-group">
                 <label for="expirationDate">Expiration Date:</label>
                 <input type="text" id="expirationDate" class="form-control" formControlName="expirationDate" placeholder="MM/YYYY" required>
                 <div *ngIf="isInvalidControl('expirationDate')" class="invalid-feedback">
                   Please provide a valid expiration date (MM/YYYY).
                 </div>
               </div>
-              <div class="form-group ">
+              <div class="form-group">
                 <label for="securityCode">Security Code:</label>
                 <div class="input-group">
                   <input type="{{ securityCodeVisible ? 'text' : 'password' }}" id="securityCode" class="form-control" formControlName="securityCode" maxlength="4" placeholder="****" required>
@@ -97,10 +142,9 @@
                   </div>
                 </div>
                 <div *ngIf="isInvalidControl('securityCode')" class="invalid-feedback">
-                  Please provide a valid security code (3 digits).
+                  Please provide a valid security code (4 digits).
                 </div>
               </div>
-              
             </div>
           </form>
         </div>
@@ -115,9 +159,10 @@
       </div>
     </div>
   </div>
-  
-  <!-- Message pour le paiement en espèces -->
-  <div *ngIf="selectedExpense && selectedExpense.methodPayment === 'CASH'" class="text-center mt-3">
-    <p class="alert alert-warning" role="alert">Please visit us to pay in cash.</p>
-  </div>
 </div>
+
+<style>
+  .exclude-pdf {
+  display: none;
+}
+</style>
