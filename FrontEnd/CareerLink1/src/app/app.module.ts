@@ -37,6 +37,8 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
 import { JwtModule } from "@auth0/angular-jwt";
 import { PoliciesComponent } from './policies/policies.component';
 import { BlackoutComponent } from './blackout/blackout.component';
+import { PerformenceComponent } from './components/performence/performence.component';
+import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,6 +67,8 @@ import { BlackoutComponent } from './blackout/blackout.component';
     LeaveStatisticsComponent,
     PoliciesComponent,
     BlackoutComponent,
+    PerformenceComponent,
+    PerformencedisplayComponent,
 
   ],
   imports: [

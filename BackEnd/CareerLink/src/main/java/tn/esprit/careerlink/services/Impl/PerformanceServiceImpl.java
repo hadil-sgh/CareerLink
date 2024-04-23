@@ -8,6 +8,7 @@ import tn.esprit.careerlink.repositories.PerformanceRepository;
 import tn.esprit.careerlink.services.IPerformanceService;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.List;
@@ -18,6 +19,7 @@ public class PerformanceServiceImpl implements IPerformanceService {
         PerformanceRepository performanceRepository;
     @Override
     public Performance addPerformence(Performance performence) {
+
         return performanceRepository.save(performence);
     }
 
@@ -34,6 +36,11 @@ public class PerformanceServiceImpl implements IPerformanceService {
     @Override
     public List<Performance> getAllPerformences() {
         return performanceRepository.findAll();
+    }
+
+    @Override
+    public List<Performance> getPerformanceByYearAndMonth(int year, int month) {
+        return performanceRepository.findByYearAndMonth(year,month);
     }
 
     @Override
