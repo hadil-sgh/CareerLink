@@ -28,13 +28,14 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { ProfileComponent } from './components/profile/profile.component';
-import{NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
+import {NgxExtendedPdfViewerModule}from'ngx-extended-pdf-viewer';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalpopComponent } from './modalpop/modalpop.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
 import { JwtModule } from "@auth0/angular-jwt";
+import { RecruitmentComponent } from './components/recruitment/recruitment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +62,7 @@ import { JwtModule } from "@auth0/angular-jwt";
     ModalpopComponent,
     RejectComponent,
     LeaveStatisticsComponent,
+    RecruitmentComponent,
 
   ],
   imports: [

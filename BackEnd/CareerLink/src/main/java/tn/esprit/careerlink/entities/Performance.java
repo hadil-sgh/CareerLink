@@ -20,6 +20,6 @@ public class Performance implements Serializable {
     Integer grade;
     String comment;
     String week;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     User user;
 }

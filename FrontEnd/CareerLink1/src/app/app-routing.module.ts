@@ -18,6 +18,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ModalpopComponent } from './modalpop/modalpop.component';
 import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
+import { RecruitmentComponent } from './components/recruitment/recruitment.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -46,7 +47,9 @@ const routes: Routes = [
       { path: "teams", component: TeamComponent },
       { path: "TimeOffTracker/traitment/:id", component: RejectComponent },
       { path: "sata", component: LeaveStatisticsComponent },
-      { path:"profile/:id",component:ProfileComponent}
+      { path:"profile/:id",component:ProfileComponent},
+      { path: "recruitment", component: RecruitmentComponent }
+
 
 ]},
 ];
