@@ -21,6 +21,7 @@ import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.co
 import { PoliciesComponent } from './policies/policies.component';
 import { BlackoutComponent } from './blackout/blackout.component';
 import { PerformenceComponent } from './components/performence/performence.component';
+import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -52,7 +53,8 @@ const routes: Routes = [
       { path: "TimeOffTracker/traitment/:id", component: RejectComponent },
       { path: "sata", component: LeaveStatisticsComponent },
       { path:"profile/:id",component:ProfileComponent},
-      { path:"performence",component:PerformenceComponent}
+      { path:"performence",component:PerformencedisplayComponent},
+      { path:"performenceadd",component:PerformenceComponent},
 
 ]},
 ];

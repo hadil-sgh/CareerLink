@@ -176,7 +176,6 @@ export class TimeofftrackerComponent {
 
 
   deletetimeOff(id: number): void {
-    // Find the time off request by its ID
     const timeOff = this.timesOff.find(t => t.id === id);
   
     if (timeOff) {

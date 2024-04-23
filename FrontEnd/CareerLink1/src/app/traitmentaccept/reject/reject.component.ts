@@ -71,6 +71,7 @@ export class RejectComponent implements OnInit {
     this.timeoffservice.getDayOffByRole(this.id).subscribe(
       (dayOffs: number) => {
         this.dayOffs = dayOffs;
+        console.log('daysoff',dayOffs)
       },
       (error: any) => {
         console.error('Error fetching day offs:', error);

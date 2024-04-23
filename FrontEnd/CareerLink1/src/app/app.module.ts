@@ -38,6 +38,7 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { PoliciesComponent } from './policies/policies.component';
 import { BlackoutComponent } from './blackout/blackout.component';
 import { PerformenceComponent } from './components/performence/performence.component';
+import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +68,7 @@ import { PerformenceComponent } from './components/performence/performence.compo
     PoliciesComponent,
     BlackoutComponent,
     PerformenceComponent,
+    PerformencedisplayComponent,
 
   ],
   imports: [

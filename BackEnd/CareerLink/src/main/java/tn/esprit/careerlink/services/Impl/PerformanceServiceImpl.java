@@ -39,6 +39,11 @@ public class PerformanceServiceImpl implements IPerformanceService {
     }
 
     @Override
+    public List<Performance> getPerformanceByYearAndMonth(int year, int month) {
+        return performanceRepository.findByYearAndMonth(year,month);
+    }
+
+    @Override
     public void deletePerformence(Integer idPerformence) {
         performanceRepository.deleteById(idPerformence);
     }

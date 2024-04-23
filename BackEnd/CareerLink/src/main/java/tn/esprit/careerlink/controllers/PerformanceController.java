@@ -37,7 +37,6 @@ public class PerformanceController {
     }
     @PutMapping("/update")
     public Performance updatePerformance(@RequestBody Performance Performance ){
-        Performance.setYear(Year.now().getValue());
         return performenceService.updatePerformence(Performance);
     }
 
@@ -80,5 +79,9 @@ public class PerformanceController {
         List<String> teamNames = teams.stream().map(Team::getName).collect(Collectors.toList());
         return ResponseEntity.ok(teamNames);
     }
+        @GetMapping("/filter/{year}/{month}")
+        public  List<Performance> filterbyyearandmonth(@PathVariable ("year") int year ,@PathVariable ("month") int month){
+            return performenceService.getPerformanceByYearAndMonth(year,month);
+        }
 
 }

@@ -5,7 +5,6 @@ import { Performance } from 'src/app/models/Performence';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/User';
 import {  Task } from 'src/app/models/Task';
-import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
 import { Status } from 'src/app/models/Status';
 import Swal from 'sweetalert2';
 
@@ -82,7 +81,6 @@ export class PerformenceComponent implements OnInit {
             break;
     }
 
-    console.log('Image path:', imagePath);
     return imagePath;
 }
 
@@ -173,27 +171,6 @@ export class PerformenceComponent implements OnInit {
 
 
 
-  editPerformance(performance: Performance): void {
-    this.selectedPerformance = performance;
-    this.performanceForm.patchValue({
-      // Patch form values based on the selected performance
-    });
-  }
-
-  updatePerformance(): void {
-    if (this.selectedPerformance && this.performanceForm.valid) {
-      const updatedPerformance = { ...this.selectedPerformance, ...this.performanceForm.value } as Performance;
-      this.performanceService.updatePerformance(updatedPerformance).subscribe(
-        (response: any) => {
-          console.log('Success updating performance:', response);
-          this.loadPerformanceList();
-          this.resetForm();
-          this.selectedPerformance = null;
-        },
-        (error: any) => console.error('Error updating performance:', error)
-      );
-    }
-  }
 
   deletePerformance(id: number): void {
     this.performanceService.deletePerformance(id).subscribe(

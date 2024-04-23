@@ -59,6 +59,11 @@ export class PerformanceService {
 
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`,{headers});
   }
+  filterbyyearMonth(year:number,month:number){
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<Performance[]>(`${this.baseUrl}/filter/${year}/${month}`,{headers});
+
+  }
 
   getTasksForUserThisMonth(userId: number): Observable<Task[]> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
