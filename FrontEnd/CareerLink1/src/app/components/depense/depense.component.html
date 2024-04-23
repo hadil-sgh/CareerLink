@@ -21,7 +21,7 @@
   <div class="container mt-3"></div>
   <div class="row justify-content-center mb-3" >
     <div class="col-6 text-center">
-      <button class="btn btn-success" (click)="generatePDF()">Download PDF</button>
+      <button class="btn btn-success" (click)="generatePDF()">Download Expenses invoices</button>
     </div>
   </div>
   <div class="container mt-3"#content>
@@ -117,11 +117,15 @@
           <form [formGroup]="expenseForm" (ngSubmit)="payExpense(selectedExpense)">
             <div class="form-group">
               <label for="cardNumber">Card Number:</label>
-              <input type="text" id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="1234 1234 1234 1234 " (input)="formatCardNumber($event)">
+              <input type="text" id="cardNumber" class="form-control" formControlName="cardNumber" placeholder="1234 1234 1234 1234 " (input)="formatCardNumber($event)" required>
+              <div *ngIf="expenseForm.get('cardNumber')?.hasError('invalidLength')" class="invalid-feedback">
+                Card number must be exactly 16 digits.
+              </div>
               <div *ngIf="isInvalidControl('cardNumber')" class="invalid-feedback">
                 Please provide a valid card number.
               </div>
             </div>
+          
             
             <div class="form-row">
               <div class="form-group">

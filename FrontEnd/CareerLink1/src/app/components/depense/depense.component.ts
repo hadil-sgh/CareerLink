@@ -160,10 +160,35 @@ showProjectDetails(project: any) {
   initializeForm(): void {
     // Initialisation du formulaire avec FormBuilder
     this.expenseForm = this.fb.group({
-      cardNumber: ['', Validators.required],
+      cardNumber: ['', [Validators.required, Validators.minLength(19), Validators.maxLength(19), this.validateCardNumber]],
       expirationDate: ['', [Validators.required, this.validateExpirationDate]],
       securityCode: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^[0-9]{4}$')]]
     });
+  }
+  formatCardNumber(event: any): void {
+    // Get the current value of the card number input
+    let cardNumber = event.target.value;
+
+    // Remove any non-digit characters from the input
+    cardNumber = cardNumber.replace(/\D/g, '');
+
+    // Add a space after every 4 digits using regex
+    cardNumber = cardNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+    
+
+    // Update the form control with the formatted card number
+    this.expenseForm.patchValue({ cardNumber });
+  }
+  validateCardNumber(control: any): { [key: string]: any } | null {
+    const cardNumber = control.value;
+    if (cardNumber && cardNumber.replace(/\D/g, '').length !== 16) {
+      return { 'invalidLength': true };
+    }
+    return null;
+  }
+  isInvalidControl(controlName: string): boolean {
+    const control = this.expenseForm.get(controlName);
+    return control ? control.invalid && (control.dirty || control.touched) : false;
   }
 
   validateExpirationDate(control: any) {
@@ -266,23 +291,8 @@ showProjectDetails(project: any) {
     );
   }
 
-  isInvalidControl(controlName: string): boolean {
-    const control = this.expenseForm.get(controlName);
-    return control ? control.invalid && (control.dirty || control.touched) : false;
-  }
-  formatCardNumber(event: any): void {
-    // Get the current value of the card number input
-    let cardNumber = event.target.value;
-
-    // Remove any non-digit characters from the input
-    cardNumber = cardNumber.replace(/\D/g, '');
-
-    // Add a space after every 4 digits using regex
-    cardNumber = cardNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
-
-    // Update the form control with the formatted card number
-    this.expenseForm.patchValue({ cardNumber });
-  }
+ 
+  
   generatePDF() {
     const data = this.content.nativeElement;
 
