@@ -49,6 +49,11 @@ public class PerformanceController {
     public List<Performance> getAllPerformance(){
         return performenceService.getAllPerformences();
     }
+    @GetMapping("/getAllbymail")
+    public List<Performance> getAllPerformancebyemail(@PathVariable ("email") String email){
+
+        return performenceService.getAllPerformencesbyid(email);
+    }
 
     @DeleteMapping("/delete/{id}")
     public void  deletePerformance(@PathVariable ("id") Integer idPerformance) {
