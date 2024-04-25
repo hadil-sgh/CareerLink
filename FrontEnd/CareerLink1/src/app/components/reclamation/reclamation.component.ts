@@ -88,11 +88,16 @@ export class ReclamationComponent {
     );
   }
 
-  loadReclamations(): void{
-    this.reclamationService.findAllReclamation()
-    .subscribe(
-      reclamations => this.reclamations =reclamations,
-      error => console.error('error, getallRec', error)
+  loadReclamations(): void {
+    this.reclamationService.findAllReclamation().subscribe(
+      reclamations => {
+        this.reclamations = reclamations;
+        
+        
+      },
+      error => {
+        console.error('Error loading reclamations:', error);
+      }
     );
   }
 
@@ -237,6 +242,6 @@ export class ReclamationComponent {
       this.router.navigate(['/Employee/checkreponse', reclamation.idreclamation]);
     }
   }
-  
+ 
 
 }

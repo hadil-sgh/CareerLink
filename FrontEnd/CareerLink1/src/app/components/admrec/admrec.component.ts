@@ -89,4 +89,5 @@ export class AdmrecComponent implements OnInit {
       this.router.navigate(['/admin/answred', reclamation.idreclamation]);
     }
   }
+  
 }
