@@ -22,6 +22,7 @@ import { PoliciesComponent } from './policies/policies.component';
 import { BlackoutComponent } from './blackout/blackout.component';
 import { PerformenceComponent } from './components/performence/performence.component';
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
+import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -36,6 +37,7 @@ const routes: Routes = [
       { path: "taketimeoff", component: TaketimeoffComponent },
       { path: "TimeOffTracker/update/:id", component: ModalpopComponent },
       { path: "expense", component: DepenseComponent },
+      { path:"performenceempl",component:PerformenceemployeeComponent},
 
     ]
   },

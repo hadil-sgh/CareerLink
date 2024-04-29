@@ -14,7 +14,15 @@ export class PerformanceService {
   private baseUrl = 'http://localhost:8086/spring2024/Performance';
 
   constructor(private http: HttpClient, private userService:UserService, private jwtHelper: JwtHelperService) { }
-
+  
+  
+  findPeformancesbysession(): Observable<Performance[]> {
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    const email = this.getUserIdFromToken();
+    const encodedEmail = encodeURIComponent(email); 
+    const url = `${this.baseUrl}/getAllbymail/${encodedEmail}`; 
+    return this.http.get<Performance[]>(url, {headers}); 
+  }
 
 
   getUserIdFromToken(): string {
