@@ -1,99 +1,45 @@
-<!-- <div class="row">
-    <div class="col-lg-12 d-flex align-items-stretch">
-      <div class="card w-100">
-        <div class="card-body p-4">
-          <div class="mb-4"></div>
-         
-          <div class="d-flex justify-content-end statistics-button">
-            <button type="submit" class="btn btn-outline-primary m-1" routerLink="/admin/performenceadd">
-                <img src="/assets/FrontOffice/img/add.png" alt="Edit Icon" class="button-icon" />
-                Add
-            </button>          </div>
-          <form [formGroup]="performanceForm" (ngSubmit)="filter()" class="form-inline" id="searchForm">
-            <div class="form-group mr-2">
-              <select formControlName="week" class="form-control" id="week">
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
+
+<div class="separator"></div>
+
+
+<div class="container">
+  <div class="text-center">
+    <img src="/assets/FrontOffice/img/note.png" alt="Edit Icon" class="button-icon" />
+      <h5 style="color:grey; display: inline-block; margin-right: 5px;"><b>This are your performance results i hope you are satisfied</b> </h5><i class="fas fa-exclamation-triangle" style="color: orange;"></i>
+    </div>
+    <div class="separator"></div>
+
+  <div class="row justify-content-center">
+    <ng-container *ngFor="let performance of performanceList; let i = index;">
+      <div class="col-md-3 mb-4">
+        <div class="card" [ngClass]="{'grey-text': isCurrentMonthAndYear(performance.week, performance.year)}">
+          <div class="card-body">
+            <h5 class="card-title">{{ performance.week }} / {{ performance.year }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted"></h6>
+            <div class="star-rating">
+              <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
             </div>
-            <div class="form-group mr-2">
-              <input type="number" formControlName="year" class="form-control" id="year" placeholder="Year">
-            </div>
-            <button type="submit" class="btn btn-primary" (click)="filter()">Search</button>
-          </form>
-  
-          <div class="separator"></div>
-          <div class="card-deck">
-            <div class="card" style="width: 15rem;" *ngFor="let performance of performanceList">
-              <div class="card-body">
-                <h5 class="card-title">{{ performance.user.firstName}} {{ performance.user.lastName }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <div class="star-rating">
-                  <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
-                </div>
-                <p class="card-text"><b>Comment :</b>{{ performance.comment }}</p>
-                <p class="card-text">{{ performance.week }} / {{ performance.year }}</p>
-                <button type="button" class="btn btn-outline-success m-1" data-toggle="modal" data-target="#exampleModal" (click)="openEditModal(performance)">
-                  <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
-                </button>
-                <button type="button" class="btn btn-outline-danger m-1" (click)="deletePerformance(performance.idperformence)">
-                  <img src="/assets/FrontOffice/img/delete.png" alt="Edit Icon" class="button-icon" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="current" style="text-align: center;">
-            <pagination-controls (pageChange)="p= $event"></pagination-controls>
+            <p class="card-text"><b>Comment :</b>{{ performance.comment }}</p>
           </div>
         </div>
       </div>
-    </div>
+      <!-- Close the row and start a new one after every fourth card -->
+      <div *ngIf="(i + 1) % 4 === 0" class="w-100"></div>
+    </ng-container>
   </div>
-  
+</div>
+
+
+         
+  <div class="separator"></div>
+<div class="separator"></div>
+<div class="separator"></div>
+<div class="separator"></div>
+
 
           <style>
-            .card-deck {
-             display: flex;
-             flex-wrap: wrap;
-             justify-content: space-around;
-           }
-           .button-margin {
-               margin: 20px;
-             }
-            .separator {
-            height: 40px; }
-            .separator1 {
-            height: 10px; }
-            .button-space {
-            margin: 0 10px; } 
-            .button-space1 {
-            margin: 0 5px; 
-          }
-          .swal-center {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          }
-          .button-icon {
-            width: 20px; 
-            height: auto; 
-            margin-right: 5px; 
-          }
-          .status-icon {
-            width: 20px; 
-            height: auto; 
-            margin-right: 5px; 
-          }
+           .separator {
+            height: 100px; }
           .star-rating {
           font-size: 24px;
         }
@@ -106,109 +52,28 @@
           color: gold;
         }
         
-          .button-icon1 {
-            width: 40px; 
-            height: auto; 
-            margin-right: 5px; 
-          }
-  
-    .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.card-container .card {
-  flex: 0 0 calc(25% - 15px);
-  margin-bottom: 15px;
-}
-#searchForm {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px; /* Add some top margin for spacing */
-}
-
-
-#searchForm .form-group {
-    margin-right: 10px; /* Adjust as needed */
-}.card-deck {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.button-margin {
-  margin: 20px;
-}
-
-.separator {
-  height: 40px;
-}
-
-.separator1 {
-  height: 10px;
-}
-
-.button-space {
-  margin: 0 10px;
-}
-
-.button-space1 {
-  margin: 0 5px;
-}
-
-.swal-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-icon,
-.status-icon {
-  width: 20px;
-  height: auto;
-  margin-right: 5px;
-}
-
 .star-rating {
   font-size: 24px;
 }
-
-.star {
-  color: gray;
-}
-
-.checked {
-  color: gold;
-}
-
-.button-icon1 {
-  width: 40px;
-  height: auto;
-  margin-right: 5px;
-}
-
-.card-container {
+.container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.card-container .card {
-  flex: 0 0 calc(25% - 15px);
-  margin-bottom: 15px;
-}
-
-#searchForm {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  margin-top: 20px; /* Add some top margin for spacing */
+  flex-wrap: wrap;
 }
 
-#searchForm .form-group {
-  margin-right: 10px; /* Adjust as needed */
+.card {
+  margin-bottom: 20px; /* Adjust margin as needed */
 }
 
-          </style> -->
+.grey-text {
+  background-color: grey;
+}
+.button-icon {
+width: 40px; /* Adjust the width to your desired size */
+height: auto; /* Maintain aspect ratio */
+margin-right: 5px; /* Optional: Add margin for spacing */
+}
+
+
+
+          </style>

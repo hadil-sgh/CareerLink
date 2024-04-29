@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IPerformanceService {
     Performance addPerformence(Performance performence);
+    //Performance best(Performance performence);
     Performance updatePerformence(Performance performence);
     Performance getOnePerformence(Integer idPerformence);
     List<Performance> getAllPerformences();

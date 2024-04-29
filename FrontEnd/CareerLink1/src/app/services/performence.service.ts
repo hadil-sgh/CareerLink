@@ -20,8 +20,8 @@ export class PerformanceService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
     const email = this.getUserIdFromToken();
     const encodedEmail = encodeURIComponent(email); 
-    const url = `${this.baseUrl}/getAllbymail?email=${encodedEmail}`; 
-    return this.http.get<Performance[]>(url, { headers }); 
+    const url = `${this.baseUrl}/getAllbymail/${encodedEmail}`; 
+    return this.http.get<Performance[]>(url, {headers}); 
   }
 
 

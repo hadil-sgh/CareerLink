@@ -49,7 +49,7 @@ public class PerformanceController {
     public List<Performance> getAllPerformance(){
         return performenceService.getAllPerformences();
     }
-    @GetMapping("/getAllbymail")
+    @GetMapping("/getAllbymail/{email}")
     public List<Performance> getAllPerformancebyemail(@PathVariable ("email") String email){
 
         return performenceService.getAllPerformencesbyid(email);
