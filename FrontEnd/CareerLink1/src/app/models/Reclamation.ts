@@ -10,7 +10,7 @@ export class Reclamation {
     description!: string;
  
     typeReclamation!:TypeReclamation;
-   
+   importance!:number;
      
  
     reponse!: Reponse[]; 

@@ -1,7 +1,23 @@
 <div class="card">
+  <div class="card-header">
+    
+    <div class="btn-group mr-2 centre"> <!-- Utilisez move-to-right au lieu de move-right -->
+      <button type="button" class="btn btn-danger blinking-button" (click)="verifyUnansweredReclamations()">Check Unanswered Reclamations</button>
+    </div>
+    
+  <div class="form-group">
+    <label for="filterDropdown">Filter by Type:</label>
+    <select class="form-control" id="filterDropdown" [(ngModel)]="selectedType" (change)="filterReclamationsByType()">
+      <option value="" selected disabled>Choose a Type</option>
+      <option value="EXCESSIVE_EXPENSES">EXCESSIVE EXPENSES</option>
+      <option value="INCORRECT_BILLING">INCORRECT BILLING</option>
+      <option value="UNAUTHORIZED_CHARGES">UNAUTHORIZED CHARGES</option>
+      <option value="OTHER">OTHER</option>
+    </select>
+  </div>
+  
   <div class="card-body">
     <div class="table-responsive">
-      <h5 class="card-header">Reclamation List</h5>
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
@@ -10,30 +26,32 @@
             <th>DATE</th>
             <th>DESCRIPTION</th>
             <th>TYPE</th>
+            
             <th class="text-center align-middle">ACTION</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let reclamation of reclamations">
-            <td>{{ reclamation.expense.user.firstName}}</td>
-              <td class="action-cell">{{ reclamation.expense.project.name}}</td>
+          <tr *ngFor="let reclamation of reclamations" [ngClass]="{
+            'importance-red': reclamation.importance >= 4.0,
+            'importance-purple': reclamation.importance < 4.0 && reclamation.importance > 2.0,
+            'importance-yellow': reclamation.importance <= 2.0
+          }">
+            <td>{{ reclamation.expense.user.firstName }}</td>
+            <td class="action-cell">{{ reclamation.expense.project.name }}</td>
             <td>{{ reclamation.datereclamation | date }}</td>
             <td>{{ reclamation.description }}</td>
             <td>{{ reclamation.typeReclamation }}</td>
+            
             <td class="text-center align-middle">
               <ng-container *ngIf="!hasResponse(reclamation)">
                 <button type="button" class="btn btn-lg" style="background-color: #FFA500; color: #ffffff; border-color: #FFA500;" [routerLink]="['/admin/reponse', reclamation.idreclamation]">Answer</button>
               </ng-container>
-              
-              
-              
               <button type="button" class="btn btn-dark btn-lg" style="background-color: #4169E1; color: #ffffff; border-color: #4169E1;" *ngIf="hasResponse(reclamation)" [routerLink]="['/admin/answred', reclamation.idreclamation]">
                 Check Answer
               </button>
-              
-              
             </td>
           </tr>
+          
           <tr *ngIf="reclamations.length === 0">
             <td colspan="4" class="text-center">No reclamations found.</td>
           </tr>
@@ -42,11 +60,24 @@
     </div>
   </div>
 </div>
+
 <style>
-.btn-orange {
-  background-color: #FFA500; /* Couleur orange */
-  color: #ffffff; /* Couleur du texte en blanc */
-  border-color: #FFA500; /* Couleur de la bordure orange */
+  .blinking-button {
+    animation: blinker 1s linear infinite;
+  }
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+  .move-to-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px; /* Pour ajouter un espace en haut */
+    margin-right: 10px; /* Pour ajouter un espace à droite */
 }
+
 
 </style>

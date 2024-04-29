@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+
+  .table-danger {
+  background-color: #ffcccc; /* Rouge pour une importance élevée */
+}
+
+.table-warning {
+  background-color: #ffffcc; /* Jaune pour une importance moyenne */
+}
+
+.table-success {
+  background-color: #ccffcc; /* Vert pour une importance faible */
+}
+

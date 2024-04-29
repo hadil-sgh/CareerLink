@@ -1,0 +1,186 @@
+/* Style pour le tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 2px solid #4CAF50;
+  }
+  
+  /* Style pour les en-têtes de colonne */
+  th {
+    text-align: left;
+    padding: 12px;
+    transition: background-color 0.3s ease;
+    border-right: 2px solid #afc2af; /* Bordure à droite de chaque en-tête */
+  }
+  .black-text {
+    color: black;
+  }
+  
+  /* Style pour chaque colonne */
+  .col-id {
+    background-color: #4CAF50; /* Vert */
+    color: white;
+  }
+  
+  .col-description {
+    background-color: #21adf3; /* Bleu */
+    color: white;
+  }
+  
+  .col-date {
+    background-color: #21adf3; /* Orange */
+    color: white;
+  }
+  
+  .col-type {
+    background-color: #21adf3; /* Violet */
+    color: white;
+  }
+  .col-action {
+    background-color: #21adf3; /* Violet */
+    color: white;
+  }
+  /* Effet de survol sur les en-têtes */
+  th:hover {
+    background-color: #45a049;
+  }
+  
+  /* Style pour les lignes impaires */
+  tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Style pour les cellules */
+  td {
+    padding: 12px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Effet de survol sur les cellules */
+  td:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* Style pour les cellules de données numériques */
+  td.number {
+    text-align: right;
+  }
+  
+  /* Style pour le titre */
+  h2 {
+    color: #4CAF50;
+    transition: color 0.3s ease;
+  }
+  
+  /* Effet de survol sur le titre */
+  h2:hover {
+    color: #45a049;
+  }
+  .container {
+    margin-bottom: 20px;
+}
+
+.importance-red {
+  background-color: rgb(236, 66, 66);
+ 
+}
+
+.importance-purple {
+  background-color: rgb(74, 245, 105);
+ 
+}
+
+.importance-yellow {
+  background-color: rgb(241, 150, 64);
+ 
+}
+.text-red {
+  color: red;
+}
+
+.text-purple {
+  color: purple;
+}
+
+.text-yellow {
+  color: yellow;
+}
+.filter-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  background-color: #007bff;
+  color: #181616;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+}
+
+.type-selector {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+/* Styles pour les carrés de couleur avec indications d'importance */
+/* Styles pour les carrés de couleur avec indications d'importance */
+.color-squares {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.color-square {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  margin-right: 20px;
+  border-radius: 4px;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}
+
+.purple {
+  background-color: rgb(234, 50, 4);
+  color: white;
+}
+
+.yellow {
+  background-color: rgb(248, 125, 10);
+  color: black;
+}
+
+.label {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+.repondre-button {
+  background-color: #21adf3; /* Change this to the desired color */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.repondre-button:hover {
+  background-color: #00bcd4; /* Change this to the desired hover color */
+}

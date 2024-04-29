@@ -10,6 +10,6 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
 
     List<Expense> findAllByOrderByDateexpense();
-    
+
 
 }

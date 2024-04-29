@@ -148,6 +148,7 @@ export class ReclamationComponent {
       datereclamation: datereclamation,
       description: description,
       typeReclamation: typeReclamation,
+      importance:0,
       reponse: [],
       expense: { idexpense: idexpense, unitPrice: 0, quantity: 0, amount: 0, dateexpense: new Date(), category: '', methodPayment: MethodPayment.CARD, 
         statusPayment:StatusPayment.NONPAYE ,project: { idProject: 0, name: '', description: '', dueDate: new Date(), price: 0, teams: [], tasks: [], expense: [] ,},reclamation: [] ,user: {

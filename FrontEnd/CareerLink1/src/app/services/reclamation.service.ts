@@ -45,4 +45,15 @@ export class ReclamationService {
     return this.http.get<Reclamation[]>( this.baseUrl + 'tri');
 
   }
+  getAllReclamationsSortedByImportance(): Observable<Reclamation[]> {
+    return this.http.get<Reclamation[]>(this.baseUrl + 'reclamations/sorted');
+  }
+
+  getReclamationsByType(type: string): Observable<Reclamation[]> {
+    return this.http.get<Reclamation[]>(`${this.baseUrl}type/${type}`);
+  }
+
+  verifyUnansweredReclamations(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'verifierNonRepondues');
+  }
 }

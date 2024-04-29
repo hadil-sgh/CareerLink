@@ -22,20 +22,22 @@ export class AdmrecComponent implements OnInit {
   projects: Project[] = [];
   filteredProjects: Project[] = [];
   users: User[] = [];
+  selectedType: string = ''; // Variable pour stocker le type sélectionné
 
   constructor(
     private reclamationService: ReclamationService,
     private reponseservice: ReponseService,
-    private expenseService:ExpenseService,
+    private expenseService: ExpenseService,
     private fb: FormBuilder,
-    private userservice:UserService,
+    private userservice: UserService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadReclamations();
+    this.sortReclamationsByImportance();
     this.loadReponses();
   }
+
   loadUsers(): void {
     this.userservice.findAllUsers()
       .subscribe(
@@ -46,7 +48,7 @@ export class AdmrecComponent implements OnInit {
         error => console.error('Erreur lors du chargement des utilisateurs :', error)
       );
   }
-  
+
   loadProjects(): void {
     this.expenseService.getAllProjects()
       .subscribe(
@@ -57,7 +59,6 @@ export class AdmrecComponent implements OnInit {
         error => console.error('error, getAllProjects', error)
       );
   }
-  
 
   loadReclamations(): void {
     this.reclamationService.findAllReclamation()
@@ -89,5 +90,46 @@ export class AdmrecComponent implements OnInit {
       this.router.navigate(['/admin/answred', reclamation.idreclamation]);
     }
   }
+
+  sortReclamationsByImportance(): void {
+    this.reclamationService.getAllReclamationsSortedByImportance()
+      .subscribe(
+        reclamations => this.reclamations = reclamations,
+        error => console.error('Error sorting reclamations by importance:', error)
+      );
+  }
+
+  filterReclamationsByType(): void {
+    if (this.selectedType !== '') {
+      this.reclamationService.getReclamationsByType(this.selectedType)
+        .subscribe(
+          reclamations => this.reclamations = reclamations,
+          error => console.error('Error filtering reclamations by type:', error)
+        );
+    } else {
+      // Si aucun type n'est sélectionné, charger toutes les réclamations
+      this.loadReclamations();
+    }
+  }
+
+  verifyUnansweredReclamations(): void {
+    this.reclamationService.verifyUnansweredReclamations()
+      .subscribe(
+        reclamations => {
+          this.reclamations = reclamations.reclamationsNonRepondues;
+          alert(`Total Unanswered Reclamations: ${reclamations.totalReclamationsNonRepondues}`);
+        },
+        error => console.error('Error verifying unanswered reclamations:', error)
+      );
+  }
+
   
+  
+  
+
+  // Fonction pour déclencher le filtrage lorsque le type est sélectionné dans le menu déroulant
+  onTypeSelected(type: string): void {
+    this.selectedType = type;
+    this.filterReclamationsByType();
+  }
 }
