@@ -40,6 +40,7 @@ import { BlackoutComponent } from './blackout/blackout.component';
 import { PerformenceComponent } from './components/performence/performence.component';
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
+import { ProjectComponent } from './components/project/project.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,6 +72,7 @@ import { PerformenceemployeeComponent } from './components/performenceemployee/p
     PerformenceComponent,
     PerformencedisplayComponent,
     PerformenceemployeeComponent,
+    ProjectComponent,
 
   ],
   imports: [

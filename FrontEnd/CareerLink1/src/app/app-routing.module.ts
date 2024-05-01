@@ -23,6 +23,7 @@ import { BlackoutComponent } from './blackout/blackout.component';
 import { PerformenceComponent } from './components/performence/performence.component';
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
+import { ProjectComponent } from './components/project/project.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -57,6 +58,8 @@ const routes: Routes = [
       { path:"profile/:id",component:ProfileComponent},
       { path:"performence",component:PerformencedisplayComponent},
       { path:"performenceadd",component:PerformenceComponent},
+      { path:"project",component:ProjectComponent},
+
 
 ]},
 ];
