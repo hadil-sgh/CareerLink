@@ -23,6 +23,7 @@
     "aos": "^2.3.4",
     "bad-words": "^3.0.4",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.2",
     "cors": "^2.8.5",
     "formBuilder": "^3.19.1",
     "html2canvas": "^1.4.1",

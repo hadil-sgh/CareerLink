@@ -40,7 +40,8 @@ export class ReclamationComponent {
   idexpense: number | undefined;
   forbiddenWords=['mot1','fuck','null'];
   showCheckAnswerButton = false;
-  
+  unsuccessfulAttempts = 0;
+
   ngOnInit(): void {
     this.loadReclamations();
     this.createForm();
@@ -114,6 +115,7 @@ export class ReclamationComponent {
       response => {
         console.log('success, deleteReclamation', response);
         alert('Claim deleted successfully.');
+        this.unsuccessfulAttempts = 0;
         this.loadReclamations();
       },
       error => {
@@ -177,6 +179,7 @@ export class ReclamationComponent {
         () => {
           console.log('success, addReclamationAndAffect');
           alert('cmail added successfully');
+          this.unsuccessfulAttempts = 0;
           this.loadReclamations();
           this.reclamationForm.reset();
         },
@@ -218,6 +221,7 @@ export class ReclamationComponent {
       this.reclamationService.updateReclamation(updatedReclamation).subscribe(
         response => {
           console.log('success, updateReclamation', response);
+          this.unsuccessfulAttempts = 0;
           alert('claim updated successfully');
           this.loadReclamations();
           this.reclamationForm.reset();
@@ -231,8 +235,18 @@ export class ReclamationComponent {
   
    
   containsForbiddenWords(comment: string): boolean {
-    return this.forbiddenWords.some(word => comment.toLowerCase().includes(word.toLowerCase()));
-  }    
+    if (this.forbiddenWords.some(word => comment.toLowerCase().includes(word.toLowerCase()))) {
+      this.unsuccessfulAttempts++;
+      if (this.unsuccessfulAttempts >= 3) {
+        // Bannir l'utilisateur ou effectuer toute autre action nécessaire
+        alert("Vous avez été banni pour utilisation de mots interdits.");
+        // Vous pouvez également rediriger l'utilisateur vers une page de bannissement ou effectuer d'autres actions ici
+      }
+      return true;
+    }
+    return false;
+  }
+  
   checkAnswer(reclamation: Reclamation): void {
     if (reclamation.reponse.length === 0) {
       // Aucune réponse associée à cette réclamation

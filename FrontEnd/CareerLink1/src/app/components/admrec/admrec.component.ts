@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Chart, registerables } from 'chart.js/auto';
 import { Project } from 'src/app/models/Project';
 import { Reclamation } from 'src/app/models/Reclamation';
 import { Reponse } from 'src/app/models/Reponse';
@@ -10,36 +11,152 @@ import { ReclamationService } from 'src/app/services/reclamation.service';
 import { ReponseService } from 'src/app/services/reponse.service';
 import { UserService } from 'src/app/services/user.service';
 
+Chart.register(...registerables);
+
 @Component({
   selector: 'app-admrec',
   templateUrl: './admrec.component.html',
   styleUrls: ['./admrec.component.css']
 })
-export class AdmrecComponent implements OnInit {
+export class AdmrecComponent implements OnInit, OnDestroy {
+  @ViewChild('myChart') myChart!: ElementRef;
+  @ViewChild('selectedProjectChart') selectedProjectChart!: ElementRef;
+  chart!: Chart;
+  selectedProject: Project | null = null;
   reclamations: Reclamation[] = [];
   reclamationForm!: FormGroup;
   Reponses: Reponse[] = [];
   projects: Project[] = [];
   filteredProjects: Project[] = [];
   users: User[] = [];
-  selectedType: string = ''; // Variable pour stocker le type sélectionné
+  selectedType: string = '';
+  projectReclamationStats: { [key: string]: number } = {};
 
   constructor(
     private reclamationService: ReclamationService,
     private reponseservice: ReponseService,
     private expenseService: ExpenseService,
     private fb: FormBuilder,
-    private userservice: UserService,
+    private userService: UserService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.sortReclamationsByImportance();
     this.loadReponses();
+    this.loadProjects();
+    this.loadReclamations();
+  }
+
+  ngOnDestroy(): void {
+    if (this.chart) {
+      this.chart.destroy(); // Détruire le graphique lors de la destruction du composant
+    }
+  }
+
+  onProjectSelected(): void {
+    if (this.selectedProject) {
+      const projectName = this.selectedProject.name;
+      const reclamationCount = this.countReclamationsByProject(projectName);
+      this.projectReclamationStats = { [projectName]: reclamationCount };
+
+      console.log('Project Name:', projectName);
+      console.log('Reclamation Count:', reclamationCount);
+
+      if (this.chart) {
+        console.log('Updating existing chart...');
+        this.chart.data.labels = [projectName];
+        this.chart.data.datasets[0].data = [reclamationCount];
+        this.chart.update();
+      } else {
+        console.log('Creating new chart...');
+        this.createChart();
+      }
+
+      this.createSelectedProjectChart();
+    } else {
+      console.log('No project selected');
+    }
+  }
+
+  createSelectedProjectChart(): void {
+    if (this.selectedProject && this.selectedProjectChart) {
+      const ctx = this.selectedProjectChart.nativeElement.getContext('2d');
+      if (ctx) {
+        const projectName = this.selectedProject.name;
+        const reclamationCount = this.countReclamationsByProject(projectName);
+
+        if (this.selectedProjectChart) {
+          const selectedProjectChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: [projectName],
+              datasets: [{
+                label: '# of Reclamations',
+                data: [reclamationCount],
+                backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                borderColor: ['rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Statistiques du Projet Sélectionné'
+                }
+              }
+            }
+          });
+        }
+      }
+    }
+  }
+
+  calculateProjectReclamationStats(): void {
+    this.projects.forEach(project => {
+      const reclamationCount = this.countReclamationsByProject(project.name);
+      this.projectReclamationStats[project.name] = reclamationCount;
+    });
+  }
+
+  countReclamationsByProject(projectName: string): number {
+    return this.reclamations.filter(reclamation => reclamation.expense.project.name === projectName).length;
+  }
+
+  createChart(): void {
+    const ctx = this.myChart.nativeElement.getContext('2d');
+    if (ctx) {
+      if (this.chart) {
+        this.chart.destroy(); // Détruire le graphique existant
+      }
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(this.projectReclamationStats),
+          datasets: [{
+            label: '# of Reclamations',
+            data: Object.values(this.projectReclamationStats),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    } else {
+      console.error('Canvas context is null.');
+    }
   }
 
   loadUsers(): void {
-    this.userservice.findAllUsers()
+    this.userService.findAllUsers()
       .subscribe(
         users => {
           this.users = users;
@@ -54,7 +171,9 @@ export class AdmrecComponent implements OnInit {
       .subscribe(
         projects => {
           this.projects = projects;
-          this.filteredProjects = projects; // Copiez tous les projets dans filteredProjects
+          this.filteredProjects = projects;
+          this.calculateProjectReclamationStats();
+          this.createChart(); // Appel à la méthode createChart après avoir chargé les projets
         },
         error => console.error('error, getAllProjects', error)
       );
@@ -63,7 +182,11 @@ export class AdmrecComponent implements OnInit {
   loadReclamations(): void {
     this.reclamationService.findAllReclamation()
       .subscribe(
-        reclamations => this.reclamations = reclamations,
+        reclamations => {
+          this.reclamations = reclamations;
+          this.calculateProjectReclamationStats();
+          this.createChart(); // Appel à la méthode calculateProjectReclamationStats après avoir chargé les réclamations
+        },
         error => console.error('Error loading reclamations:', error)
       );
   }
@@ -82,11 +205,8 @@ export class AdmrecComponent implements OnInit {
 
   checkAnswer(reclamation: Reclamation): void {
     if (reclamation.reponse.length === 0) {
-      // Aucune réponse associée à cette réclamation
       alert('Votre réclamation est en cours de traitement. Merci de vérifier à nouveau plus tard.');
     } else {
-      // Il y a une réponse associée à cette réclamation
-      // Naviguer vers le chemin approprié pour vérifier la réponse
       this.router.navigate(['/admin/answred', reclamation.idreclamation]);
     }
   }
@@ -107,7 +227,6 @@ export class AdmrecComponent implements OnInit {
           error => console.error('Error filtering reclamations by type:', error)
         );
     } else {
-      // Si aucun type n'est sélectionné, charger toutes les réclamations
       this.loadReclamations();
     }
   }
@@ -123,11 +242,6 @@ export class AdmrecComponent implements OnInit {
       );
   }
 
-  
-  
-  
-
-  // Fonction pour déclencher le filtrage lorsque le type est sélectionné dans le menu déroulant
   onTypeSelected(type: string): void {
     this.selectedType = type;
     this.filterReclamationsByType();
