@@ -193,6 +193,7 @@ getStars(grade: number): string[] {
             error => console.error('Error fetching users list:', error)
         );
   }
+
 // Inside your component class
 openEditModal(performance: Performance): void {
   this.selectedPerformance = performance;

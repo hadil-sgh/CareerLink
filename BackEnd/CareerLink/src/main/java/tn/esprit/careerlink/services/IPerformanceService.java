@@ -14,4 +14,5 @@ public interface IPerformanceService {
     List<Performance> getPerformanceByYearAndMonth(int year,int month);
     void deletePerformence(Integer idPerformence);
     float getCurrentWeekGradeForUser(Integer userId);
+
 }

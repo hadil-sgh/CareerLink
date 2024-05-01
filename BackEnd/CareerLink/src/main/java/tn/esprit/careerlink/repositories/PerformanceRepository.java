@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 import tn.esprit.careerlink.entities.Performance;
 import tn.esprit.careerlink.entities.User;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PerformanceRepository extends JpaRepository<Performance, Integer> {
@@ -16,4 +18,10 @@ public interface PerformanceRepository extends JpaRepository<Performance, Intege
     @Query("SELECT p FROM Performance p WHERE p.year = :year AND p.week = :month")
     List<Performance> findByYearAndMonth(@Param("year") int year, @Param("month") int month);
     List<Performance> findByUser(User user);
+    @Query("SELECT p FROM Performance p WHERE p.week = ?1 AND p.year = ?2 ORDER BY p.grade DESC")
+    List<Performance> findByMonthAndYear(int month, int year);
+    List<Performance> findByYear(int year);
 }
+
+
+

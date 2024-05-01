@@ -7,6 +7,7 @@ import tn.esprit.careerlink.entities.Performance;
 import tn.esprit.careerlink.entities.Task;
 import tn.esprit.careerlink.entities.Team;
 import tn.esprit.careerlink.entities.User;
+import tn.esprit.careerlink.repositories.PerformanceRepository;
 import tn.esprit.careerlink.repositories.TeamRepository;
 import tn.esprit.careerlink.services.Impl.NlpService;
 import tn.esprit.careerlink.services.Impl.PerformanceServiceImpl;
@@ -14,11 +15,11 @@ import tn.esprit.careerlink.services.Impl.TaskService;
 import tn.esprit.careerlink.services.Impl.UserServiceImpl;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Year;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static tn.esprit.careerlink.controllers.TimeOffTrackerController.convertToLocalDateViaSqlDate;
@@ -32,7 +33,7 @@ public class PerformanceController {
     private  final UserServiceImpl userService;
     private  final TaskService taskService;
     private  final TeamRepository teamRepository;
-    private  final NlpService nlpService;
+    private  final PerformanceRepository performanceRepository;
     @PostMapping("/add")
     public Performance addPerformance(@RequestBody Performance Performance){
         Performance.setYear(Year.now().getValue());
@@ -42,41 +43,31 @@ public class PerformanceController {
     public Performance updatePerformance(@RequestBody Performance Performance ){
         return performenceService.updatePerformence(Performance);
     }
-//    @GetMapping("/best")
-//    public String getBestEmployeeComment() {
-//        List<User> allEmployees = userService.getAllUsers();
-//
-//        // Find the employee with the highest average grade
-//        User bestEmployee = allEmployees.stream()
-//                .max(Comparator.comparingDouble(employee -> performenceService.getAverageGradeByEmployee(employee)))
-//                .orElse(null);
-//
-//        if (bestEmployee != null) {
-//            // Get all performances of the best employee
-//            List<Performance> performances = performenceService.getPerformancesByUser(bestEmployee);
-//
-//            // Find the performance with the highest grade
-//            Performance bestPerformance = performances.stream()
-//                    .max(Comparator.comparingInt(Performance::getGrade))
-//                    .orElse(null);
-//
-//            if (bestPerformance != null) {
-//                // Analyze sentiment of comments and find the most positive one
-//                List<Performance> performancesWithSentiment = performances.stream()
-//                        .filter(performance -> performance.getComment() != null)
-//                        .sorted(Comparator.comparingInt(performance ->
-//                                nlpService.findSentiment(performance.getComment())))
-//                        .collect(Collectors.toList());
-//
-//                // Return the most positive comment
-//                return performancesWithSentiment.get(0).getComment();
-//            } else {
-//                return "No comments found for the best employee.";
-//            }
-//        } else {
-//            return "No best employee found.";
-//        }
-//    }
+    @GetMapping("/best")
+    public Optional<Performance> getBestEmployeeComment() {
+        List<Performance> performanceList=performenceService.PerformanceForCurrentMonth();
+        String comment= performenceService.findBestComment(performanceList);
+        return performenceService.findPerformanceByComment(performanceList,comment);
+
+    }
+    @GetMapping("/arraveofayear")
+    public Map<Integer, Double> AvrageImprovmentInAYear() {
+        LocalDate currentDate = LocalDate.now();
+
+        // Get the current year
+        int currentYear = currentDate.getYear();
+        List<Performance> list=performanceRepository.findByYear(currentYear);
+        return performenceService.calculateMonthlyAverageImprovement(list);
+
+    }
+    @GetMapping("/AvragePerformance")
+    public Map<Integer, Float> AvragePerformance() {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+        List<Performance> list=performanceRepository.findAll();
+        return performenceService.calculateAveragePerformanceByMonth(list,currentYear);
+
+    }
 
 
     @GetMapping("/getOne/{id}")

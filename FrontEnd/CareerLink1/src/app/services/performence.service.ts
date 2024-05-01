@@ -23,8 +23,16 @@ export class PerformanceService {
     const url = `${this.baseUrl}/getAllbymail/${encodedEmail}`; 
     return this.http.get<Performance[]>(url, {headers}); 
   }
+  getAverageImprovementInAYear(): Observable<Map<number, number>> {
+    return this.http.get<Map<number, number>>(`${this.baseUrl}/arraveofayear`);
+  }
 
-
+  getAveragePerformance(): Observable<Map<number, number>> {
+    return this.http.get<Map<number, number>>(`${this.baseUrl}/AvragePerformance`);
+  }
+  getBestPerformance(): Observable<Performance> {
+    return this.http.get<Performance>(`${this.baseUrl}/best`);
+  }
   getUserIdFromToken(): string {
     const token = localStorage.getItem('token');
     if (token) {

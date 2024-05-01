@@ -23,6 +23,7 @@ import { BlackoutComponent } from './blackout/blackout.component';
 import { PerformenceComponent } from './components/performence/performence.component';
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -46,6 +47,7 @@ const routes: Routes = [
     component: AllTemplateBackComponent,
     children: [
       { path: "user", component: UserComponent },
+      { path: "Dashboeard", component: DashboardComponent },
       { path: "TimeOffTracker", component: TakeofftraitmentComponent },
       { path: "expense", component: ExpenseComponent },
       { path: "stock", component: StockComponent },
