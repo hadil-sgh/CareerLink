@@ -4,7 +4,7 @@ import { PerformanceService } from 'src/app/services/performence.service';
 import { Performance } from 'src/app/models/Performence';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/User';
-import {  Task } from 'src/app/models/Task';
+import { Task } from 'src/app/models/Task';
 import { Status } from 'src/app/models/Status';
 import Swal from 'sweetalert2';
 
@@ -22,7 +22,9 @@ export class PerformenceComponent implements OnInit {
   teamNames:any;
   performanceForm!: FormGroup;
   selectedPerformance: Performance | null = null;
-  selectedStars: number = 0;
+  selectedStarsTeamWork: number = 0;
+  selectedStarsDiscipline: number = 0;
+  selectedStarsPunctuality: number = 0;
 
   ngOnInit(): void {
     this.loadPerformanceList();
@@ -33,7 +35,6 @@ export class PerformenceComponent implements OnInit {
   }
   
   loadTasks(): void {
-  
     this.performanceForm.get('user')?.valueChanges.subscribe((selectedUser: User) => {
       if (selectedUser) { 
         this.performanceService.getTasksForUserThisMonth(selectedUser.id).subscribe(
@@ -47,6 +48,7 @@ export class PerformenceComponent implements OnInit {
       }
     });
   }
+
   getImageSource(status: string): string {
     let statusEnum: Status;
 
@@ -82,17 +84,13 @@ export class PerformenceComponent implements OnInit {
     }
 
     return imagePath;
-}
-
-
-
+  }
 
   loadteamname(): void {
     this.performanceForm.get('user')?.valueChanges.subscribe((selectedUser: User) => {
       if (selectedUser) { 
         this.performanceService.getTeamNamesByUser(selectedUser.id).subscribe(
           teamNames => {
-            // Assuming this will set the team names to a property called teamNames in your component
             this.teamNames = teamNames;
           },
           (error: any) => {
@@ -103,16 +101,14 @@ export class PerformenceComponent implements OnInit {
     });
   }
   
-
   createForm(): void {
     this.performanceForm = this.fb.group({
-      grade: [null], // We'll set the grade value dynamically
+      grade: [null], // Will be calculated dynamically
       comment: [''],
       week: [''],
       user: [''],
     });
 
-    // Subscribe to changes in the 'week' form control
     this.performanceForm.get('week')?.valueChanges.subscribe((selectedMonth: number) => {
       console.log('Selected month number:', selectedMonth);
     });
@@ -124,12 +120,12 @@ export class PerformenceComponent implements OnInit {
             performanceList => {
                 this.performanceList = performanceList;
                 console.log('Fetched performance list:', performanceList);
-                
             },
             error => console.error('Error fetching performance list:', error)
         );
   }
- loadusers(): void {
+
+  loadusers(): void {
     this.userServive.findAllUsers()
         .subscribe(
           users => {
@@ -139,11 +135,15 @@ export class PerformenceComponent implements OnInit {
             error => console.error('Error fetching users list:', error)
         );
   }
+
   addPerformance(): void {
     const performance = this.performanceForm.value as Performance;
-    performance.grade = this.selectedStars;
-    performance.idperformence = 0; // Set idperformence to 0
+    
+    // Calculate average grade
+    const averageGrade = (this.selectedStarsTeamWork + this.selectedStarsDiscipline + this.selectedStarsPunctuality) / 3;
+    performance.grade = averageGrade;
 
+    performance.idperformence = 0; // Set idperformence to 0
     // Extracting only the user id
     performance.user = { id: performance.user.id } as User;
 
@@ -166,11 +166,7 @@ export class PerformenceComponent implements OnInit {
             },
             (error: any) => console.error('Error adding performance:', error)
         );
-}
-
-
-
-
+  }
 
   deletePerformance(id: number): void {
     this.performanceService.deletePerformance(id).subscribe(
@@ -184,10 +180,22 @@ export class PerformenceComponent implements OnInit {
 
   resetForm(): void {
     this.performanceForm.reset();
-    this.selectedStars = 0;
+    this.selectedStarsTeamWork = 0;
+    this.selectedStarsDiscipline = 0;
+    this.selectedStarsPunctuality = 0;
   }
 
-  selectStars(starCount: number): void {
-    this.selectedStars = starCount;
+  selectStars(starCount: number, category: string): void {
+    switch (category) {
+      case 'teamWork':
+        this.selectedStarsTeamWork = starCount;
+        break;
+      case 'discipline':
+        this.selectedStarsDiscipline = starCount;
+        break;
+      case 'punctuality':
+        this.selectedStarsPunctuality = starCount;
+        break;
+    }
   }
 }

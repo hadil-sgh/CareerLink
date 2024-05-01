@@ -21,8 +21,9 @@
 
                 <label class="labelnorm" for="star-rating">Current Month Grade</label>
                 <div class="star-rating">
-                    <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
+                    <span *ngFor="let star of stars" class="star" [ngClass]="{'checked': star === 'checked', 'half': star === 'half'}">&#9733;</span>
                 </div>
+                
             </div>
             <div class="d-flex justify-content-end" style="margin-right: -5mm;">
                 <div class="card text-white bg-info mb-3" style="max-width: 14rem; max-height: 7rem; margin-right: 5mm;">
@@ -116,16 +117,32 @@
     margin-right: 5px; 
   }
   .star-rating {
-  font-size: 24px;
+  font-size: 30px; /* Increase the font size to make stars bigger */
 }
 
+/* Add or update the existing styles for stars */
 .star {
   color: gray;
+  display: inline-block;
 }
 
 .checked {
   color: gold;
 }
+
+.half {
+  position: relative;
+  display: inline-block;
+}
+
+.half:before {
+  content: '\2605'; /* Unicode character for a solid star */
+  position: absolute;
+  overflow: hidden;
+  width: 50%; /* Display half of the star */
+  color: gold; /* Color of the half star */
+}
+
 
   .button-icon1 {
     width: 40px; 

@@ -17,7 +17,7 @@
             <h5 class="card-title">{{ performance.week }} / {{ performance.year }}</h5>
             <h6 class="card-subtitle mb-2 text-muted"></h6>
             <div class="star-rating">
-              <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
+              <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked', 'half': star === 'half'}">&#9733;</span>
             </div>
             <p class="card-text"><b>Comment :</b>{{ performance.comment }}</p>
           </div>
@@ -45,15 +45,25 @@
         }
         
         .star {
-          color: gray;
-        }
-        
-        .checked {
-          color: gold;
-        }
-        
-.star-rating {
-  font-size: 24px;
+  color: gray;
+  display: inline-block;
+}
+
+.checked {
+  color: gold;
+}
+
+.half {
+  position: relative;
+  display: inline-block;
+}
+
+.half:before {
+  content: '\2605'; /* Unicode character for a solid star */
+  position: absolute;
+  overflow: hidden;
+  width: 50%; /* Display half of the star */
+  color: gold; /* Color of the half star */
 }
 .container {
   display: flex;

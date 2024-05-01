@@ -85,8 +85,12 @@
                 <td>{{ performance.user.firstName}} {{ performance.user.lastName }}</td>
                 <td>
                   <div class="star-rating">
-                    <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
+                    <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked', 'half': star === 'half'}">&#9733;</span>
                   </div>
+                  
+                  
+                  
+                  
                 </td>
                 <td>{{ performance.comment }}</td>
                 <td>{{ performance.week }} / {{ performance.year }}</td>
@@ -109,157 +113,102 @@
   </div>
   
 
-          <style>
-            .card-deck {
-             display: flex;
-             flex-wrap: wrap;
-             justify-content: space-around;
-           }
-           .button-margin {
-               margin: 20px;
-             }
-            .separator {
-            height: 40px; }
-            .separator1 {
-            height: 10px; }
-            .button-space {
-            margin: 0 10px; } 
-            .button-space1 {
-            margin: 0 5px; 
-          }
-          .swal-center {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          }
-          .button-icon {
-            width: 20px; 
-            height: auto; 
-            margin-right: 5px; 
-          }
-          .status-icon {
-            width: 20px; 
-            height: auto; 
-            margin-right: 5px; 
-          }
-          .star-rating {
-          font-size: 24px;
-        }
-        
-        .star {
-          color: gray;
-        }
-        
-        .checked {
-          color: gold;
-        }
-        
-          .button-icon1 {
-            width: 40px; 
-            height: auto; 
-            margin-right: 5px; 
-          }
+  <style>
+    .card-deck {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
   
-    .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.card-container .card {
-  flex: 0 0 calc(25% - 15px);
-  margin-bottom: 15px;
-}
-#searchForm {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px; /* Add some top margin for spacing */
-}
-
-
-#searchForm .form-group {
-    margin-right: 10px; /* Adjust as needed */
-}.card-deck {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.button-margin {
-  margin: 20px;
-}
-
-.separator {
-  height: 40px;
-}
-
-.separator1 {
-  height: 10px;
-}
-
-.button-space {
-  margin: 0 10px;
-}
-
-.button-space1 {
-  margin: 0 5px;
-}
-
-.swal-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-icon,
-.status-icon {
-  width: 20px;
-  height: auto;
-  margin-right: 5px;
-}
-
-.star-rating {
+    .button-margin {
+      margin: 20px;
+    }
+  
+    .separator {
+      height: 40px;
+    }
+  
+    .separator1 {
+      height: 10px;
+    }
+  
+    .button-space {
+      margin: 0 10px;
+    }
+  
+    .button-space1 {
+      margin: 0 5px;
+    }
+  
+    .swal-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .button-icon,
+    .status-icon {
+      width: 20px;
+      height: auto;
+      margin-right: 5px;
+    }
+  
+    .star-rating {
   font-size: 24px;
 }
 
 .star {
   color: gray;
+  display: inline-block;
 }
 
 .checked {
   color: gold;
 }
 
-.button-icon1 {
-  width: 40px;
-  height: auto;
-  margin-right: 5px;
+.half {
+  position: relative;
+  display: inline-block;
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+.half:before {
+  content: '\2605'; /* Unicode character for a solid star */
+  position: absolute;
+  overflow: hidden;
+  width: 50%; /* Display half of the star */
+  color: gold; /* Color of the half star */
 }
 
-.card-container .card {
-  flex: 0 0 calc(25% - 15px);
-  margin-bottom: 15px;
-}
 
-#searchForm {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px; /* Add some top margin for spacing */
-}
-
-#searchForm .form-group {
-  margin-right: 10px; /* Adjust as needed */
-}
-
-          </style>
+    .button-icon1 {
+      width: 40px;
+      height: auto;
+      margin-right: 5px;
+    }
+  
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  
+    .card-container .card {
+      flex: 0 0 calc(25% - 15px);
+      margin-bottom: 15px;
+    }
+  
+    #searchForm {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px; /* Add some top margin for spacing */
+    }
+  
+    #searchForm .form-group {
+      margin-right: 10px; /* Adjust as needed */
+    }
+  </style>
+  
 <!-- Add modal markup at the end of your HTML template -->
 <div id="editPerformanceModal" class="modal">
     <div class="modal-dialog">
