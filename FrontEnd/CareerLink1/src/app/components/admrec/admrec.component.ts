@@ -20,9 +20,9 @@ Chart.register(...registerables);
 })
 export class AdmrecComponent implements OnInit, OnDestroy {
   @ViewChild('myChart') myChart!: ElementRef;
-  @ViewChild('selectedProjectChart') selectedProjectChart!: ElementRef;
+  
   chart!: Chart;
-  selectedProject: Project | null = null;
+  
   reclamations: Reclamation[] = [];
   reclamationForm!: FormGroup;
   Reponses: Reponse[] = [];
@@ -31,6 +31,7 @@ export class AdmrecComponent implements OnInit, OnDestroy {
   users: User[] = [];
   selectedType: string = '';
   projectReclamationStats: { [key: string]: number } = {};
+  verifiedUnansweredReclamations: Reclamation[] = [];
 
   constructor(
     private reclamationService: ReclamationService,
@@ -45,7 +46,13 @@ export class AdmrecComponent implements OnInit, OnDestroy {
     this.sortReclamationsByImportance();
     this.loadReponses();
     this.loadProjects();
-    this.loadReclamations();
+
+    // Charger les données du graphique à partir du stockage
+    const storedChartData = sessionStorage.getItem('chartData');
+    if (storedChartData) {
+      this.projectReclamationStats = JSON.parse(storedChartData);
+      this.createChart();
+    }
   }
 
   ngOnDestroy(): void {
@@ -55,62 +62,7 @@ export class AdmrecComponent implements OnInit, OnDestroy {
   }
 
   onProjectSelected(): void {
-    if (this.selectedProject) {
-      const projectName = this.selectedProject.name;
-      const reclamationCount = this.countReclamationsByProject(projectName);
-      this.projectReclamationStats = { [projectName]: reclamationCount };
-
-      console.log('Project Name:', projectName);
-      console.log('Reclamation Count:', reclamationCount);
-
-      if (this.chart) {
-        console.log('Updating existing chart...');
-        this.chart.data.labels = [projectName];
-        this.chart.data.datasets[0].data = [reclamationCount];
-        this.chart.update();
-      } else {
-        console.log('Creating new chart...');
-        this.createChart();
-      }
-
-      this.createSelectedProjectChart();
-    } else {
-      console.log('No project selected');
-    }
-  }
-
-  createSelectedProjectChart(): void {
-    if (this.selectedProject && this.selectedProjectChart) {
-      const ctx = this.selectedProjectChart.nativeElement.getContext('2d');
-      if (ctx) {
-        const projectName = this.selectedProject.name;
-        const reclamationCount = this.countReclamationsByProject(projectName);
-
-        if (this.selectedProjectChart) {
-          const selectedProjectChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-              labels: [projectName],
-              datasets: [{
-                label: '# of Reclamations',
-                data: [reclamationCount],
-                backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-                borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              plugins: {
-                title: {
-                  display: true,
-                  text: 'Statistiques du Projet Sélectionné'
-                }
-              }
-            }
-          });
-        }
-      }
-    }
+    // Logique de sélection du projet...
   }
 
   calculateProjectReclamationStats(): void {
@@ -174,11 +126,31 @@ export class AdmrecComponent implements OnInit, OnDestroy {
           this.filteredProjects = projects;
           this.calculateProjectReclamationStats();
           this.createChart(); // Appel à la méthode createChart après avoir chargé les projets
+  
+          // Stocker les données du graphique dans sessionStorage
+          sessionStorage.setItem('chartData', JSON.stringify(this.projectReclamationStats));
+  
+          console.log('Chart data stored in sessionStorage:', this.projectReclamationStats);
         },
         error => console.error('error, getAllProjects', error)
       );
-  }
+  } sortReclamationsByImportance(): void {
+    this.reclamationService.getAllReclamationsSortedByImportance()
+    .subscribe(
+      reclamations => {
+        this.reclamations = reclamations;
+        this.calculateProjectReclamationStats();
+        this.createChart(); // Appel à la méthode calculateProjectReclamationStats après avoir chargé les réclamations
 
+        // Stocker les données du graphique dans sessionStorage
+        sessionStorage.setItem('chartData', JSON.stringify(this.projectReclamationStats));
+
+        console.log('Chart data stored in sessionStorage:', this.projectReclamationStats);
+      },
+      error => console.error('Error loading reclamations:', error)
+    );
+  }
+  
   loadReclamations(): void {
     this.reclamationService.findAllReclamation()
       .subscribe(
@@ -186,10 +158,16 @@ export class AdmrecComponent implements OnInit, OnDestroy {
           this.reclamations = reclamations;
           this.calculateProjectReclamationStats();
           this.createChart(); // Appel à la méthode calculateProjectReclamationStats après avoir chargé les réclamations
+  
+          // Stocker les données du graphique dans sessionStorage
+          sessionStorage.setItem('chartData', JSON.stringify(this.projectReclamationStats));
+  
+          console.log('Chart data stored in sessionStorage:', this.projectReclamationStats);
         },
         error => console.error('Error loading reclamations:', error)
       );
   }
+  
 
   loadReponses(): void {
     this.reponseservice.findAllReponse()
@@ -197,10 +175,6 @@ export class AdmrecComponent implements OnInit, OnDestroy {
         reponses => this.Reponses = reponses,
         error => console.error('Error loading responses:', error)
       );
-  }
-
-  hasResponse(reclamation: Reclamation): boolean {
-    return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
   }
 
   checkAnswer(reclamation: Reclamation): void {
@@ -211,13 +185,7 @@ export class AdmrecComponent implements OnInit, OnDestroy {
     }
   }
 
-  sortReclamationsByImportance(): void {
-    this.reclamationService.getAllReclamationsSortedByImportance()
-      .subscribe(
-        reclamations => this.reclamations = reclamations,
-        error => console.error('Error sorting reclamations by importance:', error)
-      );
-  }
+ 
 
   filterReclamationsByType(): void {
     if (this.selectedType !== '') {
@@ -240,6 +208,20 @@ export class AdmrecComponent implements OnInit, OnDestroy {
         },
         error => console.error('Error verifying unanswered reclamations:', error)
       );
+  }
+ 
+  hasResponse(reclamation: Reclamation): boolean {
+    return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
+  }
+  
+  respondToReclamation(reclamation: Reclamation): void {
+    // Votre logique pour répondre à une réclamation ici...
+    // Une fois que la réponse est envoyée avec succès, vous pouvez mettre à jour la liste des réclamations.
+    this.reclamations = this.reclamations.filter(r => r.idreclamation !== reclamation.idreclamation);
+    // Vous pouvez également appeler à nouveau la méthode verifyUnansweredReclamations() pour mettre à jour le nombre total de réclamations non répondues.
+  }
+  unrepliedReclamations(): Reclamation[] {
+    return this.reclamations.filter(reclamation => !this.hasResponse(reclamation));
   }
 
   onTypeSelected(type: string): void {
