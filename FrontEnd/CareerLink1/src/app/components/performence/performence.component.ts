@@ -4,7 +4,7 @@ import { PerformanceService } from 'src/app/services/performence.service';
 import { Performance } from 'src/app/models/Performence';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/User';
-import { Task } from 'src/app/models/Task';
+import { Task2 } from 'src/app/models/Task2';
 import { Status } from 'src/app/models/Status';
 import Swal from 'sweetalert2';
 
@@ -18,7 +18,7 @@ export class PerformenceComponent implements OnInit {
   
   performanceList: Performance[] = [];
   users: User[] = [];
-  tasks: Task[] = [];
+  tasks: Task2[] = [];
   teamNames:any;
   performanceForm!: FormGroup;
   selectedPerformance: Performance | null = null;

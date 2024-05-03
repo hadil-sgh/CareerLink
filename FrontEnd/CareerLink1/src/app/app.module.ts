@@ -24,7 +24,6 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { AuthGuard } from './models/AuthGuard';
-import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TakeofftraitmentComponent } from './takeofftraitment/takeofftraitment.component';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -41,6 +40,7 @@ import { PerformenceComponent } from './components/performence/performence.compo
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +94,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NgxExtendedPdfViewerModule,
     NgbModule,
     MatDialogModule,
+    
    
   ],
   providers: [ 

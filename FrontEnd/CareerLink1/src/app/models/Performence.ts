@@ -9,5 +9,6 @@ export interface Performance {
     comment: string;
     week: number;
     year: number;
-    user: User; // Assurez-vous d'avoir également un modèle User si nécessaire
+    user: User; 
+    expanded?: boolean;
 }

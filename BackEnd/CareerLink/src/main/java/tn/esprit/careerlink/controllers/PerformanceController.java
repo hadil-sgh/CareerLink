@@ -9,9 +9,8 @@ import tn.esprit.careerlink.entities.Team;
 import tn.esprit.careerlink.entities.User;
 import tn.esprit.careerlink.repositories.PerformanceRepository;
 import tn.esprit.careerlink.repositories.TeamRepository;
-import tn.esprit.careerlink.services.Impl.NlpService;
 import tn.esprit.careerlink.services.Impl.PerformanceServiceImpl;
-import tn.esprit.careerlink.services.Impl.TaskService;
+import tn.esprit.careerlink.services.Impl.TaskService2;
 import tn.esprit.careerlink.services.Impl.UserServiceImpl;
 
 import java.time.LocalDate;
@@ -31,7 +30,7 @@ import static tn.esprit.careerlink.controllers.TimeOffTrackerController.convertT
 public class PerformanceController {
     private  final PerformanceServiceImpl performenceService;
     private  final UserServiceImpl userService;
-    private  final TaskService taskService;
+    private  final TaskService2 taskService;
     private  final TeamRepository teamRepository;
     private  final PerformanceRepository performanceRepository;
     @PostMapping("/add")

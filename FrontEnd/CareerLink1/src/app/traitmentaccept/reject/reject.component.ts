@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeofftrackerService } from 'src/app/services/timeofftracker.service';
 import Swal from 'sweetalert2';
-import { Task } from 'src/app/models/Task';
+import { Task2 } from 'src/app/models/Task2';
 
 @Component({
   selector: 'app-reject',
@@ -15,7 +15,7 @@ export class RejectComponent implements OnInit {
   id!: number;
   currentWeekGrade: number | undefined;
   stars: string[] = [];
-  tasks: Task[] = [];
+  tasks: Task2[] = [];
   dayOffs: number = 0;
   daysLeft: number = 0;
   count: number = 0;

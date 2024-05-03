@@ -64,6 +64,12 @@ export class PerformenceemployeeComponent {
   
     return stars;
   }
+
+  toggleReadMore(index: number): void {
+    this.performanceList[index].expanded = !this.performanceList[index].expanded;
+  }
+  
+  
   
   loadPerformanceList(): void {
     this.performanceService.findPeformancesbysession()

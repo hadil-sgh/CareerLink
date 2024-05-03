@@ -4,7 +4,7 @@ import { PerformanceService } from 'src/app/services/performence.service';
 import { Performance } from 'src/app/models/Performence';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/User';
-import {  Task } from 'src/app/models/Task';
+import {  Task2 } from 'src/app/models/Task2';
 import { Status } from 'src/app/models/Status';
 import Swal from 'sweetalert2';
 @Component({
@@ -17,7 +17,7 @@ export class PerformencedisplayComponent {
   
   performanceList: Performance[] = [];
   users: User[] = [];
-  tasks: Task[] = [];
+  tasks: Task2[] = [];
   stars: string[] = [];
   count: number = 0;
   p : number = 1 ;
