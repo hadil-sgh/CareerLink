@@ -72,8 +72,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     PerformenceComponent,
     PerformencedisplayComponent,
     PerformenceemployeeComponent,
-    DashboardComponent,
-
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -93,8 +92,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     NgbModule,
-    MatDialogModule,
+    MatDialogModule
+     
     
+,
+
    
   ],
   providers: [ 
