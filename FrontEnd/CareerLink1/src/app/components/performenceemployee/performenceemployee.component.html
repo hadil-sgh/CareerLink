@@ -5,21 +5,30 @@
 <div class="container">
   <div class="text-center">
     <img src="/assets/FrontOffice/img/note.png" alt="Edit Icon" class="button-icon" />
-      <h5 style="color:grey; display: inline-block; margin-right: 5px;"><b>This are your performance results i hope you are satisfied</b> </h5><i class="fas fa-exclamation-triangle" style="color: orange;"></i>
-    </div>
-    <div class="separator"></div>
+    <h5 style="color: grey; display: inline-block; margin-right: 5px;"><b>This are your performance results. I hope you are satisfied.</b></h5>
+    <i class="fas fa-exclamation-triangle" style="color: orange;"></i>
+  </div>
+  <div class="separator"></div>
 
   <div class="row justify-content-center">
     <ng-container *ngFor="let performance of performanceList; let i = index;">
       <div class="col-md-3 mb-4">
-        <div class="card" [ngClass]="{'grey-text': isCurrentMonthAndYear(performance.week, performance.year)}">
+        <div class="card" [ngClass]="{'expanded-card': performance.expanded, 'grey-text': isCurrentMonthAndYear(performance.week, performance.year)}">
           <div class="card-body">
             <h5 class="card-title">{{ performance.week }} / {{ performance.year }}</h5>
             <h6 class="card-subtitle mb-2 text-muted"></h6>
             <div class="star-rating">
-              <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked'}">&#9733;</span>
+              <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked', 'half': star === 'half'}">&#9733;</span>
             </div>
-            <p class="card-text"><b>Comment :</b>{{ performance.comment }}</p>
+            <!-- Display a portion of the comment -->
+            <p class="card-text"><b>Comment:</b> {{ performance.comment.substring(0, 100) }}</p>
+            <!-- Read more button to toggle additional content -->
+            <button class="btn btn-link read-more-btn" (click)="toggleReadMore(i)">Read More</button>
+            <!-- Additional content shown when expanded is true -->
+            <div *ngIf="performance.expanded" class="additional-content">
+              <!-- Display the remaining part of the comment -->
+              <p>{{ performance.comment.substring(100) }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -28,6 +37,8 @@
     </ng-container>
   </div>
 </div>
+
+
 
 
          
@@ -43,17 +54,44 @@
           .star-rating {
           font-size: 24px;
         }
-        
+        /* Style for expanded card */
+.expanded-card {
+  height: auto; /* Allow card to expand dynamically */
+  max-height: none; /* Remove max-height constraint */
+}
+
+/* Style for additional content */
+.additional-content {
+  display: none; /* Hide additional content by default */
+  margin-top: 10px;
+}
+
+/* Style for read more button */
+.read-more-btn {
+  color: blue;
+  cursor: pointer;
+}
+
         .star {
-          color: gray;
-        }
-        
-        .checked {
-          color: gold;
-        }
-        
-.star-rating {
-  font-size: 24px;
+  color: gray;
+  display: inline-block;
+}
+
+.checked {
+  color: gold;
+}
+
+.half {
+  position: relative;
+  display: inline-block;
+}
+
+.half:before {
+  content: '\2605'; /* Unicode character for a solid star */
+  position: absolute;
+  overflow: hidden;
+  width: 50%; /* Display half of the star */
+  color: gold; /* Color of the half star */
 }
 .container {
   display: flex;

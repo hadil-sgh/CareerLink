@@ -4,7 +4,7 @@ import { Observable, catchError, tap, throwError } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
 import { UserService } from './user.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Task } from '../models/Task';
+import { Task2 } from '../models/Task2';
 import { Daysoffbyrole } from '../models/Daysoffbyrole';
 import { Blackoutperiods } from '../models/Blackoutperiods';
 
@@ -109,12 +109,12 @@ export class TimeofftrackerService {
 
     return this.http.post<Blackoutperiods>(`${this.baseUrl}addblackout`, blackoutperiods, { headers });
   }
-  getTasksForUserThisMonth(userId: number): Observable<Task[]> {
+  getTasksForUserThisMonth(userId: number): Observable<Task2[]> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
     const url = `${this.baseUrl}tasks/${userId}`;
     console.log('Requesting tasks for user with ID:', userId); // Log request initiation
-    return this.http.get<Task[]>(url, { headers }).pipe(
-      tap((tasks: Task[]) => {
+    return this.http.get<Task2[]>(url, { headers }).pipe(
+      tap((tasks: Task2[]) => {
         console.log('Received tasks for user with ID:', userId, 'Tasks:', tasks); // Log successful response
       }),
       catchError((error) => {

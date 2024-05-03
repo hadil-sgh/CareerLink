@@ -68,27 +68,67 @@
                 <label class="form-label" for="comment">Comment:</label>
                 <input type="text" formControlName="comment" class="form-control" id="comment">
             </div>
-          
             <div class="form-group">
-                <label class="form-label" for="grade">Grade:</label>
-                <div id="star-rating" class="star-rating">
-                    <span class="star" (click)="selectStars(1)" [ngClass]="{'selected': selectedStars >= 1}">
+                <label class="form-label">Teamwork and Leadership:</label>
+                <div id="star-rating-team-work" class="star-rating">
+                    <span class="star" (click)="selectStars(1, 'teamWork')" [ngClass]="{'selected': selectedStarsTeamWork >= 1}">
                         <i class="fa-solid fa-star"></i>
                     </span>
-                    <span class="star" (click)="selectStars(2)" [ngClass]="{'selected': selectedStars >= 2}">
+                    <span class="star" (click)="selectStars(2, 'teamWork')" [ngClass]="{'selected': selectedStarsTeamWork >= 2}">
                         <i class="fa-solid fa-star"></i>
                     </span>
-                    <span class="star" (click)="selectStars(3)" [ngClass]="{'selected': selectedStars >= 3}">
+                    <span class="star" (click)="selectStars(3, 'teamWork')" [ngClass]="{'selected': selectedStarsTeamWork >= 3}">
                         <i class="fa-solid fa-star"></i>
                     </span>
-                    <span class="star" (click)="selectStars(4)" [ngClass]="{'selected': selectedStars >= 4}">
+                    <span class="star" (click)="selectStars(4, 'teamWork')" [ngClass]="{'selected': selectedStarsTeamWork >= 4}">
                         <i class="fa-solid fa-star"></i>
                     </span>
-                    <span class="star" (click)="selectStars(5)" [ngClass]="{'selected': selectedStars >= 5}">
+                    <span class="star" (click)="selectStars(5, 'teamWork')" [ngClass]="{'selected': selectedStarsTeamWork >= 5}">
                         <i class="fa-solid fa-star"></i>
                     </span>
                 </div>
-                <input type="hidden" formControlName="grade" id="grade">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Strategic and Critical Thinking:</label>
+                <div id="star-rating-discipline" class="star-rating">
+                    <span class="star" (click)="selectStars(1, 'discipline')" [ngClass]="{'selected': selectedStarsDiscipline >= 1}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(2, 'discipline')" [ngClass]="{'selected': selectedStarsDiscipline >= 2}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(3, 'discipline')" [ngClass]="{'selected': selectedStarsDiscipline >= 3}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(4, 'discipline')" [ngClass]="{'selected': selectedStarsDiscipline >= 4}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(5, 'discipline')" [ngClass]="{'selected': selectedStarsDiscipline >= 5}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Discipline:</label>
+                <div id="star-rating-punctuality" class="star-rating">
+                    <span class="star" (click)="selectStars(1, 'punctuality')" [ngClass]="{'selected': selectedStarsPunctuality >= 1}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(2, 'punctuality')" [ngClass]="{'selected': selectedStarsPunctuality >= 2}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(3, 'punctuality')" [ngClass]="{'selected': selectedStarsPunctuality >= 3}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(4, 'punctuality')" [ngClass]="{'selected': selectedStarsPunctuality >= 4}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                    <span class="star" (click)="selectStars(5, 'punctuality')" [ngClass]="{'selected': selectedStarsPunctuality >= 5}">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+                </div>
             </div>
             
             <div class="separator"></div>

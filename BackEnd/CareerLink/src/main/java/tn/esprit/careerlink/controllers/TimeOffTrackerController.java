@@ -1,7 +1,6 @@
 package tn.esprit.careerlink.controllers;
 
 import lombok.AllArgsConstructor;
-import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.temporal.TemporalField;
-import java.time.temporal.WeekFields;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -48,7 +41,7 @@ public class TimeOffTrackerController {
     EmailService emailService;
     UserRepository userRepository;
     PerformanceServiceImpl performanceService;
-     TaskService taskService;
+     TaskService2 taskService;
      DaysoffbyroleService daysoffbyroleService;
      BlackoutperiodsService blackoutperiodsService;
     @PostMapping("/add")
@@ -141,15 +134,16 @@ public class TimeOffTrackerController {
         }
     }
     @GetMapping("/currentWeek")
-    public ResponseEntity<Integer> getCurrentWeekGrade(@RequestParam int idle ) {
-        int id =  timeOffTrackerService.getOneLeave(idle).getUser().getId();
-        Integer grade = performanceService.getCurrentWeekGradeForUser(id);
-        if (grade != null) {
+    public ResponseEntity<Float> getCurrentWeekGrade(@RequestParam int idle) {
+        int id =timeOffTrackerService.getOneLeave(idle).getUser().getId();
+        try {
+            float grade = performanceService.getCurrentWeekGradeForUser(id);
             return new ResponseEntity<>(grade, HttpStatus.OK);
-        } else {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
     @GetMapping("/getOne/{id}")
     public tn.esprit.careerlink.entities.TimeOffTracker getOneleave(@PathVariable ("id")Integer idLeave){
