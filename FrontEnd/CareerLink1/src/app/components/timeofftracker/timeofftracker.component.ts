@@ -36,6 +36,7 @@ export class TimeofftrackerComponent {
    totalldisplay:any;
    pdfurl = 'url';
   id: any;
+  blob!:Blob;
   timeOffTracker!: TimeOffTracker;
    
    ngOnInit() :void {
@@ -147,20 +148,7 @@ export class TimeofftrackerComponent {
 
 
   
-  edittimeoff(timeoff: TimeOffTracker): void {
- 
 
-    this.selectedtimesOff = timeoff;
-    this.timeoffForm.patchValue({
-  
-      type :timeoff.type,
-      description :timeoff.description,
-      fromDate :  timeoff.fromDate,
-      toDate : timeoff.toDate
-     
-    });
-   }
- 
 
  
   
@@ -184,58 +172,50 @@ export class TimeofftrackerComponent {
   
  
 
-   addTimeOff(): void {
-    
-    const newtimeoff = this.timeoffForm.value;
-   
-
-    this.timeoffService.TakeTiMEOff(newtimeoff)
-    .subscribe(
-      response => {  
-        console.log('success, add', response);
-        this.LoadListOfTimesOf();
-      },
-      
-      error => console.error('error, add', error)
-    );
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Your work has been saved",
-      showConfirmButton: false,
-      timer: 1500,
-      customClass: {
-        popup: 'swal-center',
-      },
-    });
-    
-  } 
 
 
- deletetimeOff(id: number):void {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.timeoffService.deleteTiMEOff(id).subscribe ( ():void => {
-    
-        this.LoadListOfTimesOf();
-        });
-      Swal.fire({
-        title: "Deleted!",
-        text: "this time Off rquest has been deleted.",
-        icon: "success"
-      });
-    }
-  });
+
+  deletetimeOff(id: number): void {
+    const timeOff = this.timesOff.find(t => t.id === id);
   
+    if (timeOff) {
+      if (timeOff.status !== 'Pending') {
+      
+        Swal.fire({
+          title: "Can't Delete",
+          text: "This time off request has already been treated and cannot be deleted.",
+          icon: "error"
+        });
+      } else {
+        // If the status is Pending, confirm deletion
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Call the delete API
+            this.timeoffService.deleteTiMEOff(id).subscribe(() => {
+              // On successful deletion, reload the list of time off requests
+              this.LoadListOfTimesOf();
+            });
+            Swal.fire({
+              title: "Deleted!",
+              text: "This time off request has been deleted.",
+              icon: "success"
+            });
+          }
+        });
+      }
+    } else {
+      console.error('Time off request not found.');
+    }
   }
+  
  
   cancel(): void {
     this.timeoffForm.reset(); 
@@ -329,39 +309,61 @@ pdf(id: number): void {
 }
 
 
-
 Preview(id: number) {
-  
   this.timeoffService.getPdf(id).subscribe(
-    (blob: Blob) => { // Change HttpResponse<Blob> to Blob
-      console.log('Response from server:', blob);
-      // Process the Blob data as needed
-      let url = window.URL.createObjectURL(blob);
-     this.modalservice.open(this.popupview, { size: 'lg' });
-      // Open the Blob URL in a new tab with the content type set to 'application/pdf'
-   
-      this.pdfurl = url;
+    (blob: Blob | null) => {
+      if (blob !== null && blob.size > 0) {
+        console.log('Response from server:', blob);
+        let url = window.URL.createObjectURL(blob);
+        this.modalservice.open(this.popupview, { size: 'lg' });
+        this.pdfurl = url;
+      } else {
+        // Display an alert when an empty Blob is returned
+        this.showEmptyBlobAlert();
+      }
     },
     (error: HttpErrorResponse) => {
       console.error('Error fetching PDF:', error);
-      // Handle error, show appropriate message to the user
       if (error.status === 404) {
         console.error('PDF not found.');
-        // Additional error handling logic for 404 error
       } else {
         console.error('An unexpected error occurred.');
-        // Additional error handling logic for other error codes
       }
     }
   );
-  
 }
+
+showEmptyBlobAlert(): void {
+  Swal.fire({
+    icon: 'error',
+    title: 'Empty PDF',
+    text: 'There is no PDF attached to thisThe PDF file is empty or not available for this time off request.',
+    confirmButtonText: 'OK'
+  });
+}
+
+
+
+
+
+
+
+
+
 
 
 editTimeOffTracker(id: number): void {
   this.router.navigate(['/Employee/TimeOffTracker/update', id]);
 }
 
+showPdfAlert(): void {
+  Swal.fire({
+    icon: 'info',
+    title: 'PDF Not Available',
+    text: 'PDF file is not available for this time off request.',
+    confirmButtonText: 'OK'
+  });
+}
 
 
 }

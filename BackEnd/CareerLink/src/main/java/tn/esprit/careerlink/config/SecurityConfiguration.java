@@ -28,7 +28,7 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-     private final LogoutHandler logoutHandler;
+    private final LogoutHandler logoutHandler;
 
     private static final String[] WHITE_LIST_URL = {
             "/api-docs",
@@ -39,7 +39,10 @@ public class SecurityConfiguration {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/swagger-ui.html"};
+            "/swagger-ui.html",
+            "/TimeOffTracker/update/**",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         HttpSecurity httpSecurity = http
@@ -61,8 +64,10 @@ public class SecurityConfiguration {
                                 .requestMatchers("/Performance/**").hasAnyAuthority("Admin", "HR_manager","Consultant")
                                 .requestMatchers("/Team/**").hasAnyAuthority("Admin", "HR_manager")
                                 .requestMatchers("/Recruitment/**").hasAnyAuthority("Admin", "HR_manager")
-                                .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
-                                .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee","Admin")
+                                 .requestMatchers("/TimeOffTracker/**").hasAnyAuthority("Admin", "HR_manager", "Consultant")
+                                 .requestMatchers("/TimeOffTracker/add").hasAnyAuthority("Employee","Admin")
+                                 .requestMatchers("/TimeOffTracker/adddaysoff").hasAnyAuthority("Admin")
+                                 .requestMatchers("/TimeOffTracker/addblackout").hasAnyAuthority("Admin")
 
                                 .anyRequest()
                                 .authenticated()
@@ -84,7 +89,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET","PUT","POST","DELETE","OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type","Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

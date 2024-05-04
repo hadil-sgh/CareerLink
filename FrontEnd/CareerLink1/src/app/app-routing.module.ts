@@ -18,7 +18,13 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ModalpopComponent } from './modalpop/modalpop.component';
 import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
+
 import { RecruitmentComponent } from './components/recruitment/recruitment.component';
+
+import { PerformenceComponent } from './components/performence/performence.component';
+import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
+import { PoliciesComponent } from './policies/policies.component';
+import { BlackoutComponent } from './blackout/blackout.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -44,15 +50,20 @@ const routes: Routes = [
       { path: "TimeOffTracker", component: TakeofftraitmentComponent },
       { path: "expense", component: ExpenseComponent },
       { path: "stock", component: StockComponent },
+      { path: "policies", component: PoliciesComponent },
+      { path: "blackout", component: BlackoutComponent },
       { path: "teams", component: TeamComponent },
       { path: "TimeOffTracker/traitment/:id", component: RejectComponent },
       { path: "sata", component: LeaveStatisticsComponent },
       { path:"profile/:id",component:ProfileComponent},
-      { path: "recruitment", component: RecruitmentComponent }
+      { path: "recruitment", component: RecruitmentComponent },
+      { path:"performence",component:PerformencedisplayComponent},
+      { path:"performenceadd",component:PerformenceComponent},
 
 
 ]},
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -15,6 +15,7 @@ import tn.esprit.careerlink.services.EmailSender;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,24 +33,34 @@ public class EmailService implements EmailSender {
 
     @Override
 
-    public void send(String to, String subject,String email) {
+    public void send(String to, String subject, Map<String, String> placeholders) {
         try {
+            // Read the email template HTML file
+            ClassPathResource emailTemplateResource = new ClassPathResource("emailacceptencetemplate.html");
+            String emailContent = new String(Files.readAllBytes(emailTemplateResource.getFile().toPath()), StandardCharsets.UTF_8);
 
+            // Replace placeholders with actual values
+            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+                emailContent = emailContent.replace("{{" + entry.getKey() + "}}", entry.getValue());
+            }
+
+            // Create the email message
             MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper =
-                    new MimeMessageHelper(mimeMessage, "utf-8");
-
-            helper.setText(email, true);
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            helper.setText(emailContent, true);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setFrom("careerlinkcontact@gmail.com");
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            log.error("failed to send email " + e);
 
-            throw new IllegalStateException("failed to send email");
+            // Send the email
+            mailSender.send(mimeMessage);
+        } catch (MessagingException | IOException e) {
+            log.error("Failed to send email: " + e.getMessage());
+            throw new IllegalStateException("Failed to send email");
         }
     }
+
+
 
     @Override
     @Async

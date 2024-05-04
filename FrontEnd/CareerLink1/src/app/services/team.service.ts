@@ -16,6 +16,10 @@ export class TeamService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
     return this.http.get<Team[]> ( this.baseUrl + 'getAll',{headers} )
   }
+  getbyuser(): Observable<Team[]>{
+    const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+    return this.http.get<Team[]> ( this.baseUrl + 'byuser',{headers} )
+  }
 
   addTeam(team: Team) : Observable<Team> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -18,9 +19,15 @@ public class Recruitment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    String fullNameCandidate;
+    String email;
     String description;
-    Integer numberRec;
-    @JsonIgnore
+    String post;
+    Date interviewDate;
+    String result;
+    @Lob
+    String cv;
     @ManyToOne
     User user;
+    Long score; //score of sponsorship
 }

@@ -1,0 +1,173 @@
+<div class="table-responsive text-nowrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Full Name Candidate</th>
+        <th>Email</th>
+        <th>Description</th>
+        <th>Post</th>
+        <th>Interview Date</th>
+        <th>Result</th>
+        <th>CV</th>
+        <th>Proposed by</th>
+        <th>Score</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      <tr *ngFor="let rec of pagedRecruitments">
+        <td>{{ rec.fullNameCandidate }}</td>
+        <td>{{ rec.email }}</td>
+        <td>{{ rec.description }}</td>
+        <td>{{ rec.post }}</td>
+        <td>{{ rec.interviewDate | date }}</td>
+        <td>{{ rec.result }}</td>
+        <td>         <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" style="height: 20;width: 20;" class="button-icon" (click)="Preview(rec.id)"> </td>
+        <td>{{ rec.user.firstName }} {{ rec.user.lastName }}</td>
+        <td>{{ rec.score }}</td>
+        <td>
+          <button type="submit" class="btn btn-outline-primary m-1" (click)="editRecruitment(rec)">Edit</button>
+          <button type="submit" class="btn btn-danger" (click)="deleteRecruitment(rec.id)">Delete</button>
+          <!-- <button type="submit" class="btn btn-outline-info" [routerLink]="['/admin/profile',user.id]">Details</button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button class="btn btn-light btn-sm m-1" (click)="goToPreviousPage()" [disabled]="currentPage === 1">
+  Previous
+</button>
+{{ currentPage }}
+<button class="btn btn-light btn-sm m-1" (click)="goToNextPage()" [disabled]="currentPage === totalrecs">
+  Next
+</button>
+
+<div class="row mt-3">
+  <div class="col-md-7">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <form [formGroup]="recruitmentForm" (ngSubmit)="selectedRecruitment? updateRecruitment() : addRecruitment()">
+          <div class="mb-3"> 
+            <label for="fullNameCandidate" class="form-label">Candidate Full Name :</label>
+            <input type="text" id="fullNameCandidate" name="fullNameCandidate" class="form-control" formControlName="fullNameCandidate">          
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" formControlName="email" autocomplete="email">
+          </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <input type="text" id="description" name="description" class="form-control" formControlName="description">
+          </div>
+          
+          <div class="mb-3">
+            <label for="post" class="form-label">Post:</label>
+            <input type="text" id="post" name="post" class="form-control" formControlName="post">
+          </div>
+          
+          <div class="mb-3">
+            <label for="interviewDate" class="form-label">Interview Date:</label>
+            <input type="date" id="interviewDate" name="interviewDate" class="form-control" formControlName="interviewDate">
+          </div>
+          
+          <div class="mb-3">
+            <label for="result" class="form-label">Result:</label>
+            <select id="result" class="form-select" name="result" formControlName="result">
+              <option>On hold</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label for="cv" class="form-label">CV:</label>
+            <input  type="file" id="cv" class="form-control"  formControlName="cv">
+          </div> 
+
+          <div class="mb-3">
+            <label for="user" class="form-label">Proposed by:</label>
+            <select id="user" name="user" class="form-select" formControlName="user">
+              <option>No one</option>
+              <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName}} {{ user.lastName }}</option>
+            </select>
+          </div>
+
+          
+          <div class="mb-3">
+            <label for="score" class="form-label">Score:</label>
+            <input type="number" id="score" name="score" class="form-control" formControlName="score">
+          </div> 
+            
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-primary" [disabled]="recruitmentForm.invalid">{{ selectedRecruitment ? 'Edit' : 'Add' }} Recruitment</button>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-outline-secondary" *ngIf="selectedRecruitment" (click)="cancelUpdate()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .separator {
+  height: 100px; }
+  .separator1 {
+  height: 10px; }
+  .button-space {
+  margin: 0 10px; } 
+  .button-space1 {
+  margin: 0 5px; 
+}
+.swal-center {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.status-icon {
+width: 20px; /* Adjust the width to your desired size */
+height: auto; /* Maintain aspect ratio */
+margin-right: 5px; /* Optional: Add margin for spacing */
+}
+.ngx-pagination .current {
+padding: 0.1875rem 0.625rem;
+background: #edb95e;
+color: #fefefe;
+cursor: default;
+}
+.button-icon {
+width: 20px; /* Adjust the width to your desired size */
+height: auto; /* Maintain aspect ratio */
+margin-right: 5px; /* Optional: Add margin for spacing */
+}
+.container1 {
+display: flex; /* Use flexbox layout */
+align-items: center; /* Align items vertically */
+}
+
+.button-icon {
+margin-right: 10px; /* Adjust margin as needed */
+}
+
+
+
+</style>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">the attached pdf file: <b></b></h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+  <ngx-extended-pdf-viewer [src]="pdfurl"></ngx-extended-pdf-viewer>
+  </div>
+  <div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
+  </div>
+</ng-template>

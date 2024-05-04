@@ -71,6 +71,26 @@ public class TimeOffTrackerServiceImpl implements ITimeOffTrackerService {
     return timeOffTrackerspersession;
     }
 
+    @Override
+    public long calculateTotalTimeOff(User user) {
+        List<TimeOffTracker> approvedTimeOffRequests = leaveRepository.findByUserAndStatus(user, LeaveStatus.Accepted);
+
+        // Calculate total time off duration
+        long totalTimeOffMillis = 0;
+        for (TimeOffTracker timeOffTracker : approvedTimeOffRequests) {
+            if (timeOffTracker.getType() != LeaveType.Medical && timeOffTracker.getType() != LeaveType.Maternity) {
+                long timeOffDurationMillis = timeOffTracker.getToDate().getTime() - timeOffTracker.getFromDate().getTime();
+                totalTimeOffMillis += timeOffDurationMillis;
+            }
+        }
+
+        // Convert milliseconds to days
+        long totalTimeOffDays = totalTimeOffMillis / (1000 * 60 * 60 * 24);
+
+        return Math.max(totalTimeOffDays, 0); // Ensure the return value is non-negative
+    }
+
+
 
     @Override
     public void deleteLeave(Integer idLeave) {

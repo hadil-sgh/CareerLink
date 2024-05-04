@@ -36,6 +36,10 @@ import { RejectComponent } from './traitmentaccept/reject/reject.component';
 import { LeaveStatisticsComponent } from './leave-statistics/leave-statistics.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { RecruitmentComponent } from './components/recruitment/recruitment.component';
+import { PoliciesComponent } from './policies/policies.component';
+import { BlackoutComponent } from './blackout/blackout.component';
+import { PerformenceComponent } from './components/performence/performence.component';
+import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +67,10 @@ import { RecruitmentComponent } from './components/recruitment/recruitment.compo
     RejectComponent,
     LeaveStatisticsComponent,
     RecruitmentComponent,
+    PoliciesComponent,
+    BlackoutComponent,
+    PerformenceComponent,
+    PerformencedisplayComponent,
 
   ],
   imports: [

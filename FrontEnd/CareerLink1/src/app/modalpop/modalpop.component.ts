@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { TimeofftrackerService } from '../services/timeofftracker.service';
-import { from } from 'rxjs';
 import { TimeOffTracker } from '../models/TimeOffTracker';
 
 @Component({
@@ -11,71 +9,52 @@ import { TimeOffTracker } from '../models/TimeOffTracker';
   templateUrl: './modalpop.component.html',
   styleUrls: ['./modalpop.component.css']
 })
-export class ModalpopComponent {
-  form!:FormGroup 
-  oneTimeOff :any;
-  timeoff!: any;
-  
-  id = this.route.snapshot.params['id'];
-  timeOffTracker!: TimeOffTracker;
-  constructor(private timeoffservice:TimeofftrackerService , private route :ActivatedRoute,private formbuilder : FormBuilder ,private router : Router) { 
-    console.log('ModalpopComponent loaded!');
+export class ModalpopComponent implements OnInit {
+  form!: FormGroup;
+  timeoff: TimeOffTracker = new TimeOffTracker();
+  id !: number ;
 
-  }
+  constructor(
+    private timeoffservice: TimeofftrackerService,
+    private route: ActivatedRoute,
+    private formbuilder: FormBuilder,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
-    this.timeoff = new TimeOffTracker();
-    this.id = this.route.snapshot.params['id'];  
-       this.timeoffservice.findoneTimesOff(this.id).subscribe(
-       data => {
-         console.log(data);
-         this.timeoff = data;
-       },
-       error => console.log(error)
-     );
-    console.log('ModalpopComponent initialized!');
-    this.form = this.formbuilder.group({
-      // Define your form controls here
-      type: ['', Validators.required],
-      description: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
-      // Add other form controls as needed
-  });
-  }
-  FindoneTimesOff(){
+    this.id = Number(this.route.snapshot.params['id']);
     this.timeoffservice.findoneTimesOff(this.id).subscribe(
-      (res: any) => {
-        this.oneTimeOff = res;
-        console.log('one time off', this.oneTimeOff);
-        this.form.patchValue({
-          type: this.oneTimeOff.type,
-          description: this.oneTimeOff.description,
-          fromDate: this.oneTimeOff.fromDate,
-          toDate: this.oneTimeOff.toDate,
-          status: this.oneTimeOff.status,
-          user: this.oneTimeOff.user,
-          pdf: this.oneTimeOff.pdf
-        });
+      (data: TimeOffTracker) => {
+        this.timeoff = data;
+        this.initializeForm();
       },
-      (error: any) => {
-        console.error(error);
-      }
+      error => console.log(error)
     );
   }
+
+  initializeForm(): void {
+    this.form = this.formbuilder.group({
+      type: [this.timeoff.type, Validators.required],
+      description: [this.timeoff.description, Validators.required],
+      fromDate: [this.timeoff.fromDate, Validators.required],
+      toDate: [this.timeoff.toDate, Validators.required],
+    });
+  }
+
   updateTimeOffTracker(): void {
-    console.log("Button pressed"); // Log when the button is pressed
-    this.timeoffservice.updateTimeOff(this.id, this.timeoff).subscribe(
+    console.log("Button pressed");
+    const formValue = this.form.value;
+    this.timeoffservice.updateTimeOff(this.id, formValue).subscribe(
       (data: any) => {
-        console.log("updateTimeOff() called"); // Log when updateTimeOff() is called
+        console.log("updateTimeOff() called");
         console.log(data);
-       this.goToList()        
+        this.goToList();
       },
       (error: any) => console.log(error)
     );
   }
-  
- 
-  closeModal() {
+
+  closeModal(): void {
     const modalElement = document.querySelector('.bd-example-modal-lg') as HTMLElement;
     if (modalElement) {
       modalElement.classList.remove('show');
@@ -83,9 +62,8 @@ export class ModalpopComponent {
       document.body.classList.remove('modal-open');
     }
   }
+
   goToList(): void {
     this.router.navigate(['/Employee/TimeOffTracker']);
   }
-  
- 
 }

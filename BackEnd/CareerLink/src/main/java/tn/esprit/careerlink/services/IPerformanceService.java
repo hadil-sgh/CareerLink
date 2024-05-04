@@ -9,5 +9,7 @@ public interface IPerformanceService {
     Performance updatePerformence(Performance performence);
     Performance getOnePerformence(Integer idPerformence);
     List<Performance> getAllPerformences();
+    List<Performance> getPerformanceByYearAndMonth(int year,int month);
     void deletePerformence(Integer idPerformence);
+    Integer getCurrentWeekGradeForUser(Integer userId);
 }
