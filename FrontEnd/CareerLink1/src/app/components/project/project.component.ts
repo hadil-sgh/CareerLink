@@ -3,6 +3,8 @@ import { Project } from 'src/app/models/Project';
 import { Expense } from 'src/app/models/Expense';
 import { ProjectService } from 'src/app/services/project.service';
 import { ExpenseService } from 'src/app/services/expense.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-project',
@@ -12,10 +14,16 @@ import { ExpenseService } from 'src/app/services/expense.service';
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
   selectedProject: Project | null = null;
-  newProject: Project = new Project();
-  newExpense: Expense = new Expense();
+  projectForm: FormGroup;
 
-  constructor(private projectService: ProjectService, private expenseService: ExpenseService) {}
+  constructor(private projectService: ProjectService, private formBuilder: FormBuilder) {
+    this.projectForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      dueDate: ['', Validators.required],
+      price: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.loadProjects();
@@ -34,31 +42,24 @@ export class ProjectComponent implements OnInit {
 
   selectProject(project: Project): void {
     this.selectedProject = project;
-  }
-
-  createProject(): void {
-    this.projectService.createProject(this.newProject).subscribe(
-      (createdProject) => {
-        this.projects.push(createdProject);
-        this.newProject = new Project();
-      },
-      (error) => {
-        console.error('Error creating project:', error);
-      }
-    );
+    this.projectForm.patchValue({
+      name: project.name,
+      description: project.description,
+      dueDate: project.dueDate,
+      price: project.price
+    });
   }
 
   updateProject(): void {
-    if (this.selectedProject) {
-      this.projectService.updateProject(this.selectedProject).subscribe(
-        (updatedProject) => {
-          const index = this.projects.findIndex(p => p.id === updatedProject.id);
-          if (index !== -1) {
-            this.projects[index] = updatedProject;
-          }
+    if (this.selectedProject && this.projectForm.valid) {
+      const updatedProject = { ...this.selectedProject, ...this.projectForm.value } as Project;
+      this.projectService.updateProject(updatedProject).subscribe(
+        (response) => {
+          console.log('success, updateProject', response);
+          this.loadProjects();
         },
         (error) => {
-          console.error('Error updating project:', error);
+          console.error('error, updateProject', error);
         }
       );
     }
@@ -75,7 +76,4 @@ export class ProjectComponent implements OnInit {
       }
     );
   }
-  
-
-  }
-
+}
