@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from 'src/app/models/Project';
-import { Expense } from 'src/app/models/Expense';
+import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 
 @Component({
   selector: 'app-project',
@@ -15,9 +14,22 @@ export class ProjectComponent implements OnInit {
   projects: Project[] = [];
   selectedProject: Project | null = null;
   projectForm: FormGroup;
+  showNewProjectFormFlag: boolean = false;
+  newProjectForm: FormGroup;
 
-  constructor(private projectService: ProjectService, private formBuilder: FormBuilder) {
+  constructor(
+    private projectService: ProjectService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {
     this.projectForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      dueDate: ['', Validators.required],
+      price: ['', Validators.required]
+    });
+
+    this.newProjectForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       dueDate: ['', Validators.required],
@@ -75,5 +87,35 @@ export class ProjectComponent implements OnInit {
         console.error('Error deleting project:', error);
       }
     );
+  }
+
+  showNewProjectForm(): void {
+    this.showNewProjectFormFlag = true;
+  }
+
+  addNewProject(): void {
+    if (this.newProjectForm.valid) {
+      const newProject = this.newProjectForm.value as Project;
+      this.projectService.createProject(newProject).subscribe(
+        (response) => {
+          console.log('success, addNewProject', response);
+          this.loadProjects();
+          this.showNewProjectFormFlag = false;
+          this.newProjectForm.reset();
+        },
+        (error) => {
+          console.error('error, addNewProject', error);
+        }
+      );
+    }
+  }
+
+  cancelNewProject(): void {
+    this.showNewProjectFormFlag = false;
+    this.newProjectForm.reset();
+  }
+
+  cancelUpdate(): void {
+    this.projectForm.reset();
   }
 }

@@ -1,6 +1,39 @@
 <div class="container">
   <h1>Project Management</h1>
 
+  <!-- Project Management Section Banner -->
+  <div class="project-management-banner">
+    <p>This section allows you to manage your projects.</p>
+    <button (click)="showNewProjectForm()" class="btn btn-primary">New Project</button>
+  </div>
+
+  <!-- New Project Form -->
+  <div class="project-details" *ngIf="showNewProjectFormFlag" [class.active]="showNewProjectFormFlag">
+    <h2>Add New Project</h2>
+    <form [formGroup]="newProjectForm" (ngSubmit)="addNewProject()" class="project-form">
+      <div class="form-group">
+        <label for="newName">Name:</label>
+        <input type="text" id="newName" formControlName="name" required>
+      </div>
+      <div class="form-group">
+        <label for="newDescription">Description:</label>
+        <textarea id="newDescription" formControlName="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="newDueDate">Due Date:</label>
+        <input type="date" id="newDueDate" formControlName="dueDate" required>
+      </div>
+      <div class="form-group">
+        <label for="newPrice">Price:</label>
+        <input type="number" id="newPrice" formControlName="price" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit" [disabled]="newProjectForm.invalid">Add Project</button>
+        <button type="button" (click)="cancelNewProject()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
   <!-- Project List -->
   <div class="project-cards">
     <div class="project-card" *ngFor="let project of projects" [class.selected]="selectedProject === project" (click)="selectProject(project)">
@@ -9,6 +42,15 @@
         <p>{{ project.description }}</p>
         <p>Due Date: {{ project.dueDate | date }}</p>
         <p>Price: {{ project.price | currency }}</p>
+        <!-- Display Expense Details -->
+        <div *ngIf="project.expense">
+          <p>Expense Amount: {{ project.expense.amount | currency }}</p>
+          <p>Expense Date: {{ project.expense.date | date }}</p>
+          <!-- Add more expense details if needed -->
+        </div>
+        <div *ngIf="!project.expense">
+          <p>No expense associated with this project.</p>
+        </div>
       </div>
       <div class="card-actions">
         <button class="update-btn" (click)="updateProject()">Update</button>
@@ -17,6 +59,7 @@
     </div>
   </div>
 
+  <!-- Project Details -->
   <div class="project-details" *ngIf="selectedProject" [class.active]="selectedProject">
     <h2>Project Details</h2>
     <form [formGroup]="projectForm" (ngSubmit)="updateProject()" class="project-form">
@@ -39,10 +82,12 @@
       <div class="form-actions">
         <button type="submit" [disabled]="projectForm.invalid">Update Project</button>
         <button type="button" (click)="deleteProject(selectedProject.id)">Delete Project</button>
+        <button type="button" (click)="cancelUpdate()">Cancel</button>
       </div>
     </form>
   </div>
 </div>
+
 
 <style>
   .container {
@@ -122,6 +167,36 @@
     color: #333;
   }
 
+  .project-management-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #01050a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .project-management-banner p {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    background-color: #25ad30;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #c82333;
+  }
+
   .form-group {
     margin-bottom: 20px;
   }
@@ -173,21 +248,12 @@
   .form-actions button[type="button"]:hover {
     background-color: #c82333;
   }
+
+  .delete-btn {
+    background-color: #dc3545;
+  }
+
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
 </style>
-
-<script>
-  // Add hover animation to project cards
-  const projectCards = document.querySelectorAll('.project-card');
-
-  projectCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.transform = 'translateY(-5px)';
-      card.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0)';
-      card.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-    });
-  });
-</script>
