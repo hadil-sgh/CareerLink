@@ -124,7 +124,7 @@ public class ReclamationServiceImpl implements IReclamationService {
             if (!reclamationEstRepondue(reclamation)) {
                 LocalDate dateCreation = reclamation.getDatereclamation();
                 long joursDepuisCreation = ChronoUnit.DAYS.between(dateCreation, LocalDate.now());
-                if (joursDepuisCreation <= 2) {
+                if (joursDepuisCreation == 2) {
                     reclamationsNonRepondues.add(reclamation);
                 }
             }

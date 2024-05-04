@@ -1,120 +1,98 @@
-<style>
-    /* Styles CSS personnalisés pour ajuster les dimensions */
-    .custom-table-container {
-      height: 300px; /* Définir une hauteur fixe pour le conteneur du tableau */
-      overflow-y: auto; /* Ajouter une barre de défilement verticale si nécessaire */
-    }
-  
-    .custom-table {
-        height: 250px;
-      width: 100%; /* Utiliser la largeur maximale disponible */
-    }
-  
-    .button-cell {
-      white-space: nowrap; /* Empêcher le contenu de se retourner à la ligne */
-    }
-     /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
-     .action-column, .action-cell {
-        border-right: 2px solid #000000; /* Ajouter une bordure droite */
-    }
-  </style>
-   <app-header-front></app-header-front>
-  
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-7">
-        <div class="card">
-          <div class="card-header bg-dark text-white">
-            Reclamation List
+<app-header-front></app-header-front>
+
+<div class="container mt-5"> <!-- Ajout de la classe mt-5 pour déplacer vers le bas -->
+  <div class="row">
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          Reclamation List
+        </div>
+        <div class="card-body custom-table-container">
+          <div class="row justify-content-center align-items-center mt-3">
+            <div class="col-6 text-center">
+              <button class="btn btn-warning btn-block" (click)="tri()">Order My Claims By Date</button>
+            </div>
           </div>
-         
-          <div class="card-body custom-table-container">
-            <div class="row justify-content-center align-items-center" style="height: 10vh;"> <!-- Adjust height as needed -->
-                <div class="col-6 text-center">
-                  <button class="btn btn-warning btn-block" style="margin-top: 20px;" (click)="tri()">Order My Claims By Date</button>
-                </div>
-              </div>
-              
-              
-              
-                          <table class="table table-bordered table-striped text-center custom-table">
-              <thead class="thead-dark">
-                <tr>
-                    <th style="width: 25%; " >PROJECT</th>
-                  <th style="width: 25%;">DATE</th>
-                  <th style="width: 40%;">DESCRIPTION</th>
-                  <th style="width: 25%;">TYPE</th>
-                  <th style="width: 10%;">ACTION</th> <!-- Cellule vide pour aligner avec les boutons du formulaire -->
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let reclamation of reclamations">
-                    <td >{{ reclamation.expense.project.name }}</td>
-                  <td>{{ reclamation.datereclamation | date }}</td>
-                  <td>{{ reclamation.description }}</td>
-                  <td>{{ reclamation.typeReclamation }}</td>
-                  <td class="button-cell">
-                    <button type="button" class="btn btn-success btn-sm" (click)="editReclamation(reclamation)" *ngIf="!hasResponse(reclamation)">
-                        Edit
-                      </button>
-                      <!-- Afficher le bouton "Delete" uniquement si l'utilisateur peut supprimer -->
-                      <button type="button" class="btn btn-dark btn-sm" (click)="deleteReclamation(reclamation.idreclamation)" *ngIf="!hasResponse(reclamation)">
-                        Delete
-                      </button>
-                    <button type="button" class="btn btn-warning btn-sm" *ngIf="hasResponse(reclamation)" [routerLink]="['/Employee/checkreponse', reclamation.idreclamation]">
-                      Check Answer
-                    </button>
-                    
-                  </td>
-                </tr>
-                <tr *ngIf="reclamations.length === 0">
-                  <td colspan="4" class="text-center">No reclamations found.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table class="table table-bordered table-striped text-center custom-table">
+            <thead class="thead-dark">
+              <tr>
+                <th style="width: 25%;">PROJECT</th>
+                <th style="width: 25%;">DATE</th>
+                <th style="width: 40%;">DESCRIPTION</th>
+                <th style="width: 25%;">TYPE</th>
+                <th style="width: 10%;">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reclamation of reclamations">
+                <td>{{ reclamation.expense.project.name }}</td>
+                <td>{{ reclamation.datereclamation | date }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.typeReclamation }}</td>
+                <td class="button-cell">
+                  <button type="button" class="btn btn-success btn-sm mr-1" (click)="editReclamation(reclamation)" *ngIf="!hasResponse(reclamation)">
+                    Edit
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm mr-1" (click)="deleteReclamation(reclamation.idreclamation)" *ngIf="!hasResponse(reclamation)">
+                    Delete
+                  </button>
+                  <button type="button" class="btn btn-warning btn-sm" *ngIf="hasResponse(reclamation)" [routerLink]="['/Employee/checkreponse', reclamation.idreclamation]">
+                    Check Answer
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="reclamations.length === 0">
+                <td colspan="5" class="text-center">No reclamations found.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      
-      <div class="col-md-5">
-        <div class="card">
-          <div class="card-header bg-dark text-white">
-            {{ selectedReclamation ? 'Edit Reclamation' : 'Add Reclamation' }}
-          </div>
-          <div class="card-body custom-form-container">
-            <form [formGroup]="reclamationForm" (ngSubmit)="selectedReclamation ? updateReclamation() : addReclamationAndAffect()" class="custom-form">
-                <div class="form-group">
-                    <label for="datereclamation">Date:</label>
-                    <input type="date" formControlName="datereclamation" class="form-control" readonly>
-                    <div class="alert alert-danger" *ngIf="reclamationForm.controls['datereclamation'].invalid && reclamationForm.controls['datereclamation'].touched">
-                      <div *ngIf="reclamationForm.controls['datereclamation'].hasError('required')">Date is required!</div>
-                    </div>
-                  </div>
-              <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea formControlName="description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          {{ selectedReclamation ? 'Edit Reclamation' : 'Add Reclamation' }}
+        </div>
+        <div class="card-body custom-form-container">
+          <form [formGroup]="reclamationForm" (ngSubmit)="selectedReclamation ? updateReclamation() : addReclamationAndAffect()" class="custom-form">
+            <div class="form-group">
+              <label for="datereclamation">Date:</label>
+              <input type="date" formControlName="datereclamation" class="form-control" readonly>
+              <div class="alert alert-danger mt-2" *ngIf="reclamationForm.controls['datereclamation'].invalid && reclamationForm.controls['datereclamation'].touched">
+                <div *ngIf="reclamationForm.controls['datereclamation'].hasError('required')">Date is required!</div>
               </div>
-              <div class="form-group">
-                <label for="typeReclamation">Type:</label>
-                <select formControlName="typeReclamation" class="form-control" required>
-                  <option value="EXCESSIVE_EXPENSES">Excessive Expenses</option>
-                  <option value="INCORRECT_BILLING">Incorrect Billing</option>
-                  <option value="UNAUTHORIZED_CHARGES">Unauthorized Charges</option>
-                  <option value="OTHER">Other</option>
-                </select>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-success" [disabled]="reclamationForm.invalid">
-                  {{ selectedReclamation ? 'Update Reclamation' : 'Add Reclamation' }}
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="cancel()">
-                  {{ selectedReclamation ? 'Cancel' : 'Clear' }}
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea formControlName="description" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="typeReclamation">Type:</label>
+              <select formControlName="typeReclamation" class="form-control" required>
+                <option value="EXCESSIVE_EXPENSES">Excessive Expenses</option>
+                <option value="INCORRECT_BILLING">Incorrect Billing</option>
+                <option value="UNAUTHORIZED_CHARGES">Unauthorized Charges</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-success mr-2" [disabled]="reclamationForm.invalid">
+                {{ selectedReclamation ? 'Update Reclamation' : 'Add Reclamation' }}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancel()">
+                {{ selectedReclamation ? 'Cancel' : 'Clear' }}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
+
+<footer class="footer mt-5 py-3 bg-light">
+  <div class="container text-center">
+   
+  </div>
+</footer>

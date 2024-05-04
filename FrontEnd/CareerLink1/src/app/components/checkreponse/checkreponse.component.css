@@ -1,0 +1,7 @@
+.card-header {
+    margin-bottom: 30px; /* Ajouter un espace en dessous des en-têtes de carte */
+  }
+  
+  .card-header:first-child {
+    margin-top: 30px; /* Déplacer vers le bas le premier en-tête de carte */
+  }

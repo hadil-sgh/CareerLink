@@ -1,0 +1,38 @@
+/* Styles CSS personnalisés pour ajuster les dimensions */
+.custom-table-container, .custom-form-container {
+    height: 400px; /* Définir une hauteur fixe pour les conteneurs */
+    overflow-y: auto;
+     /* Ajouter une barre de défilement verticale si nécessaire */
+  }
+  
+  .custom-table {
+    height: 100%; /* Utiliser la hauteur maximale disponible */
+    width: 100%; /* Utiliser la largeur maximale disponible */
+   
+  }
+  /* Ajustement de la position des titres */
+.card-header {
+    margin-bottom: 30px; /* Ajouter un espace en dessous des en-têtes de carte */
+  }
+  
+  .card-header:first-child {
+    margin-top: 30px; /* Déplacer vers le bas le premier en-tête de carte */
+  }
+  
+  
+  .button-cell {
+    white-space: nowrap; /* Empêcher le contenu de se retourner à la ligne */
+  }
+  
+  /* Ajouter une classe CSS pour la bordure droite uniquement sur la colonne "ACTION" */
+  .action-column, .action-cell {
+    border-right: 2px solid #000000; /* Ajouter une bordure droite */
+  }
+/* Ajustement de la taille des boutons et de la mise en page */
+/* Ajustement de la taille des boutons et de la mise en page */
+.custom-form .btn {
+    width: 100%; /* Utiliser toute la largeur disponible pour les boutons */
+    margin-bottom: 10px; /* Ajouter un espacement entre les boutons */
+    margin-top: 20px; /* Déplacer les boutons vers le bas */
+  }
+  

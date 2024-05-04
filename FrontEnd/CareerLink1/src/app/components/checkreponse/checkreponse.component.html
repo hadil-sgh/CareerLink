@@ -3,19 +3,28 @@
     <div class="col-md-8 mx-auto">
       <div class="card">
         <!-- Texte au-dessus du QR Code -->
-        <div class="card-header bg-dark text-white text-center">
-          Thank You for Scanning the QR Code to Verify Your Response
-        </div>
-        <div class="card-body text-center">
+       
+        <div class="card-body text-center d-flex justify-content-center align-items-center" style="height: 70vh;"> <!-- Centrage vertical et horizontal -->
           <!-- Espace pour le QR Code -->
-          <div class="mb-3">
+          
+          <div class="col-md-8 mx-auto">
+            <div class="card-header bg-dark text-white text-center">
+              Thank You for Scanning the QR Code to Verify Your Response
+            </div>
             <!-- Affichage du QR Code -->
             <div *ngIf="qrCodeImageUrl" class="qr-code-container">
               <img [src]="qrCodeImageUrl" alt="QR Code" class="img-fluid qr-code-img">
             </div>
+            
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<footer class="footer mt-3 py-1 bg-light">
+  <div class="container text-center">
+   
+  </div>
+</footer>

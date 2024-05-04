@@ -210,19 +210,13 @@ export class AdmrecComponent implements OnInit, OnDestroy {
       );
   }
  
+
+
   hasResponse(reclamation: Reclamation): boolean {
     return this.Reponses.some(response => response.reclamation.idreclamation === reclamation.idreclamation);
   }
   
-  respondToReclamation(reclamation: Reclamation): void {
-    // Votre logique pour répondre à une réclamation ici...
-    // Une fois que la réponse est envoyée avec succès, vous pouvez mettre à jour la liste des réclamations.
-    this.reclamations = this.reclamations.filter(r => r.idreclamation !== reclamation.idreclamation);
-    // Vous pouvez également appeler à nouveau la méthode verifyUnansweredReclamations() pour mettre à jour le nombre total de réclamations non répondues.
-  }
-  unrepliedReclamations(): Reclamation[] {
-    return this.reclamations.filter(reclamation => !this.hasResponse(reclamation));
-  }
+  
 
   onTypeSelected(type: string): void {
     this.selectedType = type;
