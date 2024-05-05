@@ -69,6 +69,7 @@ public class SecurityConfiguration {
                                  .requestMatchers("/TimeOffTracker/adddaysoff").hasAnyAuthority("Admin")
                                  .requestMatchers("/TimeOffTracker/addblackout").hasAnyAuthority("Admin")
 
+
                                 .anyRequest()
                                 .authenticated()
 
