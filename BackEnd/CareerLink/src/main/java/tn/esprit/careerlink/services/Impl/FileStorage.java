@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+@Service
 public class FileStorage {
 
     public static String saveFile(String fileName, MultipartFile multipartFile)
@@ -28,5 +30,13 @@ public class FileStorage {
         }
 
         return fileCode;
+    }
+
+    public static byte[] getFile(String filePath) throws IOException {
+        if (filePath == null) {
+            throw new IllegalArgumentException("File path cannot be null");
+        }
+        Path path = Paths.get(filePath);
+        return Files.readAllBytes(path);
     }
 }

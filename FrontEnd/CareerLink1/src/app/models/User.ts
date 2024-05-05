@@ -7,5 +7,6 @@ export class User{
     role!:Role;
     email!:String;
     pwd!:String;
+    score!:number;
    
 }

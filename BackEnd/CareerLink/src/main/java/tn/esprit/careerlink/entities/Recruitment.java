@@ -20,8 +20,6 @@ public class Recruitment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String fullNameCandidate;
-    String email;
-    String description;
     String post;
     Date interviewDate;
     String result;
@@ -29,5 +27,4 @@ public class Recruitment implements Serializable {
     String cv;
     @ManyToOne
     User user;
-    Long score; //score of sponsorship
 }

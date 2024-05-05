@@ -41,6 +41,10 @@ findAllRecs(): Observable<Recruitment[]> {
     const headers = this.addTokenToHeaders(new HttpHeaders());
     return this.http.post<Recruitment>(this.baseUrl + 'add', formData, { headers });
   }
+  importRecruitments(formData: FormData): Observable<any> {
+    const headers = this.addTokenToHeaders(new HttpHeaders());
+    return this.http.post<any>(this.baseUrl + 'import', formData, { headers });
+  }
   
   getCV(id: number) {
     const headers = this.addTokenToHeaders(new HttpHeaders());

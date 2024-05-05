@@ -64,13 +64,11 @@ ngOnInit() {
 createForm(): void {
   this.recruitmentForm = this.fb.group({
     fullNameCandidate: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    description: [''],
     post: [''],
     interviewDate: [''],
     result: [''],
+    cv:[''],
     user: [''],
-    score: ['']
   });
 }
 
@@ -97,13 +95,10 @@ const recFrom = this.recruitmentForm.value;
   const formData = new FormData();
 
   formData.append('fullNameCandidate', recFrom.fullNameCandidate);
-  formData.append('email', recFrom.email);
-  formData.append('description', recFrom.description);
   formData.append('post', recFrom.post);
   formData.append('interviewDate', recFrom.interviewDate);
   formData.append('result', recFrom.result);
-  formData.append('userId', recFrom.user.id); // Ajoutez le userId depuis l'objet user, par exemple user.id
-  formData.append('score', recFrom.score);
+  formData.append('userId', recFrom.user.id); 
   if (this.selectedFile) {
     formData.append('cv', this.selectedFile);
   }
@@ -148,14 +143,11 @@ editRecruitment(recruitment: Recruitment): void {
   this.selectedRecruitment = recruitment;
   this.recruitmentForm.patchValue({
     fullNameCandidate: recruitment.fullNameCandidate,
-    email: recruitment.email,
-    description: recruitment.description,
     post: recruitment.post,
     interviewDate: recruitment.interviewDate,
     result: recruitment.result,
     cv: recruitment.cv,
     user: recruitment.user,
-    score: recruitment.score
   });
 }
 
@@ -168,13 +160,10 @@ updateRecruitment(): void {
     const recruitmentId = this.selectedRecruitment.id;
     
     formData.append('fullNameCandidate', recFrom.fullNameCandidate);
-    formData.append('email', recFrom.email);
-    formData.append('description', recFrom.description);
     formData.append('post', recFrom.post);
     formData.append('interviewDate', recFrom.interviewDate);
     formData.append('result', recFrom.result);
     formData.append('userId', recFrom.user.id);
-    formData.append('score', recFrom.score);
     if (this.selectedFile) {
       formData.append('cv', this.selectedFile);
     }
@@ -276,6 +265,50 @@ showEmptyBlobAlert(): void {
   });
 }
 
+
+importRecruitments(): void {
+  // Check if a file is selected
+  if (!this.selectedFile) {
+    Swal.fire({
+      icon: 'error',
+      title: 'No file selected',
+      text: 'Please select an Excel file to import recruitments',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', this.selectedFile);
+  formData.append('userId', this.recruitmentForm.value.user.id);
+  if (this.selectedFile) {
+    formData.append('cv', this.selectedFile);
+  }
+
+  // Send the FormData to the backend service to import recruitments
+  this.recService.importRecruitments(formData).subscribe(
+    (response) => {
+      console.log('Success importing recruitments:', response);
+      Swal.fire({
+        icon: 'success',
+        title: 'Recruitments imported successfully',
+        confirmButtonText: 'OK'
+      });
+      // Clear the form and selected file after successful import
+      this.recruitmentForm.reset();
+      this.selectedFile = null;
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error importing recruitments:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error importing recruitments',
+        text: 'An error occurred while importing recruitments. Please try again later.',
+        confirmButtonText: 'OK'
+      });
+    }
+  );
+}
 
 //pagination
 goToPreviousPage(): void {

@@ -1,6 +1,6 @@
 import { Status } from "./Status";
 
-export interface Task {
+export interface Task2 {
     id: number;
     description: string;
     dueDate: Date;

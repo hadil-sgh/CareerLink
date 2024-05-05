@@ -25,6 +25,8 @@ import { PerformenceComponent } from './components/performence/performence.compo
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 import { PoliciesComponent } from './policies/policies.component';
 import { BlackoutComponent } from './blackout/blackout.component';
+import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path:'login',component:LoginComponent},
@@ -39,6 +41,7 @@ const routes: Routes = [
       { path: "taketimeoff", component: TaketimeoffComponent },
       { path: "TimeOffTracker/update/:id", component: ModalpopComponent },
       { path: "expense", component: DepenseComponent },
+      { path:"performenceempl",component:PerformenceemployeeComponent},
 
     ]
   },
@@ -47,6 +50,7 @@ const routes: Routes = [
     component: AllTemplateBackComponent,
     children: [
       { path: "user", component: UserComponent },
+      { path: "Dashboeard", component: DashboardComponent },
       { path: "TimeOffTracker", component: TakeofftraitmentComponent },
       { path: "expense", component: ExpenseComponent },
       { path: "stock", component: StockComponent },

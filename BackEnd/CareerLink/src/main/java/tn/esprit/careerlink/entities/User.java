@@ -30,6 +30,8 @@ public class User implements UserDetails {
     Role role;
     String email;
     String pwd;
+    @Column(nullable = true)
+    Long score;
     boolean mfaEnabled;
     String secret;
 

@@ -1,6 +1,7 @@
 package tn.esprit.careerlink.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.exception.TikaException;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,13 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 import tn.esprit.careerlink.entities.*;
 import tn.esprit.careerlink.repositories.RecruitmentRepository;
 import tn.esprit.careerlink.repositories.UserRepository;
 import tn.esprit.careerlink.services.Impl.FileStorage;
+import tn.esprit.careerlink.services.Impl.ImportService;
+import tn.esprit.careerlink.services.Impl.PdfTextExtractor;
 import tn.esprit.careerlink.services.Impl.RecruitmentServiceImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,16 +35,15 @@ public class RecruitmentController {
     private  final RecruitmentServiceImpl recruitmentService;
     private final RecruitmentRepository recruitmentRepository;
     private final UserRepository userRepository;
+    private final PdfTextExtractor pdfTextExtractor;
+    private final ImportService  importService;
 
     @PostMapping("/add")
     public Recruitment addRecruitment(@RequestParam("fullNameCandidate") String fullNameCandidate,
-                                                      @RequestParam("email") String email,
-                                                      @RequestParam("description") String description,
                                                       @RequestParam("post") String post,
                                                       @RequestParam("interviewDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date interviewDate,
                                                       @RequestParam("result") String result,
                                                       @RequestParam(value = "cv", required = false) MultipartFile file,
-                                                      @RequestParam("score") Long score,
                                                       @RequestParam("userId") Integer userId) {
         try {
             User user = userRepository.findById(userId).orElse(null);
@@ -49,8 +53,6 @@ public class RecruitmentController {
 
             Recruitment recruitment = new Recruitment();
             recruitment.setFullNameCandidate(fullNameCandidate);
-            recruitment.setEmail(email);
-            recruitment.setDescription(description);
             recruitment.setPost(post);
             recruitment.setInterviewDate(interviewDate);
             recruitment.setResult(result);
@@ -59,26 +61,29 @@ public class RecruitmentController {
             if (file != null && !file.isEmpty()) {
                 String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()), file);
                 recruitment.setCv(original);
-            }
-            recruitment.setScore(score);
 
-            return recruitmentRepository.save(recruitment);
+            }
+
+            Recruitment savedRecruitment = recruitmentService.addRecruitment(recruitment);
+
+            recruitmentService.calculateAndUpdateSponsorshipScore(savedRecruitment);
+
+            return recruitmentRepository.save(savedRecruitment);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle exception appropriately
-            return null;
+            e.printStackTrace(); // Gérer l'exception de manière appropriée
+            return null; // Retourner 500 en cas d'erreur interne du serveur
         }
     }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Recruitment> updateRecruitment(@PathVariable("id") Integer id,
                                                          @RequestParam("fullNameCandidate") String fullNameCandidate,
-                                                         @RequestParam("email") String email,
-                                                         @RequestParam("description") String description,
+
                                                          @RequestParam("post") String post,
                                                          @RequestParam("interviewDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date interviewDate,
                                                          @RequestParam("result") String result,
                                                          @RequestParam(value = "cv", required = false) MultipartFile file,
-                                                         @RequestParam("score") Long score,
                                                          @RequestParam("userId") Integer userId) {
         try {
             User user = userRepository.findById(userId).orElse(null);
@@ -92,25 +97,29 @@ public class RecruitmentController {
             }
 
             existingRecruitment.setFullNameCandidate(fullNameCandidate);
-            existingRecruitment.setEmail(email);
-            existingRecruitment.setDescription(description);
+
             existingRecruitment.setPost(post);
             existingRecruitment.setInterviewDate(interviewDate);
             existingRecruitment.setResult(result);
             existingRecruitment.setUser(user);
-            existingRecruitment.setScore(score);
 
             if (file != null && !file.isEmpty()) {
                 String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()), file);
                 existingRecruitment.setCv(original);
+
             }
 
-            Recruitment updatedRecruitment = recruitmentRepository.save(existingRecruitment);
-            return ResponseEntity.ok(updatedRecruitment);
+
+            Recruitment savedRecruitment = recruitmentService.addRecruitment(existingRecruitment);
+
+            recruitmentService.calculateAndUpdateSponsorshipScore(savedRecruitment);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedRecruitment);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle exception appropriately
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            e.printStackTrace(); // Gérer l'exception de manière appropriée
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retourner 500 en cas d'erreur interne du serveur
         }
+
     }
 
 
@@ -178,4 +187,40 @@ public class RecruitmentController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
                 .body(resource);
     }
+    @PostMapping("/import")
+    public ResponseEntity<String> importRecruitments(@RequestParam("file") MultipartFile file,
+                                                     @RequestParam("userId") Integer userId,
+                                                     @RequestParam("cv") MultipartFile cv) {
+        try {
+            importService.importRecruitmentsFromExcel(file, userId, cv);
+            return ResponseEntity.ok("Recruitments imported successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing recruitments");
+        }
+    }
+
+    @GetMapping("/searchByKeyword")
+    public List<Recruitment> searchRecruitmentsByKeyword(@RequestParam("keyword") String keyword) {
+        List<Recruitment> allRecruitments = recruitmentService.getAllRecruitments();
+        List<Recruitment> filteredRecruitments = new ArrayList<>();
+
+        for (Recruitment recruitment : allRecruitments) {
+            try {
+                // Extract text from the PDF CV
+                byte[] pdfData = FileStorage.getFile(recruitment.getCv());
+                String cvContent = pdfTextExtractor.extractText(pdfData);
+
+                // If CV content is not null and contains the keyword, add the recruitment to the filtered list
+                if (cvContent != null && cvContent.contains(keyword)) {
+                    filteredRecruitments.add(recruitment);
+                }
+            } catch (IOException  e) {
+                e.printStackTrace();
+            }
+        }
+        return filteredRecruitments;
+    }
+
+
 }

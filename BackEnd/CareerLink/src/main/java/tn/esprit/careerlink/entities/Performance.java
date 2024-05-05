@@ -16,11 +16,10 @@ public class Performance implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idperformence;
-
-    Integer grade;
-    String comment;
-    int week;
-    int year;
+     float grade;
+     String comment;
+     int week;
+     int year;
 
     @ManyToOne
     User user;
