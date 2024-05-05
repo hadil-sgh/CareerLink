@@ -264,9 +264,8 @@ showEmptyBlobAlert(): void {
 
 
 importRecruitments(): void {
-  const impForm= this.importForm.value;
+  const impForm = this.importForm.value;
 
-  // Check if a file is selected
   if (!this.selectedFile) {
     Swal.fire({
       icon: 'error',
@@ -284,7 +283,6 @@ importRecruitments(): void {
     formData.append('cv', this.selectedFile);
   }
 
-  // Send the FormData to the backend service to import recruitments
   this.recService.importRecruitments(formData).subscribe(
     (response) => {
       console.log('Success importing recruitments:', response);
@@ -294,7 +292,7 @@ importRecruitments(): void {
         confirmButtonText: 'OK'
       });
       // Clear the form and selected file after successful import
-      this.recruitmentForm.reset();
+      this.importForm.reset();
       this.selectedFile = null;
     },
     (error: HttpErrorResponse) => {
@@ -308,6 +306,7 @@ importRecruitments(): void {
     }
   );
 }
+
 
 //pagination
 goToPreviousPage(): void {
