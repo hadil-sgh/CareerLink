@@ -54,8 +54,8 @@ public class ImportService {
                 recruitment.setPost(post);
                 recruitment.setInterviewDate(interviewDate);
                 recruitment.setResult(result);
-                if (file != null && !file.isEmpty()) {
-                    String original = FileStorage.saveFile(StringUtils.cleanPath(file.getOriginalFilename()), file);
+                if (cv!= null && !cv.isEmpty()) {
+                    String original = FileStorage.saveFile(StringUtils.cleanPath(cv.getOriginalFilename()), cv);
                     recruitment.setCv(original);
 
                 }

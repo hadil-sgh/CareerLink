@@ -21,6 +21,8 @@ export class RecruitmentComponent {
 
 recruitments: Recruitment[] = [];
 recruitmentForm!: FormGroup;
+importForm!: FormGroup;
+
 selectedRecruitment: Recruitment| null = null;
 pagedRecruitments: Recruitment[] = []; 
 currentPage: number = 1; 
@@ -58,6 +60,7 @@ ngOnInit() {
   );
 
   this.createForm();
+  this.ImportForm();
   this.selectedRecruitment=null;
 }
 
@@ -67,6 +70,14 @@ createForm(): void {
     post: [''],
     interviewDate: [''],
     result: [''],
+    cv:[''],
+    user: [''],
+  });
+}
+
+ImportForm(): void {
+  this.importForm = this.fb.group({
+    file: ['', Validators.required],
     cv:[''],
     user: [''],
   });
@@ -125,19 +136,6 @@ const recFrom = this.recruitmentForm.value;
 }
 
 
-// addRecruitment(): void {
-// const recruitment = this.recruitmentForm.value;
-// this.recService.addRecruitment(recruitment)
-//   .subscribe(
-//     response => {
-//       console.log('Success, recruitment added', response);
-//       //this.loadRecs();
-//       this.recruitmentForm.reset();
-//     },
-//     error => console.error('Error, failed to add recruitment', error)
-//   );
-// }
-
 
 editRecruitment(recruitment: Recruitment): void {
   this.selectedRecruitment = recruitment;
@@ -191,7 +189,6 @@ updateRecruitment(): void {
     console.error('No recruitment selected.'); // Gérez le cas où aucun recrutement n'est sélectionné
   }
 }
-
 
 
 cancelUpdate(): void {
@@ -267,6 +264,8 @@ showEmptyBlobAlert(): void {
 
 
 importRecruitments(): void {
+  const impForm= this.importForm.value;
+
   // Check if a file is selected
   if (!this.selectedFile) {
     Swal.fire({
@@ -280,7 +279,7 @@ importRecruitments(): void {
 
   const formData = new FormData();
   formData.append('file', this.selectedFile);
-  formData.append('userId', this.recruitmentForm.value.user.id);
+  formData.append('userId', impForm.user.id);
   if (this.selectedFile) {
     formData.append('cv', this.selectedFile);
   }

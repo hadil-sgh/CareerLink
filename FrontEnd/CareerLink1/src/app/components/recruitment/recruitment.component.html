@@ -104,22 +104,22 @@
 
 
 <div class="col-md-6">
-  <form (ngSubmit)="importRecruitments()" enctype="multipart/form-data">
+  <form [formGroup]="importForm" (ngSubmit)="importRecruitments()" >
     <div class="mb-3">
       <label for="file" class="form-label">Select Excel File:</label>
-      <input type="file" id="file" name="file" class="form-control" (change)="onFileSelected($event)">
+      <input type="file" id="file" name="file" class="form-control"  formControlName="file" (change)="onFileSelected($event)">
     </div>
 
     <div class="mb-3">
       <label for="user" class="form-label">Proposed By:</label>
-      <select id="user" name="user" class="form-select" [(ngModel)]="recruitmentForm.value.user.id">
+      <select id="user" name="user" class="form-select"  formControlName="user">
         <option *ngFor="let user of users" [ngValue]="user.id">{{ user.firstName }} {{ user.lastName }}</option>
       </select>
     </div>
 
     <div class="mb-3">
       <label for="cv" class="form-label">CV:</label>
-      <input  type="file" id="cv" name="cv" class="form-control"  (change)="onFileSelected($event)">
+      <input  type="file" id="cv" name="cv" class="form-control"  formControlName="cv" (change)="onFileSelected($event)">
     </div> 
 
     <!-- Button to trigger import of recruitments -->
