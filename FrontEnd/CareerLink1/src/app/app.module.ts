@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination'; 
-import { FilterPipeModule } from 'ngx-filter-pipe';
 import { AppComponent } from './app.component';
 import { AllTemplateFrontComponent } from './FrontOffice/all-template-front/all-template-front.component';
 import { AllTemplateBackComponent } from './BackOffice/all-template-back/all-template-back.component';
@@ -98,8 +97,7 @@ import { SearchPipePipe } from './search-pipe.pipe';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     NgbModule,
-    MatDialogModule,  
-    FilterPipeModule
+    MatDialogModule 
      
     
 ,
