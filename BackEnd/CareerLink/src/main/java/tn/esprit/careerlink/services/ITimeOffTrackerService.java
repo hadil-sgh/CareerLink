@@ -22,4 +22,5 @@ public interface ITimeOffTrackerService {
     List<TimeOffTracker> getAllbyuser(String email) ;
     long calculateTotalTimeOff(User user);
 
-    }
+    int  countTeamMembersNotOnTimeOff(User user);
+}

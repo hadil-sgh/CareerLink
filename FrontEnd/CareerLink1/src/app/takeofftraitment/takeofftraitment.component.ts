@@ -9,6 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { LeaveType } from '../models/LeaveType';
+import { SearchPipePipe } from '../search-pipe.pipe';
 
 @Component({
   selector: 'app-takeofftraitment',
@@ -24,13 +26,13 @@ export class TakeofftraitmentComponent {
   pdfurl='';
   form!:FormGroup 
   timeoff!: any;
+  searchText: string = '';
 
   id = this.route.snapshot.params['id'];
   timeOffTracker!: TimeOffTracker;
   ngOnInit() :void {
     this.LoadListOfTimesOf();
     this.loadUsers();
-  
   }
  
   LoadListOfTimesOf() : void{ 
@@ -53,6 +55,14 @@ export class TakeofftraitmentComponent {
       return ''; 
   }
 }
+
+
+
+
+
+  
+
+
 getStatusColor(status: LeaveStatus): string {
   console.log('Status:', status);
 

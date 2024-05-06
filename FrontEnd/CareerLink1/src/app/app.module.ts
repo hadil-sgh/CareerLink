@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination'; 
+import { FilterPipeModule } from 'ngx-filter-pipe';
 import { AppComponent } from './app.component';
 import { AllTemplateFrontComponent } from './FrontOffice/all-template-front/all-template-front.component';
 import { AllTemplateBackComponent } from './BackOffice/all-template-back/all-template-back.component';
@@ -41,6 +42,7 @@ import { PerformenceComponent } from './components/performence/performence.compo
 import { PerformencedisplayComponent } from './components/performencedisplay/performencedisplay.component';
 import { PerformenceemployeeComponent } from './components/performenceemployee/performenceemployee.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SearchPipePipe } from './search-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     PerformencedisplayComponent,
     PerformenceemployeeComponent,
     DashboardComponent,
-
+    SearchPipePipe,
+    
   ],
   imports: [
     BrowserModule,
@@ -95,8 +98,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     NgbModule,
-    MatDialogModule,
+    MatDialogModule,  
+    FilterPipeModule
+     
     
+,
+
    
   ],
   providers: [ 

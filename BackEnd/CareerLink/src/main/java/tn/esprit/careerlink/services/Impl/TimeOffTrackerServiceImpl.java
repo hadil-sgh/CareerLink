@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import tn.esprit.careerlink.entities.LeaveStatus;
-import tn.esprit.careerlink.entities.LeaveType;
-import tn.esprit.careerlink.entities.TimeOffTracker;
-import tn.esprit.careerlink.entities.User;
+import tn.esprit.careerlink.entities.*;
 import tn.esprit.careerlink.repositories.TimeOffTrackerRepository;
 import tn.esprit.careerlink.repositories.UserRepository;
 import tn.esprit.careerlink.services.ITimeOffTrackerService;
@@ -155,5 +152,27 @@ public class TimeOffTrackerServiceImpl implements ITimeOffTrackerService {
 
         return statistics;
     }
+    public int countTeamMembersNotOnTimeOff(User user) {
+        Set<Team> teams = user.getTeams();
+        int count = 0;
 
+        for (Team team : teams) {
+            for (User teamMember : team.getUsers()) {
+                if (!teamMember.equals(user) && !isOnTimeOff(teamMember)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    private boolean isOnTimeOff(User user) {
+        Set<TimeOffTracker> timeOffTrackers = user.getLeaves();
+
+        for (TimeOffTracker timeOffTracker : timeOffTrackers) {
+            if (timeOffTracker.getStatus() == LeaveStatus.Accepted && timeOffTracker.getFromDate().before(new Date()) && timeOffTracker.getToDate().after(new Date())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

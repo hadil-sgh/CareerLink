@@ -59,6 +59,11 @@ export class TimeofftrackerService {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
         return this.http.delete<void> (this.baseUrl + 'delete/' + id, {headers});
     }
+
+    getteammerberpresent(id: number): Observable<number> {
+      const headers = this.userService.addTokenToHeaders(new HttpHeaders());
+          return this.http.get<number> (this.baseUrl + 'getTeamMemberscount/' + id, {headers});
+      }
     updateTimeOff(id: number, timeoff: TimeOffTracker): Observable<TimeOffTracker> {
       const headers = this.userService.addTokenToHeaders(new HttpHeaders());
       const url = `${this.baseUrl}update/${id}`;

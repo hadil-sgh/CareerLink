@@ -16,56 +16,70 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private userService: UserService
   ) {}
-
+  projectCount!: number;
+  userCount!: number;
+  teamCount!: number;
   performance!: Performance;
-  averagePerformanceData: any = {
-    labels: [],
-    datasets: [{
-      label: 'Average Performance',
-      data: [],
-      borderColor: 'blue',
-      fill: false
-    }]
-  };
-  averageImprovementData: any = {
-    labels: [],
-    datasets: [{
-      label: 'Average Improvement',
-      data: [],
-      borderColor: 'green',
-      fill: false
-    }]
-  };
-  @ViewChild('averagePerformanceChart') averagePerformanceChartRef!: ElementRef;
-  @ViewChild('averageImprovementChart') averageImprovementChartRef!: ElementRef;
-  avrageper: Map<number, number> | undefined;
-  avrageimp: Map<number, number> | undefined;
+  averagePerformanceData: any = null;
+  averageImprovementData: any = null;
+  @ViewChild('combinedChart') combinedChartRef!: ElementRef;
 
   ngOnInit(): void {
     this.bestperformance();
-    this.fetchAveragePerformance();
-    this.fetchAverageImprovement();
+    this.fetchCombinedData();
+    this.loadCounts();
   }
 
   ngAfterViewInit(): void {
-    // Render charts after view initialization
-    this.renderCharts();
+    // Render combined chart after view initialization
+    this.renderCombinedChart();
   }
 
-  renderCharts(): void {
-    // Render average performance chart
-    if (this.averagePerformanceData) {
-      new Chart(this.averagePerformanceChartRef.nativeElement, {
-        type: 'line',
-        data: this.averagePerformanceData
-      });
-    }
+  fetchCombinedData(): void {
+    this.performanceService.getAveragePerformance().subscribe(
+      averagePerformanceData => {
+        this.averagePerformanceData = this.formatChartData(averagePerformanceData, 'Average Performance', '#ff6483');
+        this.renderCombinedChart();
+      },
+      error => console.error('Error fetching average performance:', error)
+    );
 
-    // Render average improvement chart
-    if (this.averageImprovementData) {
-      new Chart(this.averageImprovementChartRef.nativeElement, {
+    this.performanceService.getAverageImprovementInAYear().subscribe(
+      averageImprovementData => {
+        this.averageImprovementData = this.formatChartData(averageImprovementData, 'Average Improvement', '#36a0ea');
+        this.renderCombinedChart();
+      },
+      error => console.error('Error fetching average improvement:', error)
+    );
+  }
+
+  formatChartData(data: Map<number, number>, label: string, borderColor: string): any {
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const labels = Object.keys(data).map(key => monthNames[parseInt(key) - 1]); // Convert numeric keys to month names
+
+    return {
+      labels: labels,
+      datasets: [{
+        label: label,
+        data: Object.values(data),
+        borderColor: borderColor,
+        fill: false
+      }]
+    };
+  }
+
+  renderCombinedChart(): void {
+    if (this.averagePerformanceData && this.averageImprovementData) {
+      new Chart(this.combinedChartRef.nativeElement, {
         type: 'line',
-        data: this.averageImprovementData
+        data: {
+          labels: this.averagePerformanceData.labels,
+          datasets: [
+            this.averagePerformanceData.datasets[0],
+            this.averageImprovementData.datasets[0]
+          ]
+        }
       });
     }
   }
@@ -79,57 +93,51 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       error => console.error('Error fetching best employee:', error)
     );
   }
+
   getStars(grade: number): string[] {
-    const fullStars = Math.floor(grade); 
-    const decimalPart = grade % 1; 
-  
-    let halfStar = ''; 
-  
+    const fullStars = Math.floor(grade);
+    const decimalPart = grade % 1;
+
+    let halfStar = '';
+
     if (decimalPart >= 0.5) {
       halfStar = 'half';
     }
-  
-  
+
     const stars = [];
-  
+
     for (let i = 0; i < fullStars; i++) {
       stars.push('checked');
     }
- 
+
     if (halfStar !== '') {
       stars.push(halfStar);
     }
-  
 
     const totalStars = stars.length;
     for (let i = totalStars; i < 5; i++) {
       stars.push('');
     }
-  
-  
+
     return stars;
   }
-  fetchAveragePerformance(): void {
-    this.performanceService.getAveragePerformance().subscribe(
-      avrageper => {
-        this.avrageper = avrageper;
-        this.averagePerformanceData.labels = Object.keys(avrageper);
-        this.averagePerformanceData.datasets[0].data = Object.values(avrageper);
-        console.log('Average Performance Data:', this.averagePerformanceData);
-      },
-      error => console.error('Error fetching average performance:', error)
-    );
-  }
 
-  fetchAverageImprovement(): void {
-    this.performanceService.getAverageImprovementInAYear().subscribe(
-      avrageimp => {
-        this.avrageimp = avrageimp;
-        this.averageImprovementData.labels = Object.keys(avrageimp);
-        this.averageImprovementData.datasets[0].data = Object.values(avrageimp);
-        console.log('Average Improvement Data:', this.averageImprovementData);
-      },
-      error => console.error('Error fetching average improvement:', error)
+
+
+  loadCounts(): void {
+    this.performanceService.countProjects().subscribe(
+      (      count: number) => this.projectCount = count,
+      (      error: any) => console.log('Error loading project count: ', error)
+    );
+
+    this.performanceService.countUsers().subscribe(
+      (      count: number) => this.userCount = count,
+      (      error: any) => console.log('Error loading user count: ', error)
+    );
+
+    this.performanceService.countTeams().subscribe(
+      (      count: number) => this.teamCount = count,
+      (      error: any) => console.log('Error loading team count: ', error)
     );
   }
 }

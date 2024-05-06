@@ -2,12 +2,13 @@ package tn.esprit.careerlink.services.Impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.core.MessageSendingOperations;
 import org.springframework.stereotype.Service;
 import tn.esprit.careerlink.entities.Performance;
 import tn.esprit.careerlink.entities.User;
 import tn.esprit.careerlink.repositories.PerformanceRepository;
 import tn.esprit.careerlink.services.IPerformanceService;
-
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class PerformanceServiceImpl implements IPerformanceService {
     @Autowired
     UserServiceImpl userService;
     private final SentimentAnalysisService sentimentAnalysisService;
+    private MessageSendingOperations<String> messagingTemplate;
 
 
     @Override
@@ -152,11 +154,13 @@ public class PerformanceServiceImpl implements IPerformanceService {
         }
     }
 
-    public static Optional<Performance> findPerformanceByComment(List<Performance> performances, String comment) {
-        return performances.stream()
+    public static Performance findPerformanceByComment(List<Performance> performances, String comment) {
+        Optional<Performance> optionalPerformance = performances.stream()
                 .filter(performance -> performance.getComment().equals(comment))
                 .findFirst();
+        return optionalPerformance.orElse(null);
     }
+
     public Map<Integer, Double> calculateMonthlyAverageImprovement(List<Performance> performances) {
         // Group performances by month
         Map<Integer, List<Performance>> performancesByMonth = performances.stream()
@@ -193,6 +197,23 @@ public class PerformanceServiceImpl implements IPerformanceService {
 
         return monthlyAverageImprovement;
     }
+    public Performance getBestEmployeePerformance() {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+        int currentMonth = currentDate.getMonthValue();
+        List<Performance> performanceList = performanceRepository.findByYearAndMonth(currentYear, currentMonth);
+        String comment = findBestComment(performanceList);
+        Performance bestPerformance = findPerformanceByComment(performanceList, comment);
+
+        // Notify the user associated with the best performance
+        User user = bestPerformance.getUser();
+        String destination = "/user/" + user.getUsername() + "/topic/notification";
+        messagingTemplate.convertAndSend(destination,
+                "Congratulations! You have the best performance this month.");
+
+        return bestPerformance;
+    }
+
     public Map<Integer, Float> calculateAveragePerformanceByMonth(List<Performance> performances, int year) {
         // Filter performances for the given year
         List<Performance> performancesForYear = performances.stream()

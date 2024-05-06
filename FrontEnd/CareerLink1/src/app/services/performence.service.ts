@@ -15,7 +15,17 @@ export class PerformanceService {
 
   constructor(private http: HttpClient, private userService:UserService, private jwtHelper: JwtHelperService) { }
   
-  
+  countProjects(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/countprj`);
+  }
+
+  countUsers(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/countuser`);
+  }
+
+  countTeams(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/countteam`);
+  }
   findPeformancesbysession(): Observable<Performance[]> {
     const headers = this.userService.addTokenToHeaders(new HttpHeaders());
     const email = this.getUserIdFromToken();

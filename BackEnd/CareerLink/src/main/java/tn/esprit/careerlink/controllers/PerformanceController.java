@@ -8,7 +8,10 @@ import tn.esprit.careerlink.entities.Task;
 import tn.esprit.careerlink.entities.Team;
 import tn.esprit.careerlink.entities.User;
 import tn.esprit.careerlink.repositories.PerformanceRepository;
+import tn.esprit.careerlink.repositories.ProjectRepository;
 import tn.esprit.careerlink.repositories.TeamRepository;
+import tn.esprit.careerlink.repositories.UserRepository;
+import tn.esprit.careerlink.services.Impl.MembershipCardService;
 import tn.esprit.careerlink.services.Impl.PerformanceServiceImpl;
 import tn.esprit.careerlink.services.Impl.TaskService2;
 import tn.esprit.careerlink.services.Impl.UserServiceImpl;
@@ -33,6 +36,9 @@ public class PerformanceController {
     private  final TaskService2 taskService;
     private  final TeamRepository teamRepository;
     private  final PerformanceRepository performanceRepository;
+    private  final MembershipCardService membershipCardService;
+    private  final ProjectRepository projectRepository;
+    private  final UserRepository userRepository;
     @PostMapping("/add")
     public Performance addPerformance(@RequestBody Performance Performance){
         Performance.setYear(Year.now().getValue());
@@ -43,12 +49,17 @@ public class PerformanceController {
         return performenceService.updatePerformence(Performance);
     }
     @GetMapping("/best")
-    public Optional<Performance> getBestEmployeeComment() {
+    public Performance getBestEmployeeComment() {
         List<Performance> performanceList=performenceService.PerformanceForCurrentMonth();
         String comment= performenceService.findBestComment(performanceList);
         return performenceService.findPerformanceByComment(performanceList,comment);
 
     }
+//    @PostMapping("/trigger-notification")
+//    public ResponseEntity<String> triggerNotification() {
+//        return  performenceService.getBestEmployeePerformance();
+//
+//    }
     @GetMapping("/arraveofayear")
     public Map<Integer, Double> AvrageImprovmentInAYear() {
         LocalDate currentDate = LocalDate.now();
@@ -59,6 +70,7 @@ public class PerformanceController {
         return performenceService.calculateMonthlyAverageImprovement(list);
 
     }
+
     @GetMapping("/AvragePerformance")
     public Map<Integer, Float> AvragePerformance() {
         LocalDate currentDate = LocalDate.now();
@@ -67,7 +79,18 @@ public class PerformanceController {
         return performenceService.calculateAveragePerformanceByMonth(list,currentYear);
 
     }
-
+    @GetMapping("/countprj")
+    public Long countProjects() {
+        return projectRepository.count();
+    }
+    @GetMapping("/countuser")
+    public Long countusers() {
+        return userRepository.count();
+    }
+    @GetMapping("/countteam")
+    public Long countteams() {
+        return teamRepository.count();
+    }
 
     @GetMapping("/getOne/{id}")
     public Performance getOnePerformance(@PathVariable ("id")Integer idPerformance){
