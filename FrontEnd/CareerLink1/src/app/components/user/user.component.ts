@@ -61,18 +61,46 @@ export class UserComponent implements OnInit {
       });
     }
   
+    // addUser(): void {
+    //   const user = this.userForm.value;
+    // this.userService.addUser(user)
+    //   .subscribe(
+    //     response => {
+    //       console.log('Success, user added', response);
+    //       this.loadUsers();
+    //       this.userForm.reset();
+    //     },
+    //     error => console.error('Error, failed to add user', error)
+    //   );
+    // }
     addUser(): void {
       const user = this.userForm.value;
-    this.userService.addUser(user)
-      .subscribe(
-        response => {
-          console.log('Success, user added', response);
-          this.loadUsers();
-          this.userForm.reset();
-        },
-        error => console.error('Error, failed to add user', error)
-      );
+      Swal.fire({
+        title: 'Confirmation',
+        text: 'Do you want to add this user?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userService.addUser(user).subscribe(
+            response => {
+              console.log('Success, user added', response);
+              this.loadUsers();
+              this.userForm.reset();
+              Swal.fire('Success', 'User added successfully', 'success');
+            },
+            error => {
+              console.error('Error, failed to add user', error);
+              Swal.fire('Error', 'Failed to add user', 'error');
+            }
+          );
+        }
+      });
     }
+    
     
      
 
@@ -88,19 +116,38 @@ export class UserComponent implements OnInit {
     }
 
     updateUser(): void {
+      
       if (this.selectedUser) {
         const updatedUser = { ...this.selectedUser, ...this.userForm.value } as User;
-        this.userService.updateUser(updatedUser).subscribe(
-          response => {
-            console.log('success, updateUser', response);
-            this.loadUsers();
-            this.userForm.reset();
-            this.selectedUser = null;
-          },
-          error => console.error('error, updateUser', error)
-        );
+        updatedUser.id = this.selectedUser.id; 
+        Swal.fire({
+          title: 'Confirmation',
+          text: 'Do you want to update this user?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.userService.updateUser(updatedUser).subscribe(
+              response => {
+                console.log('Success, user updated', response);
+                this.loadUsers();
+                this.userForm.reset();
+                this.selectedUser = null;
+                Swal.fire('Success', 'User updated successfully', 'success');
+              },
+              error => {
+                console.error('Error, failed to update user', error);
+                Swal.fire('Error', 'Failed to update user', 'error');
+              }
+            );
+          }
+        });
       }
     }
+    
 
     cancelUpdate(): void {
       this.userForm.reset();

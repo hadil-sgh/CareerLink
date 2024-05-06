@@ -25,26 +25,18 @@ public class UserServiceImpl implements IUserService {
     public User addUser(User user) {
         User savedUser = userRepository.save(user);
 
-        // Generate a new activation code for the user
         String activationCode = UUID.randomUUID().toString();
-       // savedUser.addToken(activationCode);
 
-        // Send the registration email with the activation code
         emailService.regsend(savedUser.getEmail(), "Welcome to our app!", savedUser, "Registration email", activationCode);
 
         return savedUser;
     }
 
     public String generateRandomPassword() {
-        // Définir la longueur du mot de passe souhaitée
-        int passwordLength = 10; // Vous pouvez ajuster la longueur selon vos besoins
-
-        // Générer un mot de passe aléatoire
+        int passwordLength = 10;
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[passwordLength];
         random.nextBytes(bytes);
-
-        // Convertir les octets aléatoires en une chaîne Base64
         return Base64.getEncoder().encodeToString(bytes);
     }
 
