@@ -149,7 +149,12 @@ public class TimeOffTrackerController {
     public tn.esprit.careerlink.entities.TimeOffTracker getOneleave(@PathVariable ("id")Integer idLeave){
         return timeOffTrackerService.getOneLeave(idLeave);
     }
+    @GetMapping("/getTeamMemberscount/{id}")
+    public int getTeamMemberscount(@PathVariable ("id")Integer id){
+        User user= timeOffTrackerService.getOneLeave(id).getUser();
 
+        return timeOffTrackerService.countTeamMembersNotOnTimeOff(user);
+    }
     @GetMapping("/getAll")
     public List<tn.esprit.careerlink.entities.TimeOffTracker> getAllleave(){
         return timeOffTrackerService.getAllLeaves();

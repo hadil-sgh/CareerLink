@@ -8,44 +8,38 @@
     <h5 style="color: grey; display: inline-block; margin-right: 5px;"><b>This are your performance results. I hope you are satisfied.</b></h5>
     <i class="fas fa-exclamation-triangle" style="color: orange;"></i>
   </div>
-  <div class="separator"></div>
 
-  <div class="row justify-content-center">
-    <ng-container *ngFor="let performance of performanceList; let i = index;">
-      <div class="col-md-3 mb-4">
-        <div class="card" [ngClass]="{'expanded-card': performance.expanded, 'grey-text': isCurrentMonthAndYear(performance.week, performance.year)}">
-          <div class="card-body">
-            <h5 class="card-title">{{ performance.week }} / {{ performance.year }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted"></h6>
-            <div class="star-rating">
-              <span *ngFor="let star of getStars(performance.grade)" class="star" [ngClass]="{'checked': star === 'checked', 'half': star === 'half'}">&#9733;</span>
-            </div>
-            <!-- Display a portion of the comment -->
-            <p class="card-text"><b>Comment:</b> {{ performance.comment.substring(0, 100) }}</p>
-            <!-- Read more button to toggle additional content -->
-            <button class="btn btn-link read-more-btn" (click)="toggleReadMore(i)">Read More</button>
-            <!-- Additional content shown when expanded is true -->
-            <div *ngIf="performance.expanded" class="additional-content">
-              <!-- Display the remaining part of the comment -->
-              <p>{{ performance.comment.substring(100) }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Close the row and start a new one after every fourth card -->
-      <div *ngIf="(i + 1) % 4 === 0" class="w-100"></div>
-    </ng-container>
-  </div>
 </div>
 
 
 
+<section id="services" class="services">
+  <div class="container" data-aos="fade-up">
+    <link rel="stylesheet" href="/assets/BackOffice/css/styles.min.css" />
+  
+    <div class="row">
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch" *ngFor="let performance of performanceList; let i = index;"
+           [ngClass]="{ 'gray-card': isCurrentMonthAndYear(performance.week, performance.year) }"
+           data-aos="zoom-in" data-aos-delay="100">
+        <div class="icon-box">
+          <div class="container1">
+            <p>{{ performance.week }} / {{ performance.year }}</p>
+          </div>                    
+          <div class="star-rating">
+            <span *ngFor="let star of getStars(performance.grade)" class="star"
+                  [ngClass]="{'checked': star === 'checked', 'half': star === 'half'}">&#9733;</span>
+          </div>
+          <p>{{ performance.comment }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- End time off history Section -->
 
-         
-  <div class="separator"></div>
+
 <div class="separator"></div>
 <div class="separator"></div>
-<div class="separator"></div>
+
 
 
           <style>
@@ -85,7 +79,10 @@
   position: relative;
   display: inline-block;
 }
-
+.icon-box {
+  height: 100%; /* Ensure icon-box fills the entire content area */
+  width: 100%;
+}
 .half:before {
   content: '\2605'; /* Unicode character for a solid star */
   position: absolute;
@@ -103,9 +100,9 @@
   margin-bottom: 20px; /* Adjust margin as needed */
 }
 
-.grey-text {
-  background-color: grey;
-}
+/* Remove specificity to apply grey text style to the entire page */
+
+
 .button-icon {
 width: 40px; /* Adjust the width to your desired size */
 height: auto; /* Maintain aspect ratio */

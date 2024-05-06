@@ -20,6 +20,8 @@ export class RejectComponent implements OnInit {
   daysLeft: number = 0;
   count: number = 0;
   countLeft: number = 0;
+  teammerberpresent: number = 0;
+
   intervalId: any;
   intervalIdLeft: any;
   isThereABlackout!: boolean; 
@@ -43,6 +45,7 @@ export class RejectComponent implements OnInit {
     this.getDaysLeft();
     this.loadTasks();
     this.startCounting();
+    this.getteammerberpresent1();
   }
    isThereABlackoutfun() {
     this.timeoffservice.isThereABlackout(this.id).subscribe(
@@ -101,7 +104,17 @@ export class RejectComponent implements OnInit {
       }
     );
   }
-
+  getteammerberpresent1(): void {
+    this.timeoffservice.getteammerberpresent(this.id).subscribe(
+      teammerberpresent => {
+        this.teammerberpresent = teammerberpresent;
+        console.log('teammerberpresent',teammerberpresent);
+      },
+      (error: any) => {
+        console.error('Error fetching teammerberpresent:', error);
+      }
+    );
+  }
   getStars(grade: number): string[] {
     console.log('Grade:', grade); // Log the grade value
     const fullStars = Math.floor(grade); // Get the integer part of the grade

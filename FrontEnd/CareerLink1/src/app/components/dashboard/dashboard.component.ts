@@ -16,7 +16,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private userService: UserService
   ) {}
-
+  projectCount!: number;
+  userCount!: number;
+  teamCount!: number;
   performance!: Performance;
   averagePerformanceData: any = null;
   averageImprovementData: any = null;
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.bestperformance();
     this.fetchCombinedData();
+    this.loadCounts();
   }
 
   ngAfterViewInit(): void {
@@ -117,5 +120,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
 
     return stars;
+  }
+
+
+
+  loadCounts(): void {
+    this.performanceService.countProjects().subscribe(
+      (      count: number) => this.projectCount = count,
+      (      error: any) => console.log('Error loading project count: ', error)
+    );
+
+    this.performanceService.countUsers().subscribe(
+      (      count: number) => this.userCount = count,
+      (      error: any) => console.log('Error loading user count: ', error)
+    );
+
+    this.performanceService.countTeams().subscribe(
+      (      count: number) => this.teamCount = count,
+      (      error: any) => console.log('Error loading team count: ', error)
+    );
   }
 }

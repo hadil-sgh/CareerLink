@@ -10,22 +10,18 @@ import { TimeofftrackerService } from '../services/timeofftracker.service';
 export class LeaveStatisticsComponent implements OnInit {
   statistics: Map<string, number> | undefined;
   pieChart: any;
-  Year!: number; // Assign default value to selectedYear
-
+  Year!: number; 
   constructor(private timeofftrackerService: TimeofftrackerService) { }
 
   ngOnInit(): void {
-    // Initialize Year with the current year
     const currentYear = new Date().getFullYear();
     this.Year = currentYear;
 
-    // Fetch statistics for the current year
     this.fetchStatistics();
   }
 
   fetchStatistics(): void {
     this.timeofftrackerService.getLeaveStatistics(this.Year).subscribe(data => {
-      // Convert the object literal into a Map object
       this.statistics = new Map(Object.entries(data));
       console.log('stat', data);
       this.renderPieChart();
@@ -43,7 +39,6 @@ export class LeaveStatisticsComponent implements OnInit {
 
     const canvasElement = document.getElementById('pieChart') as HTMLCanvasElement;
 
-    // Check if canvas element exists
     if (!canvasElement) {
       console.error('Canvas element not found.');
       return;
@@ -62,7 +57,6 @@ export class LeaveStatisticsComponent implements OnInit {
       console.log('Previous chart destroyed successfully');
     }
 
-    // Create a new pie chart
     this.pieChart = new Chart(ctx, {
       type: 'pie',
       data: {
