@@ -7,6 +7,7 @@ import { User } from 'src/app/models/User';
 import { Task2 } from 'src/app/models/Task2';
 import { Status } from 'src/app/models/Status';
 import Swal from 'sweetalert2';
+import { map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-performence',
@@ -14,6 +15,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./performence.component.css']
 })
 export class PerformenceComponent implements OnInit {
+  userFormControl: any;
   constructor(private performanceService: PerformanceService, private fb: FormBuilder,private userServive:UserService) { }
   
   performanceList: Performance[] = [];
@@ -25,6 +27,7 @@ export class PerformenceComponent implements OnInit {
   selectedStarsTeamWork: number = 0;
   selectedStarsDiscipline: number = 0;
   selectedStarsPunctuality: number = 0;
+  searchText: string = ''; 
 
   ngOnInit(): void {
     this.loadPerformanceList();
@@ -32,8 +35,11 @@ export class PerformenceComponent implements OnInit {
     this.loadusers();
     this.loadteamname();
     this.loadTasks(); 
+    
   }
-  
+
+
+
   loadTasks(): void {
     this.performanceForm.get('user')?.valueChanges.subscribe((selectedUser: User) => {
       if (selectedUser) { 

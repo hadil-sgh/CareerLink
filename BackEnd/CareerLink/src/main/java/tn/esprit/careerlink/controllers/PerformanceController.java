@@ -49,12 +49,17 @@ public class PerformanceController {
         return performenceService.updatePerformence(Performance);
     }
     @GetMapping("/best")
-    public Optional<Performance> getBestEmployeeComment() {
+    public Performance getBestEmployeeComment() {
         List<Performance> performanceList=performenceService.PerformanceForCurrentMonth();
         String comment= performenceService.findBestComment(performanceList);
         return performenceService.findPerformanceByComment(performanceList,comment);
 
     }
+//    @PostMapping("/trigger-notification")
+//    public ResponseEntity<String> triggerNotification() {
+//        return  performenceService.getBestEmployeePerformance();
+//
+//    }
     @GetMapping("/arraveofayear")
     public Map<Integer, Double> AvrageImprovmentInAYear() {
         LocalDate currentDate = LocalDate.now();

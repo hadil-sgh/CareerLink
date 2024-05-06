@@ -21,6 +21,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, Intege
     @Query("SELECT p FROM Performance p WHERE p.week = ?1 AND p.year = ?2 ORDER BY p.grade DESC")
     List<Performance> findByMonthAndYear(int month, int year);
     List<Performance> findByYear(int year);
+
 }
 
 

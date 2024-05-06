@@ -64,14 +64,15 @@ export class LeaveStatisticsComponent implements OnInit {
         datasets: [{
           data: data,
           backgroundColor: [
-            'RGB(32, 133, 236)',
-            'RGB(114, 180, 235)',
-            'RGB(10, 65, 122)',
-            'RGB(132, 100, 160)',
-            'RGB(206, 169, 188)',
-            'RGB(50, 50, 50)'
-          ],
-          hoverOffset: 4
+            '#cdb4db',
+            '#ffc8dd',
+            '#bde0fe',
+            '#90D26D',
+            '#d4a373',
+            '#e07a5f'
+        ],
+        hoverOffset: 4
+        
         }]
       }
     });

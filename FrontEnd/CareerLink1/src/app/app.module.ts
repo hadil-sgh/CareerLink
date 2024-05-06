@@ -76,6 +76,7 @@ import { SearchPipePipe } from './search-pipe.pipe';
     PerformenceemployeeComponent,
     DashboardComponent,
     SearchPipePipe,
+    
   ],
   imports: [
     BrowserModule,
