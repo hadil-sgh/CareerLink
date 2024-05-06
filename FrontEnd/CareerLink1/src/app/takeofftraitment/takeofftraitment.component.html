@@ -1,0 +1,100 @@
+
+<div class="row">
+  <div class="col-lg-12 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <div class="mb-4">
+       
+        </div >
+        <h3 class="card-header" style="text-align: center;">leave Request List</h3>
+        <div class="separator1"></div>
+
+        <input type="search" class="form-control" id="datatable-search-input" [(ngModel)]="searchText"  placeholder="Search...">
+
+   
+        <div class="separator"></div>
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th >Employee</th>
+                <th>Type Of Leave</th>
+                <th>Pdf File</th>
+                <th>Description</th>
+                <th>From</th>
+                <th>To</th>              
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              <tr *ngFor="let timeoff of timesOff | searchPipe: searchText">
+                <td class="action_label">{{timeoff.user.firstName }} {{timeoff.user.lastName }}</td>
+                <td>{{timeoff.type}}</td>
+                <td>  <img src="/assets/FrontOffice/img/pdf.png" alt="Edit Icon" class="button-icon" (click)="Preview(timeoff.id)"/> </td>
+                <td>{{timeoff.description}}</td>
+                <td>{{timeoff.fromDate | date}}</td>
+                <td>{{timeoff.toDate | date}}</td>
+                
+                <td [ngStyle]="{'color': getStatusColor(timeoff.status)}">
+                  <img [src]="getStatusIcon(timeoff.status)" alt="{{timeoff.status}} icon" class="status-icon" />
+
+                </td>
+                <td>
+                  <button type="submit" class="btn btn-outline-primary m-1" [routerLink]="['/admin/TimeOffTracker/traitment',timeoff.id]">
+                    <img src="/assets/FrontOffice/img/edit.png" alt="Edit Icon" class="button-icon" />
+                    Traitment
+                  </button>
+                  
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .separator {
+  height: 80px; }
+  .separator1 {
+  height: 10px; }
+  .button-space {
+  margin: 0 10px; } 
+  .button-space1 {
+  margin: 0 5px; 
+}
+.swal-center {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.button-icon {
+  width: 20px; 
+  height: auto; 
+  margin-right: 5px; 
+}
+.status-icon {
+  width: 20px; 
+  height: auto; 
+  margin-right: 5px; 
+}
+
+</style>
+
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">the attached pdf file: <b></b></h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<ngx-extended-pdf-viewer [src]="pdfurl"></ngx-extended-pdf-viewer>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
+	</div>
+</ng-template>

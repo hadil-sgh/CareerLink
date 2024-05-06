@@ -6,20 +6,22 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults (level = AccessLevel.PRIVATE)
 public class Performance implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    Integer grade;
-    String comment;
-    String week;
-    @ManyToOne(fetch = FetchType.EAGER)
+    Integer idperformence;
+     float grade;
+     String comment;
+     int week;
+     int year;
+
+    @ManyToOne
     User user;
+
 }

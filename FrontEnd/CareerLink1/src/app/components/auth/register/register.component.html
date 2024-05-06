@@ -1,0 +1,86 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container register">
+                <div class="row">
+                    <div class="col-md-3 register-left">
+                        <h3>Welcome</h3>
+                        <p>Ready to elevate your career? Join CareerLink now and open doors to endless possibilities! Don't wait, sign up today!</p>
+                        <input type="submit" name="login" routerLink="/login" value="Login"/><br/>
+                    </div>
+
+                    <div class="col-md-9 register-right">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <h3 class="register-heading">Register</h3>
+                                <div class="success-message-panel" *ngIf="message">
+                                    <div class="success-icon">&#10004;</div>
+                                    <div class="success-message">{{message}}</div>
+                                </div>
+                                <div class="row register-form">
+                                    <div class="col-md-10">
+                                        <form (ngSubmit)="registerUser()">
+                                            
+                                        <!-- <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="First Name *" name="firstName" [(ngModel)]="registerRequest.firstName"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Last Name *" name="lastName"  [(ngModel)]="registerRequest.lastName" />
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control" [(ngModel)]="registerRequest.role" name="role">
+                                                <option class="hidden"  selected disabled>Please select your role</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="HR_manager">HR Manager</option>
+                                                <option value="Project_manager">Project Manager</option>
+                                                <option value="Consultant">Consultant</option>
+                                                <option value="Sales_manager">Sales Manager</option>
+                                                <option value="Employee">Employee</option>
+                                            </select>
+                                        </div> -->
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Your Email *" name="email" [(ngModel)]="registerRequest.email" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Password *" name="pwd" [(ngModel)]="registerRequest.pwd" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="rememberMe" name="rememberMe" type="checkbox" [(ngModel)]="registerRequest.mfaEnabled">
+                                            <label for="rememberMe">Enable Two Factors Authentication</label>
+                                          </div>
+                                    
+                                    <div class="col-md-6">
+                                        <input type="submit" class="btnRegister"  value="Register"/>
+                                    </div>
+                                        </form>
+                                        
+                                    </div>
+                                    <div class="container" *ngIf="authResponse.mfaEnabled">
+
+                                        <div class="success-message-panel" *ngIf="message">
+                                          <div class="success-icon">&#10004;</div>
+                                          <div class="success-message">{{message}}</div>
+                                        </div>
+                                      
+                                        <h2>Set Up Two-Factor Authentication</h2>
+                                        <div class="qr-code">
+                                          <img [src]="authResponse.secretImageUri" alt="QR Code">
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="validationCode">Enter 6 digits Validation Code Generated by the app</label>
+                                          <input
+                                            type="text"
+                                            id="validationCode"
+                                            name="validationCode"
+                                            required [(ngModel)]="otpCode">
+                                        </div>
+                                        <button type="submit" class="btnVerify"   (click)="verifyTfa()"[class.button-disabled]="otpCode.length < 6">Verify code</button>
+                                      </div>
+                                </div>
+                                
+                            </div>     
+                        </div>
+                    </div>
+                </div>
+            </div>

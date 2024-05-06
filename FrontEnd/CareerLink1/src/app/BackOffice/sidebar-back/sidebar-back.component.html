@@ -18,7 +18,7 @@
             <span class="hide-menu">Home</span>
           </li>
           <li class="sidebar-item">
-            <a routerLink="/admin" class="sidebar-link" routerLink="/admin" aria-expanded="false">
+            <a routerLink="/admin" class="sidebar-link" routerLink="/admin/Dashboeard" aria-expanded="false">
               <span>
                 <img src="assets\BackOffice\images\Dash.png" height="20">
               </span>
@@ -69,42 +69,72 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" routerLink="/admin/expenses" aria-expanded="false">
+            <a class="sidebar-link" routerLink="/admin/policies" aria-expanded="false">
+              <span>
+                <img src="assets\BackOffice\images\icons\policies.png" height="20">
+              </span>
+              <span class="hide-menu">policies</span>
+            </a>
+          </li>
+         
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="/admin/expense" aria-expanded="false">
               <span>
                 <img src="assets\BackOffice\images\icons\expense.png" height="20">
               </span>
-              <span class="hide-menu">Expense</span>
+              <span class="hide-menu">Expenses</span>
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" routerLink="/admin/rec" aria-expanded="false">
+            <a class="sidebar-link" routerLink="/admin/stock" aria-expanded="false">
+              <span>
+                <img src="assets\BackOffice\images\icons\stock.png" height="20">
+              </span>
+              <span class="hide-menu">Stocks</span>
+            </a>
+          </li>
+
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="/admin/recruitment" aria-expanded="false">
               <span>
                 <img src="assets\BackOffice\images\icons\recruitment.png" height="20">
               </span>
               <span class="hide-menu">Recruitment</span>
-            </a>
-          </li>
-          <li class="nav-small-cap">
-            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-           
-            <span class="hide-menu">EXTRA</span>
-          </li>
+            </a> 
+            </li>
+
+
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
+            <a class="sidebar-link" routerLink="/admin/performence" aria-expanded="false">
               <span>
-                <i class="ti ti-mood-happy"></i>
-              </span>
-              <span class="hide-menu">Chat</span>
-            </a>
-          </li>
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
-              <span>
-                <i class="ti ti-aperture"></i>
+                <img src="assets\BackOffice\images\icons\performance.png" height="20">
               </span>
               <span class="hide-menu">Performance</span>
             </a>
           </li>
+          <li class="nav-small-cap">
+            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+            <span class="hide-menu">EXTRA</span>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="#" aria-expanded="false">
+              <span>
+                <img src="assets\BackOffice\images\icons\chat.png" height="20">
+              </span>
+              <span class="hide-menu">Chat</span>
+            </a>
+          </li>
+     
+          
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="/login" aria-expanded="false"  >
+              <span>
+                <img src="assets\BackOffice\images\icons\logout.png" height="20">
+              </span>
+              <span class="hide-menu" (click)="logout()">Logout</span>
+            </a>
+          </li>
+          
         </ul>
        
       </nav>

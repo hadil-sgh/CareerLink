@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f76c81bc-83a7-4cbb-a6db-5ff1463b3ab9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/services/EmailSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/services/Impl/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/CareerLinkApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/CareerLinkApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/controllers/TimeOffTrackerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/controllers/TimeOffTrackerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/repositories/TimeOffTrackerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/repositories/TimeOffTrackerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/services/ITimeOffTrackerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/services/ITimeOffTrackerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/services/Impl/TimeOffTrackerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/src/main/java/tn/esprit/careerlink/services/Impl/TimeOffTrackerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CareerLink/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/CareerLink/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/components/taketimeoff/taketimeoff.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/components/taketimeoff/taketimeoff.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/components/timeofftracker/timeofftracker.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/components/timeofftracker/timeofftracker.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/components/timeofftracker/timeofftracker.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/components/timeofftracker/timeofftracker.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/modalpop/modalpop.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/modalpop/modalpop.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/modalpop/modalpop.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/modalpop/modalpop.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/services/timeofftracker.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/services/timeofftracker.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/takeofftraitment/takeofftraitment.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/takeofftraitment/takeofftraitment.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/takeofftraitment/takeofftraitment.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FrontEnd/CareerLink1/src/app/takeofftraitment/takeofftraitment.component.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2eY14sLmMxw4ECcMVxRWOJxv19G" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Hadil sghair/Desktop/4SE/S2/Pi-Dev-Spring/CareerLink/BackEnd&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="CareerLinkApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="carrerlink" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="tn.esprit.careerlink.CareerLinkApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f76c81bc-83a7-4cbb-a6db-5ff1463b3ab9" name="Changes" comment="" />
+      <created>1712066510358</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712066510358</updated>
+      <workItem from="1712066511412" duration="28000" />
+      <workItem from="1712066642527" duration="11000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

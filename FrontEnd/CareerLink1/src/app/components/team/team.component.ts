@@ -11,17 +11,6 @@ import { Department } from 'src/app/models/Department';
   styleUrls: ['./team.component.css']
 })
 export class TeamComponent {
-  
-  ngOnInit() :void {
-    this.loadTeams();
-    this.createForm();
-    
-   
-    
-   
-  }
-
-
 
   teams: Team[] = [];
   teamForm!: FormGroup;
@@ -31,7 +20,12 @@ export class TeamComponent {
     'IT_OPERATIONS',
     'PROJECT_MANAGEMENT'
     ];
-
+  
+  ngOnInit() :void {
+    this.loadTeams();
+    this.createForm();
+   
+  }
 
     constructor(private teamService :TeamService , private formbilder: FormBuilder) {   
 
@@ -50,30 +44,73 @@ export class TeamComponent {
       this.teamForm = this.formbilder.group({
       
         
-        teamname : ['', Validators.required],
-        Department: ['', Validators.required],
-        Project: ['', Validators.required],
-        user: ['', Validators.required],
+        name : ['', Validators.required],
+        department: ['', Validators.required],
+        project: ['', Validators.required],
+        users: ['', Validators.required],
         
       });
-
+      console.log(this.teamForm.value +"HELLO1");
   
     
     }
     addTeams(): void {
     
-      const newteam = this.teamForm.value;
-     
-  
-      this.teamService.addTeam(newteam)
+      let team = new Team;
+      team = this.teamForm.value;
+      console.log("HELLOdfghjklmù");
+      team.users=[];
+
+
+      this.teamService.addTeam(team)
       .subscribe(
         response => {
           console.log('success, add', response);
+          console.log(this.teamForm.value +"HELLO");
+
           this.loadTeams();
         },
         error => console.error('error, add', error)
       );
     } 
+
+
+    deleteTeam(id :number): void {
+      this.teamService.deleteTeam(id).subscribe(
+        response => {
+          console.log('success, deleteteam', response);
+          this.loadTeams();
+        },
+        error => console.error('error, deleteteam', error)
+      )
+    }
+    updateTeam(): void {
+      if (this.selectedTeam && this.teamForm.valid) {
+        const updatedteam = { ...this.selectedTeam, ...this.teamForm.value } as Team;
+        this.teamService.updateTeam(updatedteam).subscribe(
+          response => {
+            console.log('success, updateteam', response);
+            this.loadTeams();
+            this.teamForm.reset();
+            this.selectedTeam=null;
+          },
+          error => console.error('error, updateTeam', error)
+        );
+      }
+    }
+    editTeam(team: Team): void {
+      this.selectedTeam = team;
+      this.teamForm.patchValue({
+        TeamName: team.name,
+        Department: team.department,
+        Project: team.projects
+       
+       
+      });
+    }
+
+
+
   }
 
   

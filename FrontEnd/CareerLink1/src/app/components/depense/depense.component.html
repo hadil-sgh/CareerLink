@@ -1,0 +1,27 @@
+<div class="card mt-5 mb-5"> <!-- Ajoutez une marge supérieure pour décaler le tableau vers le bas -->
+   
+        <div class="mx-auto table-container">
+            <h5 class="card-header">Expense List</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>IDEXPENSE</th>
+                            <th>AMOUNT</th>
+                            <th>DATE</th>
+                            <th>CATEGORY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let expense of expenses">
+                            <td>{{expense.idexpense}}</td>
+                            <td>{{expense.amount}}</td>
+                            <td>{{expense.date | date }}</td>
+                            <td>{{expense.category}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+</div>

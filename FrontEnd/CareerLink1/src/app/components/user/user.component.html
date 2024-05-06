@@ -1,54 +1,41 @@
-<div class="row">
-  <div class="col-lg-12 d-flex align-items-stretch">
-    <div class="card w-100">
-      <div class="card-body p-4">
-        <div class="mb-4">
-          <h5 class="card-title fw-semibold">...</h5>
-        </div>
-        <h5 class="card-header">Employee List</h5>
-        <div class="table-responsive text-nowrap">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Birthday</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th>Login</th>
-                <th>Password</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-              <tr *ngFor="let user of users">
-                <td>{{ user.id }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.phoneNumber }}</td>
-                <td>{{ user.address }}</td>
-                <td>{{ user.birthday | date }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.login }}</td>
-                <td>{{ user.pwd }}</td>
-                <td>
-                  <button type="submit" class="btn btn-outline-primary  m-1" (click)="editUser(user)"  >Edit</button>
-                  <span class="button-space1"></span> 
-                  <button type="submit" class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
-
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="table-responsive text-nowrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+      <tr *ngFor="let user of pagedUsers">
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button type="submit" class="btn btn-outline-primary m-1" (click)="editUser(user)">Edit</button>
+          <button type="submit" class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
+          <!-- <button type="submit" class="btn btn-outline-info" [routerLink]="['/admin/profile',user.id]">Details</button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+
+
+<button class="btn btn-light btn-sm m-1" (click)="goToPreviousPage()" [disabled]="currentPage === 1">
+  Previous
+</button>
+{{currentPage}}
+<button class="btn btn-light btn-sm m-1" (click)="goToNextPage()" [disabled]="currentPage === totalUsers">
+  Next
+</button>
+ 
+
 
 <div class="row mt-3">
   <div class="col-md-7">
@@ -74,31 +61,11 @@
             <div *ngIf="this.userForm.controls['lastName'].hasError('pattern')">Last name must consist only of letters ! </div>
           </div>
           <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Phone Number:</label>
-            <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['phoneNumber'].invalid && this.userForm.controls['phoneNumber'].touched">
-            <div *ngIf="this.userForm.controls['phoneNumber'].hasError('required')"> Phone No is required !</div>
-            <div *ngIf="this.userForm.controls['phoneNumber'].hasError('pattern')">Last name must consist only of 8 numbers ! </div>
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">Address:</label>
-            <input type="text" id="address" class="form-control" formControlName="address">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['address'].invalid && this.userForm.controls['address'].touched">
-            <div *ngIf="this.userForm.controls['address'].hasError('required')"> Address is required !</div>
-          </div>
-          <div class="mb-3">
-            <label for="birthday" class="form-label">Birth date:</label>
-            <input type="date" id="birthday" class="form-control" formControlName="birthday">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['birthday'].invalid && this.userForm.controls['birthday'].touched">
-            <div *ngIf="this.userForm.controls['birthday'].hasError('required')"> Birth date is required !</div>
-          </div>
-          <div class="mb-3">
             <label for="role" class="form-label">Role:</label>
             <select id="role" class="form-select" formControlName="role">
+              <option value="Admin">Admin</option>
               <option value="HR_manager">HR Manager</option>
+              <option value="Project_manager">Project Manager</option>
               <option value="Consultant">Consultant</option>
               <option value="Sales_manager">Sales Manager</option>
               <option value="Employee">Employee</option>
@@ -113,20 +80,6 @@
           </div>
           <div class="alert alert-danger" *ngIf="this.userForm.controls['email'].invalid && this.userForm.controls['email'].touched">
             <div *ngIf="this.userForm.controls['email'].hasError('required')"> E-mail is required !</div>
-          </div>
-          <div class="mb-3">
-            <label for="login" class="form-label">Login:</label>
-            <input type="text" id="login" class="form-control" formControlName="login">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['login'].invalid && this.userForm.controls['login'].touched">
-            <div *ngIf="this.userForm.controls['login'].hasError('required')"> Login is required !</div>
-          </div>
-          <div class="mb-3">
-            <label for="pwd" class="form-label">Password:</label>
-            <input type="password" id="pwd" class="form-control" formControlName="pwd">
-          </div>
-          <div class="alert alert-danger" *ngIf="this.userForm.controls['pwd'].invalid && this.userForm.controls['pwd'].touched">
-            <div *ngIf="this.userForm.controls['pwd'].hasError('required')"> Password is required !</div>
           </div>
           <div class="row">
             <div class="col">

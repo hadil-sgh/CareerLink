@@ -1,5 +1,4 @@
 package tn.esprit.careerlink.entities;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,13 +21,14 @@ public class TimeOffTracker implements Serializable {
     @Enumerated(EnumType.STRING)
     LeaveType type;
     String description;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+
     Date fromDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+
     Date toDate;
     @Enumerated(EnumType.STRING)
     LeaveStatus status;
     @ManyToOne
     User user;
-
+    @Lob
+    String pdfData;
 }

@@ -1,6 +1,8 @@
 export enum Role{
-    HR_manager, //0 
-    Consultant, //1
-    Sales_manager, //2
-    Employee //3
+    Admin,
+    HR_manager, 
+    Consultant,
+    Project_manager, 
+    Sales_manager, 
+    Employee 
 }

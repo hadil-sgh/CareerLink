@@ -1,5 +1,6 @@
+
 import { Team } from "./Team";
-import { Task } from "./Task";
+import { Task2 } from "./Task2";
 import { Expense } from "./Expense";
 
 export class Project {
@@ -9,7 +10,7 @@ export class Project {
     dueDate!: Date;
     price!: number;
     teams!: Team[];
-    tasks!: Task[];
+    tasks!: Task2[];
     expense!: Expense;
  
   }   

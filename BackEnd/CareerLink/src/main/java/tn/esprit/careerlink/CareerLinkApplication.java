@@ -11,6 +11,7 @@ public class CareerLinkApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CareerLinkApplication.class, args);
+
     }
 
 }

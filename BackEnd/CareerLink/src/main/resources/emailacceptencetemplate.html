@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .h1,a,p{
+            align-content: center;
+        }
+        .accepted {
+            color: #82dd55;
+        }
+
+        .rejected {
+            color: #e23636;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <img class="ax-center my-10 w-24" src="https://ibb.co/rtyQ9nf" alt="CareerLink Logo" />
+    <div class="card p-6 p-lg-10 space-y-4">
+        <h1 class="h3 fw-700">Your time off request status has been updated</h1>
+        <p>Dear <span style="color: black; font-weight: bold;">{{USER_FIRST_NAME}}</span>,</p>
+        <p>Your time off request status has been updated to: <br>
+            <!-- Conditionally apply accepted or rejected class based on status -->
+            <span class="{{TIMEOFF_STATUS_CLASS}}">{{TIMEOFF_STATUS}}</span>
+        </p>
+
+    </div>
+    <div class="text-muted text-center my-6">
+        best regards<br>
+        CareerLink Team <br>
+    </div>
+</div>
+</body>
+</html>

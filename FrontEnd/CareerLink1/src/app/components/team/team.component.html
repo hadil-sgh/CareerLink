@@ -17,13 +17,13 @@
             <tr *ngFor="let team of teams">
               <td>{{ team.name }}</td>
               <td>{{ team.department }}</td>
-              <td>{{ team.project  }}</td>
+              <td>{{ team.projects  }}</td>
               
            <td>
                 <td>
                   <button type="submit" class="btn btn-outline-success  m-1"  >Edit</button>
                   <span class="button-space1"></span> 
-                  <button type="submit" class="btn btn-outline-danger m-1" >Delete</button>
+                  <button type="submit" class="btn btn-outline-danger m-1" (click)="deleteTeam(team.id)">Delete</button>
                   
                 </td>
                 <!-- Display the list of users associated with the team -->
@@ -67,17 +67,10 @@
             </select>
             </div>
           </div>
-  
-          
         
           <div class="form-group">
-<<<<<<< HEAD
             <label for="teamname">Team Name:</label>
             <input type="text" formControlName="teamname" class="form-control" id="teamname">
-=======
-            <label for="teamname">teamname:</label>
-            <input type="text" formControlName="name" class="form-control" id="name">
->>>>>>> 3dc7b6a8969c78e74c2ea2331dd17901e2ea83c9
           </div>
 
           <div class="separator1"></div>
