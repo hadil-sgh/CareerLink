@@ -98,6 +98,7 @@ import { SearchPipePipe } from './search-pipe.pipe';
     NgxExtendedPdfViewerModule,
     NgbModule,
     MatDialogModule
+
      
     
 ,
