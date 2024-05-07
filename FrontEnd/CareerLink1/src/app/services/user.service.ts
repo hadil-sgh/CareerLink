@@ -34,9 +34,9 @@ addUser(user: User) : Observable<User> {
   return this.http.post<User> ( this.baseUrl + 'User/add', user, { headers } ); 
 }
 
-updateUser(user: User) : Observable<User> { 
-  const headers = this.addTokenToHeaders(new HttpHeaders()); 
-  return this.http.put<User> ( this.baseUrl + 'User/update', user, { headers }); 
+updateUser(id: number, user:User): Observable<User> {
+  const headers = this.addTokenToHeaders(new HttpHeaders());
+  return this.http.put<User>(`${this.baseUrl}User/update/${id}`, user, { headers });
 }
 
 deleteUser(id: number) : Observable<void> { 

@@ -35,6 +35,8 @@ id: any;
 blob!:Blob;
 @ViewChild('content') popupview !: ElementRef;
 selectedFile: File | null = null;
+selectedExFile: File | null = null;
+
 @ViewChild('fileInput') fileInput!: ElementRef; 
 
 
@@ -78,8 +80,8 @@ createForm(): void {
 ImportForm(): void {
   this.importForm = this.fb.group({
     file: ['', Validators.required],
-    cv:[''],
     user: [''],
+    cv:[''],
   });
 }
 
@@ -97,6 +99,11 @@ error => console.error('Error while fetching recruitments', error)
 onFileSelected(event: any): void {
   this.selectedFile = event.target.files[0];
 }
+
+onExFileSelected(event: any): void {
+  this.selectedExFile = event.target.files[0];
+}
+
 
 
 
@@ -263,10 +270,52 @@ showEmptyBlobAlert(): void {
 }
 
 
+// importRecruitments(): void {
+//   const impForm = this.importForm.value;
+
+//   if (!this.selectedFile) {
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'No file selected',
+//       text: 'Please select an Excel file to import recruitments',
+//       confirmButtonText: 'OK'
+//     });
+//     return;
+//   }
+
+//   const formData = new FormData();
+//   formData.append('file', this.selectedFile);
+//   formData.append('userId', impForm.user.id);
+//   if (this.selectedFile) {
+//     formData.append('cv', this.selectedFile);
+//   }
+
+//   this.recService.importRecruitments(formData).subscribe(
+//     (response) => {
+//       console.log('Success importing recruitments:', response);
+//       Swal.fire({
+//         icon: 'success',
+//         title: 'Recruitments imported successfully',
+//         confirmButtonText: 'OK'
+//       });
+//       // Clear the form and selected file after successful import
+//       this.importForm.reset();
+//       this.selectedFile = null;
+//     },
+//     (error: HttpErrorResponse) => {
+//       console.error('Error importing recruitments:', error);
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Error importing recruitments',
+//         text: 'An error occurred while importing recruitments. Please try again later.',
+//         confirmButtonText: 'OK'
+//       });
+//     }
+//   );
+// }
 importRecruitments(): void {
   const impForm = this.importForm.value;
-
-  if (!this.selectedFile) {
+  if (!this.selectedExFile) {
     Swal.fire({
       icon: 'error',
       title: 'No file selected',
@@ -277,35 +326,37 @@ importRecruitments(): void {
   }
 
   const formData = new FormData();
-  formData.append('file', this.selectedFile);
+  formData.append('file', this.selectedExFile);
   formData.append('userId', impForm.user.id);
   if (this.selectedFile) {
     formData.append('cv', this.selectedFile);
   }
 
   this.recService.importRecruitments(formData).subscribe(
-    (response) => {
+    (response: any) => {
       console.log('Success importing recruitments:', response);
       Swal.fire({
         icon: 'success',
         title: 'Recruitments imported successfully',
         confirmButtonText: 'OK'
       });
-      // Clear the form and selected file after successful import
       this.importForm.reset();
       this.selectedFile = null;
     },
     (error: HttpErrorResponse) => {
       console.error('Error importing recruitments:', error);
+      // Handle the error as plain text instead of JSON
+      const errorMessage = error.error || error.message;
       Swal.fire({
         icon: 'error',
         title: 'Error importing recruitments',
-        text: 'An error occurred while importing recruitments. Please try again later.',
+        text: errorMessage,
         confirmButtonText: 'OK'
       });
     }
   );
 }
+
 
 
 //pagination

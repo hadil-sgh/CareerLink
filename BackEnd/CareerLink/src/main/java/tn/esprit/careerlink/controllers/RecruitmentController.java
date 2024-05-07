@@ -188,12 +188,12 @@ public class RecruitmentController {
                 .body(resource);
     }
     @PostMapping("/import")
-    public ResponseEntity<String> importRecruitments(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<?> importRecruitments(@RequestParam("file") MultipartFile file,
                                                      @RequestParam("userId") Integer userId,
                                                      @RequestParam("cv") MultipartFile cv) {
         try {
             importService.importRecruitmentsFromExcel(file, userId, cv);
-            return ResponseEntity.ok("Recruitments imported successfully");
+            return ResponseEntity.status(HttpStatus.OK).body("Successful importing recruitments");
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing recruitments");

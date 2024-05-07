@@ -22,21 +22,11 @@ export class RecruitmentService {
     return headers;
   }
 
-findAllRecs(): Observable<Recruitment[]> {
+  findAllRecs(): Observable<Recruitment[]> {
     const headers = this.addTokenToHeaders(new HttpHeaders());
     return this.http.get<Recruitment[]> ( this.baseUrl + 'getAll', { headers } )
   }
-  
-  // addRecruitment(recruitment: Recruitment): Observable<Recruitment> {
-  //   const headers = this.addTokenToHeaders(new HttpHeaders());
-  //   return this.http.post<Recruitment>(this.baseUrl + 'add', recruitment, { headers })
-  //     .pipe(
-  //       catchError(error => {
-  //         console.error('Error adding recruitment:', error);
-  //         return throwError(error);
-  //       })
-  //     );
-  // }
+
   addRecruitment(formData: FormData): Observable<Recruitment> {
     const headers = this.addTokenToHeaders(new HttpHeaders());
     return this.http.post<Recruitment>(this.baseUrl + 'add', formData, { headers });
@@ -65,8 +55,8 @@ findAllRecs(): Observable<Recruitment[]> {
   }
   
 
-deleteRecruitment(id: number) : Observable<void> { 
-  const headers = this.addTokenToHeaders(new HttpHeaders()); 
-  return this.http.delete <void> ( this.baseUrl + 'delete/' + id, { headers } ); 
-}
+  deleteRecruitment(id: number) : Observable<void> { 
+    const headers = this.addTokenToHeaders(new HttpHeaders()); 
+    return this.http.delete <void> ( this.baseUrl + 'delete/' + id, { headers } ); 
+  }
 }

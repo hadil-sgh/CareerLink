@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
+//Import recruitments from excel
 public class ImportService {
 
     private final RecruitmentRepository recruitmentRepository;

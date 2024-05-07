@@ -117,4 +117,3 @@ export class AppModule { }
 export function tokenGetter() {
   return localStorage.getItem("access_token");
 }
-
