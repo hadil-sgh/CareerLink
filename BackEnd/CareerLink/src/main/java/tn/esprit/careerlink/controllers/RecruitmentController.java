@@ -188,7 +188,7 @@ public class RecruitmentController {
                 .body(resource);
     }
     @PostMapping("/import")
-    public ResponseEntity<String> importRecruitments(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<?> importRecruitments(@RequestParam("file") MultipartFile file,
                                                      @RequestParam("userId") Integer userId,
                                                      @RequestParam("cv") MultipartFile cv) {
         try {

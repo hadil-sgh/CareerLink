@@ -61,18 +61,7 @@ export class UserComponent implements OnInit {
       });
     }
   
-    // addUser(): void {
-    //   const user = this.userForm.value;
-    // this.userService.addUser(user)
-    //   .subscribe(
-    //     response => {
-    //       console.log('Success, user added', response);
-    //       this.loadUsers();
-    //       this.userForm.reset();
-    //     },
-    //     error => console.error('Error, failed to add user', error)
-    //   );
-    // }
+   
     addUser(): void {
       const user = this.userForm.value;
       Swal.fire({
@@ -130,7 +119,7 @@ export class UserComponent implements OnInit {
           confirmButtonText: 'Yes'
         }).then((result) => {
           if (result.isConfirmed) {
-            this.userService.updateUser(updatedUser).subscribe(
+            this.userService.updateUser(updatedUser.id,updatedUser).subscribe(
               response => {
                 console.log('Success, user updated', response);
                 this.loadUsers();

@@ -96,33 +96,34 @@
   </div>
 </div>
 
+<div class="row mt-3">
+  <div class="col-md-6">
+    <form [formGroup]="importForm" (ngSubmit)="importRecruitments()">
+      <div class="mb-3">
+        <label for="file" class="form-label">Select Excel File:</label>
+        <input type="file" id="file" name="file" class="form-control" accept=".xlsx,.xls" formControlName="file" (change)="onExFileSelected($event)">
+      </div>
 
-<div class="col-md-6">
-  <form [formGroup]="importForm" (ngSubmit)="importRecruitments()" enctype="multipart/form-data" >
-    <div class="mb-3">
-      <label for="file" class="form-label">Select Excel File:</label>
-      <input type="file" id="file" name="file" class="form-control"  formControlName="file" (change)="onFileSelected($event)">
-    </div>
+      <div class="mb-3">
+        <label for="user" class="form-label">Proposed By:</label>
+        <select id="user" name="user" class="form-select" formControlName="user">
+          <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName }} {{ user.lastName }}</option>
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label for="user" class="form-label">Proposed By:</label>
-      <select id="user" name="user" class="form-select"  formControlName="user">
-        <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName }} {{ user.lastName }}</option>
-      </select>
-      
-    </div>
+      <div class="mb-3">
+        <label for="cv" class="form-label">CV:</label>
+        <input type="file" id="cv" name="cv" class="form-control" formControlName="cv" (change)="onFileSelected($event)">
+      </div>
 
-    <div class="mb-3">
-      <label for="cv" class="form-label">CV:</label>
-      <input  type="file" id="cv" name="cv" class="form-control"  formControlName="cv" (change)="onFileSelected($event)">
-    </div> 
-
-    <!-- Button to trigger import of recruitments -->
-    <div class="mb-3">
-      <button type="submit" class="btn btn-primary">Import Recruitments</button>
-    </div>
-  </form>
+      <!-- Button to trigger import of recruitments -->
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Import Recruitments</button>
+      </div>
+    </form>
+  </div>
 </div>
+
 
 
 
