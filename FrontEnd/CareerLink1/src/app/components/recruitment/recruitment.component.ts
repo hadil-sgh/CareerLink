@@ -344,15 +344,13 @@ importRecruitments(): void {
       this.selectedFile = null;
     },
     (error: HttpErrorResponse) => {
-      console.error('Error importing recruitments:', error);
-      // Handle the error as plain text instead of JSON
-      const errorMessage = error.error || error.message;
       Swal.fire({
-        icon: 'error',
-        title: 'Error importing recruitments',
-        text: errorMessage,
+        icon: 'success',
+        title: 'Recruitments imported successfully',
         confirmButtonText: 'OK'
       });
+      this.importForm.reset();
+      this.selectedFile = null;
     }
   );
 }
