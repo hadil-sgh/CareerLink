@@ -333,22 +333,24 @@ importRecruitments(): void {
   }
 
   this.recService.importRecruitments(formData).subscribe(
-    (response) => {
+    (response: any) => {
       console.log('Success importing recruitments:', response);
       Swal.fire({
         icon: 'success',
         title: 'Recruitments imported successfully',
-confirmButtonText: 'OK'
+        confirmButtonText: 'OK'
       });
       this.importForm.reset();
       this.selectedFile = null;
     },
     (error: HttpErrorResponse) => {
       console.error('Error importing recruitments:', error);
+      // Handle the error as plain text instead of JSON
+      const errorMessage = error.error || error.message;
       Swal.fire({
         icon: 'error',
         title: 'Error importing recruitments',
-        text: 'An error occurred while importing recruitments. Please try again later.',
+        text: errorMessage,
         confirmButtonText: 'OK'
       });
     }

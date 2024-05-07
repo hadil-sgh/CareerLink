@@ -193,7 +193,7 @@ public class RecruitmentController {
                                                      @RequestParam("cv") MultipartFile cv) {
         try {
             importService.importRecruitmentsFromExcel(file, userId, cv);
-            return ResponseEntity.ok("Recruitments imported successfully");
+            return ResponseEntity.status(HttpStatus.OK).body("Successful importing recruitments");
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing recruitments");
